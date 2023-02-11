@@ -23,8 +23,9 @@ APP_MIME_SIG =
 #%{
 SRCS = \
 	 App.cpp  \
+	 gui/chartView/ChartView.cpp  \
 	 gui/MainWindow.cpp  \
-	 gui/stocksPanel/StocksPanel.cpp  \
+	 gui/stocksPanel/StocksPanelView.cpp  \
 
 
 #	Specify the resource definition files to use. Full or relative paths can be
@@ -39,6 +40,8 @@ RSRCS = \
 
 # End Pe/Eddie support.
 # @<-src@ 
+#%}
+
 #%}
 
 #%}

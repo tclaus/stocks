@@ -8,12 +8,10 @@
 App::App(void)
 	:	BApplication("application/x-vnd.dw-StocksApp")
 {
-	
 	window = new MainWindow();
 	window->Show();
 }
-
-
+ 
 int
 main(void)
 {
