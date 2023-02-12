@@ -3,13 +3,12 @@
 
 #include <Window.h>
 
-class MainWindow : public BWindow
-{
+class MainWindow : public BWindow {
 public:
-						MainWindow(void);
-			void		MessageReceived(BMessage *msg);
-			bool		QuitRequested(void);
-			
+  MainWindow(void);
+  void MessageReceived(BMessage *msg);
+  bool QuitRequested(void);
+
 private:
 };
 

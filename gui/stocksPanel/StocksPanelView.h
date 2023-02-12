@@ -5,20 +5,19 @@
 #ifndef StocksPanelView_H
 #define StocksPanelView_H
 
-
+#include <ListView.h>
 #include <SupportDefs.h>
 #include <View.h>
-#include <ListView.h>
 
-class StocksPanelView : public BView{
+class StocksPanelView : public BView {
 
-public: 
-			 StocksPanelView();
-	virtual ~StocksPanelView();
- 
+public:
+  StocksPanelView();
+  virtual ~StocksPanelView();
+
 private:
- BListView* fListView;
+  BListView *fListView;
+  // Textfield
 };
-
 
 #endif // StocksPanelView_H

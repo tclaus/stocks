@@ -5,17 +5,15 @@
 #ifndef CHARTVIEW_H
 #define CHARTVIEW_H
 
-
 #include <SupportDefs.h>
 #include <View.h>
 
-class ChartView: public BView {
+class ChartView : public BView {
 public:
- 		  ChartView();
- virtual ~ChartView();
+  ChartView();
+  virtual ~ChartView();
+
 private:
-
 };
-
 
 #endif // CHARTVIEW_H

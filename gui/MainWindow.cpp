@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 
-#include "stocksPanel/StocksPanelView.h"
 #include "chartView/ChartView.h"
+#include "stocksPanel/StocksPanelView.h"
 #include <Application.h>
 #include <GroupLayout.h>
 #include <InterfaceKit.h>
@@ -18,11 +18,10 @@ MainWindow::MainWindow(void)
   BView *stocksPanelView = new StocksPanelView();
   BView *mainView = new ChartView();
 
-  mainView->SetViewColor(0, 200, 0);
-
   BLayoutBuilder::Group<>(this, B_HORIZONTAL, 0)
-  .Add(stocksPanelView)
-  .Add(mainView);
+      .SetInsets(0)
+      .Add(stocksPanelView, 1)
+      .Add(mainView, 3);
 }
 
 void MainWindow::MessageReceived(BMessage *msg) {
@@ -31,8 +30,6 @@ void MainWindow::MessageReceived(BMessage *msg) {
     BWindow::MessageReceived(msg);
     break;
   }
-  
-  
   }
 }
 

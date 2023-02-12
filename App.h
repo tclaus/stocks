@@ -3,13 +3,12 @@
 
 #include <Application.h>
 
-class App : public BApplication
-{
+class App : public BApplication {
 public:
-	App(void);
+  App(void);
 
 private:
- BWindow* window;
+  BWindow *window;
 };
 
 #endif

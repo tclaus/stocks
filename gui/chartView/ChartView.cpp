@@ -5,11 +5,20 @@
  */
 
 #include "ChartView.h"
+#include <LayoutBuilder.h>
+#include <StringView.h>
 
 ChartView::ChartView()
     : BView(BRect(0, 0, 300, 200), "mainView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
-  SetViewColor(10, 128, 10);
+  this->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+
+  BStringView *placeholderText =
+      new BStringView("placeholerLabel", "Choose a share from the shares list");
+
+  BLayoutBuilder::Group<>(this, B_VERTICAL)
+      .AddGrid()
+      .Add(placeholderText, 1, 1);
 }
 
 ChartView::~ChartView() {}
