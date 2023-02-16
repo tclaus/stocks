@@ -38,5 +38,6 @@ Stocks
 .kdev4/
 CMakeCache.txt
 CMakeFiles/
+build/
 cmake_install.cmake
 compile_commands.json

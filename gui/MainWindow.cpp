@@ -3,22 +3,20 @@
 #include "chartView/ChartView.h"
 #include "stocksPanel/StocksPanelView.h"
 #include <Application.h>
-#include <GroupLayout.h>
 #include <InterfaceKit.h>
 #include <Layout.h>
 #include <LayoutBuilder.h>
-#include <StringView.h>
 #include <View.h>
 #include <Window.h>
 
-MainWindow::MainWindow(void)
+MainWindow::MainWindow()
     : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
               B_ASYNCHRONOUS_CONTROLS) {
 
   BView *stocksPanelView = new StocksPanelView();
   BView *mainView = new ChartView();
 
-  BLayoutBuilder::Group<>(this, B_HORIZONTAL, 0)
+  BLayoutBuilder::Group<>((BWindow*)this, B_HORIZONTAL, 0)
       .SetInsets(0)
       .Add(stocksPanelView, 1)
       .Add(mainView, 3);

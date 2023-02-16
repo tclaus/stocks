@@ -7,15 +7,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED False) # Set to true once we know better what to
 
 add_executable(${PROJECT_NAME} App.cpp)
 target_include_directories( ${PROJECT_NAME} SYSTEM PUBLIC
-        /Users/thorstenclaus/haiku-dev/haiku/headers/config
-        /Users/thorstenclaus/haiku-dev/haiku/headers/posix
-        /Users/thorstenclaus/haiku-dev/haiku/headers/os
-        /Users/thorstenclaus/haiku-dev/haiku/headers/os/app
-        /Users/thorstenclaus/haiku-dev/haiku/headers/os/interface
-        /Users/thorstenclaus/haiku-dev/haiku/headers/os/kernel
-        /Users/thorstenclaus/haiku-dev/haiku/headers/os/locale
-        /Users/thorstenclaus/haiku-dev/haiku/headers/os/storage
-        /Users/thorstenclaus/haiku-dev/haiku/headers/os/support
+        headers/config
+        headers/posix
+        headers/os
+        headers/os/app
+        headers/os/interface
+        headers/os/kernel
+        headers/os/locale
+        headers/os/storage
+        headers/os/support
         )
 
 add_subdirectory(gui)

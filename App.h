@@ -5,10 +5,10 @@
 
 class App : public BApplication {
 public:
-  App(void);
+  App();
 
 private:
-  BWindow *window;
+  BWindow *window{};
 };
 
 #endif

@@ -1,7 +1,9 @@
 target_sources(${PROJECT_NAME} PRIVATE
         SearchFieldControl.cpp
         SearchFieldControl.h
-        StockListItem.cpp
-        StockListItem.h
+        StockListItemBuilder.cpp
+        StockListItemBuilder.h
         StocksPanelView.cpp
-        StocksPanelView.h)
+        StocksPanelView.h
+        BListItemView.cpp
+        BListItemView.h)

@@ -5,9 +5,9 @@
 
 class MainWindow : public BWindow {
 public:
-  MainWindow(void);
+  MainWindow();
   void MessageReceived(BMessage *msg);
-  bool QuitRequested(void);
+  bool QuitRequested();
 
 private:
 };
