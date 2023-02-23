@@ -22,7 +22,6 @@ public:
 
     virtual void Update(BView *owner, const BFont *font);
 
-    virtual status_t Perform(perform_code code, void *arg);
 
 protected:
     float BaselineOffset() const;
