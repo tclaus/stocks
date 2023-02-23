@@ -26,7 +26,10 @@ SRCS = \
 	 gui/chartView/ChartView.cpp  \
 	 gui/MainWindow.cpp  \
 	 gui/stocksPanel/StocksPanelView.cpp  \
-	 gui/stocksPanel/SearchFieldControl.cpp
+	 gui/stocksPanel/SearchFieldControl.cpp \
+	 gui/stocksPanel/BListItemView.cpp \
+	 gui/stocksPanel/StockListItemBuilder.cpp
+	 
 
 #Specify the resource definition files to use.Full or relative paths can be
 #used.
@@ -79,7 +82,7 @@ LOCAL_INCLUDE_PATHS =  .
 
 #Specify the level of optimization that you want.Specify either NONE(O0),
 #SOME(O1), FULL(O2), or leave blank(for the default optimization level).
-OPTIMIZE := NONE
+OPTIMIZE :=
 
 #Specify the codes for languages you are going to support in this
 #application.The default "en" one must be provided too."make catkeys"

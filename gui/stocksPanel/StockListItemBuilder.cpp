@@ -7,10 +7,6 @@
 #include "StockListItemBuilder.h"
 #include <LayoutBuilder.h>
 #include <StringView.h>
-#include <iomanip>
-#include <locale>
-#include <iostream>
-#include <sstream>
 
 
 void StockListItemBuilder::StockListItem(const char* tickerName) {
@@ -33,15 +29,15 @@ void StockListItemBuilder::SetProfitLoss(float profitLoss) {
     _profitLoss = profitLoss;
 }
 
-BListItemView *StockListItemBuilder::Build() {
+BListItemView* StockListItemBuilder::Build() {
 
     BString listItemName = BString("item_");
     listItemName.Append(listItemName);
 
     BRect rect = BRect();
-    BView* view = new BView(rect, listItemName.String(),0,B_HORIZONTAL );
+    BView* innerView = new BView(rect, listItemName.String(),0,B_HORIZONTAL );
 
-    BLayoutBuilder::Group<>(view, B_HORIZONTAL,B_USE_DEFAULT_SPACING)
+    BLayoutBuilder::Group<>(innerView, B_HORIZONTAL,B_USE_DEFAULT_SPACING)
             .AddGroup(B_VERTICAL,B_USE_DEFAULT_SPACING,1.0f)
                 .Add(new BStringView("tickerNameView", _tickerName->String() ,B_WILL_DRAW))
                 .Add(new BStringView("stockNameView", _stockName->String(), B_WILL_DRAW))
@@ -52,9 +48,10 @@ BListItemView *StockListItemBuilder::Build() {
                 .Add(MakeProfitLossView())
             .End();
 
+	return new BListItemView(innerView);
 }
 
-BView *StockListItemBuilder::MakeLastPriceView() {
+BView* StockListItemBuilder::MakeLastPriceView() {
     BString* lastPriceString = new BString();
     lastPriceString->SetToFormat( "%f", _closingPrice);
     BStringView* lastPriceStringView = new BStringView("lastPriceView", lastPriceString->String(), B_WILL_DRAW);
@@ -62,10 +59,10 @@ BView *StockListItemBuilder::MakeLastPriceView() {
     return lastPriceStringView;
 }
 
-BView *StockListItemBuilder::MakeProfitLossView() {
+BView* StockListItemBuilder::MakeProfitLossView() {
     BString* profitLossString = new BString();
     profitLossString->SetToFormat( "%f", _profitLoss);
-    BStringView* profitLossStringView new BStringView("profitLossView", profitLossString, B_WILL_DRAW);
+    BStringView* profitLossStringView = new BStringView("profitLossView", profitLossString->String(), B_WILL_DRAW);
     profitLossStringView->SetAlignment(B_ALIGN_RIGHT);
     //TODO Grün/Rot einfärben bei profit/loss
     return profitLossStringView;

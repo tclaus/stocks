@@ -3,6 +3,7 @@
 //
 
 #include "BListItemView.h"
+#include <View.h>
 
 BListItemView::BListItemView(BView *view)
 {

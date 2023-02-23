@@ -9,7 +9,6 @@
 #include <SupportDefs.h>
 #include <View.h>
 #include "BListItemView.h"
-#include <stdio.h>
 
 class StockListItemBuilder {
 
