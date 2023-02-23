@@ -31,7 +31,7 @@ void MainWindow::MessageReceived(BMessage *msg) {
   }
 }
 
-bool MainWindow::QuitRequested(void) {
+bool MainWindow::QuitRequested() {
   be_app->PostMessage(B_QUIT_REQUESTED);
   return true;
 }

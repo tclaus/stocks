@@ -7,7 +7,7 @@
 #include "StockListItemBuilder.h"
 #include <LayoutBuilder.h>
 #include <StringView.h>
-
+#include <String.h>
 
 void StockListItemBuilder::StockListItem(const char* tickerName) {
     _tickerName = new BString(tickerName);

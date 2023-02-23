@@ -13,15 +13,6 @@ class BListItemView : public BListItem {
 public:
     BListItemView(BView *view);
 
-    BListItemView(BMessage *archive);
-
-    virtual                        ~BListItemView();
-
-    static BArchivable *Instantiate(BMessage *archive);
-
-    virtual status_t Archive(BMessage *archive,
-                             bool deep = true) const;
-
     virtual void DrawItem(BView *owner, BRect frame,
                           bool complete = false);
 
