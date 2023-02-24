@@ -7,6 +7,7 @@
 #include "ChartView.h"
 #include <LayoutBuilder.h>
 #include <StringView.h>
+#include <View.h>
 
 ChartView::ChartView()
     : BView(BRect(0, 0, 300, 200), "mainView", B_FOLLOW_ALL, B_WILL_DRAW) {

@@ -13,8 +13,8 @@ MainWindow::MainWindow()
     : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
               B_ASYNCHRONOUS_CONTROLS) {
 
-  BView *stocksPanelView = new StocksPanelView();
-  BView *mainView = new ChartView();
+    BView *stocksPanelView = new StocksPanelView();
+    BView *mainView = new ChartView();
 
   BLayoutBuilder::Group<>((BWindow*)this, B_HORIZONTAL, 0)
       .SetInsets(0)

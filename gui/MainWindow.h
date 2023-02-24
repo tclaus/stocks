@@ -6,8 +6,8 @@
 class MainWindow : public BWindow {
 public:
   MainWindow();
-  void MessageReceived(BMessage *msg);
-  bool QuitRequested();
+  void MessageReceived(BMessage *msg) override;
+  bool QuitRequested() override;
 
 private:
 };
