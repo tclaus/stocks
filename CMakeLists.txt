@@ -24,11 +24,18 @@ endif()
 haiku_add_executable(${PROJECT_NAME}
         App.cpp
         App.h
+        gui/MainWindow.h
+        gui/MainWindow.cpp
+        gui/chartView/ChartView.h
+        gui/chartView/ChartView.cpp
+        gui/stocksPanel/StocksPanelView.h
+        gui/stocksPanel/StocksPanelView.cpp
+        gui/stocksPanel/SearchFieldControl.h
+        gui/stocksPanel/SearchFieldControl.cpp
+        gui/stocksPanel/BListItemView.h
+        gui/stocksPanel/BListItemView.cpp
+        gui/stocksPanel/StockListItemBuilder.h
+        gui/stocksPanel/StockListItemBuilder.cpp
         )
 
-add_subdirectory(gui)
-target_link_libraries(${PROJECT_NAME} "be" "tracker")
-
-
-
-#target_link_libraries(${PROJECT_NAME} "be" "tracker" "stdc++" )
+target_link_libraries(${PROJECT_NAME} "be")
