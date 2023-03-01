@@ -14,20 +14,18 @@ public:
     BListItemView(BView *view);
 
     virtual void DrawItem(BView *owner, BRect frame,
-                          bool complete = false);
+                          bool complete = false) override;
 
-    void SetView(BView* view);
+    void SetView(BView *view);
 
-    const BView *View() const;
-
-    virtual void Update(BView *owner, const BFont *font);
+    void Update(BView *owner, const BFont *font) override;
 
 
 protected:
-    float BaselineOffset() const;
 
 private:
     BListItemView(const BListItemView &item);
+
     BListItemView &operator=(const BListItemView &item);
 
 private:

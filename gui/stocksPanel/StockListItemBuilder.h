@@ -13,7 +13,7 @@
 class StockListItemBuilder {
 
 public:
-	void StockListItem(const char* tickerName);
+	void SetStockTickerName(const char* tickerName);
     void SetStockName(const char* stockName);
     void SetClosingPrice(float closingPrice);
     void SetStockExchangeName(const char* stockExchangeName);
@@ -21,7 +21,7 @@ public:
     BListItemView* Build();
 
 private:
-    BView* MakeLastPriceView();
+    BView* MakeLastPriceView() const;
     BView* MakeProfitLossView();
     const BString* _tickerName;
     const BString* _stockName;

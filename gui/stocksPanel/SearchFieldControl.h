@@ -21,4 +21,4 @@ enum {
 
 };
 
-#endif // SEARCHFIELD_H
+#endif // SEARCH_FIELD_H

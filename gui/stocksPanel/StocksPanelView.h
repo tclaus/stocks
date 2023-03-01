@@ -5,8 +5,9 @@
 #ifndef StocksPanelView_H
 #define StocksPanelView_H
 
-#include <ListView.h>
+#include "BListItemView.h"
 #include <SupportDefs.h>
+#include <ListView.h>
 #include <View.h>
 
 class StocksPanelView : public BView {
@@ -18,6 +19,7 @@ public:
 private:
   BListView *fListView;
   // Textfield
+  BListItemView *buildItem();
 };
 
 #endif // StocksPanelView_H
