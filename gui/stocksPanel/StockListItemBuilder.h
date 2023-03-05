@@ -8,25 +8,29 @@
 
 #include <SupportDefs.h>
 #include <View.h>
-#include "BListItemView.h"
+#include "QuoteListItem.h"
 
 class StockListItemBuilder {
 
 public:
-	void SetStockTickerName(const char* tickerName);
-    void SetStockName(const char* stockName);
+    void SetStockTickerName(const char *tickerName);
+
+    void SetCompanyName(const char *companyName);
+
     void SetClosingPrice(float closingPrice);
-    void SetStockExchangeName(const char* stockExchangeName);
+
+    void SetStockExchangeName(const char *stockExchangeName);
+
     void SetProfitLoss(float profitLoss);
-    BListItemView* Build();
+
+    QuoteListItem *Build();
 
 private:
-    BView* MakeLastPriceView() const;
-    BView* MakeProfitLossView();
-    const BString* _tickerName;
-    const BString* _stockName;
+
+    const BString *_tickerName;
+    const BString *_companyName;
     float _closingPrice;
-    const BString* _stockExchangeName;
+    const BString *_stockExchangeName;
     float _profitLoss;
 };
 

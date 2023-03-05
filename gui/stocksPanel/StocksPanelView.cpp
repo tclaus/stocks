@@ -19,9 +19,7 @@ StocksPanelView::StocksPanelView()
                                         B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);
     listView->SetSelectionMessage(new BMessage(M_SET_STOCK));
 
-    BListItemView *stockItem = buildItem();
-
-    listView->AddItem(stockItem);
+    listView->AddItem(buildItem());
 
     BScrollView *scrollView =
             new BScrollView("scrollView", listView, B_FOLLOW_ALL, 0, false, true);
@@ -33,11 +31,11 @@ StocksPanelView::StocksPanelView()
 
 StocksPanelView::~StocksPanelView() {}
 
-BListItemView *StocksPanelView::buildItem() {
+QuoteListItem *StocksPanelView::buildItem() {
     auto stockListBuilder = new StockListItemBuilder();
-    stockListBuilder->SetStockName("Linde");
-    stockListBuilder->SetProfitLoss(41.0f);
+    stockListBuilder->SetCompanyName("Linde");
     stockListBuilder->SetStockTickerName("LIN");
+    stockListBuilder->SetProfitLoss(41.0f);
     stockListBuilder->SetStockExchangeName("Ney York Stock Exchange");
     return stockListBuilder->Build();
 }

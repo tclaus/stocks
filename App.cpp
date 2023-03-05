@@ -5,7 +5,7 @@
 #include "gui/MainWindow.h"
 
 App::App() : BApplication("application/x-vnd.dw-StocksApp") {
-  window = new MainWindow();
+   window = new MainWindow();
   window->Show();
 }
 

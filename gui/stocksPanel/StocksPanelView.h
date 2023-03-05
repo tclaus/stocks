@@ -5,7 +5,7 @@
 #ifndef StocksPanelView_H
 #define StocksPanelView_H
 
-#include "BListItemView.h"
+#include "QuoteListItem.h"
 #include <SupportDefs.h>
 #include <ListView.h>
 #include <View.h>
@@ -13,13 +13,15 @@
 class StocksPanelView : public BView {
 
 public:
-  StocksPanelView();
-  virtual ~StocksPanelView();
+    StocksPanelView();
+
+    virtual ~StocksPanelView();
 
 private:
-  BListView *fListView;
-  // Textfield
-  BListItemView *buildItem();
+    BListView *fListView;
+
+    // Textfield
+    QuoteListItem *buildItem();
 };
 
 #endif // StocksPanelView_H

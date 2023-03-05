@@ -22,59 +22,24 @@ void StockListItemBuilder::SetStockExchangeName(const char *stockExchangeName) {
     _stockExchangeName = new BString(stockExchangeName);
 }
 
-void StockListItemBuilder::SetStockName(const char *stockName) {
-    _stockName = new BString(stockName);
+void StockListItemBuilder::SetCompanyName(const char *companyName) {
+    _companyName = new BString(companyName);
 }
 
 void StockListItemBuilder::SetProfitLoss(float profitLoss) {
     _profitLoss = profitLoss;
 }
 
-BListItemView *StockListItemBuilder::Build() {
+QuoteListItem *StockListItemBuilder::Build() {
 
-    BString listItemName = BString("item_");
-    listItemName.Append(listItemName);
-
-    BRect rect = BRect(0, 0, 200, 50);
-    BView *innerView = new BView(rect, listItemName.String(), 0, B_HORIZONTAL);
-
-    BLayoutBuilder::Group<>(innerView, B_HORIZONTAL, B_USE_DEFAULT_SPACING)
-            .AddGroup(B_VERTICAL, B_USE_DEFAULT_SPACING, 1.0f)
-            .Add(new BStringView("tickerNameView", _tickerName->String(), B_WILL_DRAW))
-            .Add(new BStringView("stockNameView", _stockName->String(), B_WILL_DRAW))
-            .End()
-            .AddGlue()
-            .AddGroup(B_VERTICAL, B_USE_DEFAULT_SPACING, 1.0)
-            .Add(MakeLastPriceView())
-            .Add(MakeProfitLossView())
-            .End()
-            .Layout();
-
-
-    std::cout << "Creating view with frame: " << innerView->Frame().Height() << ", " << innerView->Frame().Width()
-              << std::endl;
-    std::cout << "Creating view with frame: " << innerView->Frame().Height() << ", " << innerView->Frame().Width()
-              << std::endl;
-    std::cout << "View has layout: " << innerView->GetLayout() << std::endl;
-    return new BListItemView(innerView);
+    Quote *quote = new Quote();
+    quote->change = _profitLoss;
+    quote->symbol = new BString(_tickerName->String());
+    quote->latestPrice = _closingPrice;
+    quote->companyName = new BString(_companyName->String());
+    quote->market = new BString("NYSE");
+    return new QuoteListItem(quote);
 }
 
-BView *StockListItemBuilder::MakeLastPriceView() const {
-    BString *lastPriceString = new BString();
-    lastPriceString->SetToFormat("%f", _closingPrice);
-    BStringView *lastPriceStringView = new BStringView("lastPriceView", lastPriceString->String(), B_WILL_DRAW);
-    lastPriceStringView->SetAlignment(B_ALIGN_RIGHT);
-    lastPriceStringView->ResizeToPreferred();
-    return lastPriceStringView;
-}
-
-BView *StockListItemBuilder::MakeProfitLossView() {
-    BString *profitLossString = new BString();
-    profitLossString->SetToFormat("%f", _profitLoss);
-    BStringView *profitLossStringView = new BStringView("profitLossView", profitLossString->String(), B_WILL_DRAW);
-    profitLossStringView->SetAlignment(B_ALIGN_RIGHT);
-    profitLossStringView->ResizeToPreferred();
-    return profitLossStringView;
-}
 
 
