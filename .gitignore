@@ -41,3 +41,5 @@ CMakeFiles/
 build/
 cmake_install.cmake
 compile_commands.json
+/cmake-build-debug/
+/cmake-build-debug-remote/

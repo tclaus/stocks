@@ -4,6 +4,7 @@
 
 #include "QuoteListItem.h"
 #include <View.h>
+#include <algorithm>
 #include <iostream>
 #include "ListView.h"
 
@@ -44,33 +45,38 @@ QuoteListItem::DrawItem(BView *owner, BRect rect, bool complete) {
         listItemDrawer->SetInsets(BSize(10, 0));
     }
 
-    if (IsSelected()) {
+    parent->SetDrawingMode(B_OP_OVER);
 
-    }
-    // Setze Höhe
     BFont font(be_plain_font);
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_SYMBOL_NAME);
     // Color: white
-    DrawItemSettings settings = {frame, &font, nullptr, B_ALIGN_LEFT, B_ALIGN_TOP};
-    frame.OffsetBySelf(0, listItemDrawer->Height(settings));
-
+    // DrawItemSettings settings = {frame, &font, nullptr, B_ALIGN_LEFT, B_ALIGN_TOP};
+    // frame.OffsetBySelf(0, listItemDrawer->Height(settings));
+    // Wenn nicht das erste Item, dann horizontale Linie zeichnen
     DrawSymbol(frame, B_ALIGN_LEFT, B_ALIGN_TOP);
     DrawLatestPrice(frame, B_ALIGN_RIGHT, B_ALIGN_TOP);
 
     DrawCompanyName(frame, B_ALIGN_LEFT, B_ALIGN_BOTTOM);
-    // (DrawChart, middle)
+    // (DrawChart, center)
     DrawChange(frame, B_ALIGN_RIGHT, B_ALIGN_BOTTOM);
+
+    float newHeight = CalcTotalRowHeight();
+    parent->FrameResized(frame.Width(), newHeight);
+    printf("Draw listitem \n");
 }
 
 void
 QuoteListItem::Update(BView *owner, const BFont *font) {
     (void) owner;
+    (void) font;
 
     font_height fh{};
     font->GetHeight(&fh);
-    float height = fh.ascent + fh.descent + fh.leading;
-    SetHeight(height);
+    float cellHeight = fh.ascent + fh.descent + fh.leading;
+    cellHeight *= 2.0;
+    SetHeight(cellHeight);
+    printf("Update listitem \n");
 }
 
 void
@@ -79,6 +85,7 @@ QuoteListItem::DrawCompanyName(BRect frame, alignment horizontal_alignment, vert
     font.SetFace(B_LIGHT_FACE);
     font.SetSize(FONT_SIZE_COMPANY_NAME);
     // Color: lightGray
+    CalcAndStoreCellHeight(&font, horizontal_alignment);
     DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment};
     listItemDrawer->DrawString(fQuote->companyName->String(), settings);
 
@@ -89,6 +96,7 @@ QuoteListItem::DrawSymbol(BRect frame, alignment horizontal_alignment, vertical_
     BFont font(be_plain_font);
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_SYMBOL_NAME);
+    CalcAndStoreCellHeight(&font, horizontal_alignment);
     // Color: white
     DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment};
     listItemDrawer->DrawString(fQuote->symbol->String(), settings);
@@ -100,11 +108,12 @@ QuoteListItem::DrawLatestPrice(BRect frame, alignment horizontal_alignment, vert
     BFont font(be_bold_font);
     font.SetFace(B_BOLD_FACE);
     font.SetSize(FONT_SIZE_PRICE);
+    char priceString[12];
+    std::sprintf(priceString, "%.2f", fQuote->latestPrice);
 
-    std::string priceString = std::to_string(fQuote->latestPrice);
-
+    CalcAndStoreCellHeight(&font, horizontal_alignment);
     DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment};
-    listItemDrawer->DrawString(priceString.c_str(), settings);
+    listItemDrawer->DrawString(priceString, settings);
 }
 
 void
@@ -113,8 +122,46 @@ QuoteListItem::DrawChange(BRect frame, alignment horizontal_alignment, vertical_
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_PRICE - 2); // A bit smaller than price
 
-    std::string priceString = std::to_string(fQuote->change);
+    char changeString[12];
+    std::sprintf(changeString, "%+.2f", fQuote->change);
 
+    CalcAndStoreCellHeight(&font, horizontal_alignment);
     DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment};
-    listItemDrawer->DrawString(priceString.c_str(), settings);
+    listItemDrawer->DrawString(changeString, settings);
+}
+
+void
+QuoteListItem::CalcAndStoreCellHeight(const BFont *font, alignment alignment) {
+    font_height fh{};
+    font->GetHeight(&fh);
+    float cellHeight = fh.ascent + fh.descent + fh.leading;
+    int rowNumber;
+    switch (alignment) {
+
+        case B_ALIGN_LEFT: {
+            rowNumber = 0;
+            break;
+        }
+        case B_ALIGN_RIGHT: {
+            rowNumber = 1;
+            break;
+        }
+        default: {
+            break;
+        }
+    };
+    AddRowHeight(rowNumber, cellHeight);
+}
+
+void
+QuoteListItem::AddRowHeight(int rowNum, float cellHeight) {
+    rowSizes[rowNum] = std::max(rowSizes[rowNum], cellHeight);
+}
+
+float
+QuoteListItem::CalcTotalRowHeight() {
+    float totalHeight = 0;
+    totalHeight += rowSizes[0];
+    totalHeight += rowSizes[1];
+    return totalHeight;
 }

@@ -21,7 +21,9 @@ private:
     BListView *fListView;
 
     // Textfield
-    QuoteListItem *buildItem();
+    QuoteListItem *buildItem1();
+
+    QuoteListItem *buildItem2();
 };
 
 #endif // StocksPanelView_H

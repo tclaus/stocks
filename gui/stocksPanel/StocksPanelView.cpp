@@ -19,7 +19,8 @@ StocksPanelView::StocksPanelView()
                                         B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);
     listView->SetSelectionMessage(new BMessage(M_SET_STOCK));
 
-    listView->AddItem(buildItem());
+    listView->AddItem(buildItem1());
+    listView->AddItem(buildItem2());
 
     BScrollView *scrollView =
             new BScrollView("scrollView", listView, B_FOLLOW_ALL, 0, false, true);
@@ -31,11 +32,22 @@ StocksPanelView::StocksPanelView()
 
 StocksPanelView::~StocksPanelView() {}
 
-QuoteListItem *StocksPanelView::buildItem() {
+QuoteListItem *StocksPanelView::buildItem1() {
     auto stockListBuilder = new StockListItemBuilder();
-    stockListBuilder->SetCompanyName("Linde");
-    stockListBuilder->SetStockTickerName("LIN");
-    stockListBuilder->SetProfitLoss(41.0f);
-    stockListBuilder->SetStockExchangeName("Ney York Stock Exchange");
+    stockListBuilder->SetCompanyName("Linde PLC");
+    stockListBuilder->SetStockTickerName("LIN.DE");
+    stockListBuilder->SetProfitLoss(1.8f); // Absolut oder Prozent?
+    stockListBuilder->SetClosingPrice(338.10f);
+    stockListBuilder->SetStockExchangeName("New York Stock Exchange");
+    return stockListBuilder->Build();
+}
+
+QuoteListItem *StocksPanelView::buildItem2() {
+    auto stockListBuilder = new StockListItemBuilder();
+    stockListBuilder->SetCompanyName("2G Energy AG");
+    stockListBuilder->SetStockTickerName("2GB.DE");
+    stockListBuilder->SetProfitLoss(2.01f); //Prozent?
+    stockListBuilder->SetClosingPrice(22.80f);
+    stockListBuilder->SetStockExchangeName("XETRA");
     return stockListBuilder->Build();
 }

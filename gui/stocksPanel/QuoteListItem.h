@@ -47,9 +47,16 @@ public:
 protected:
 
 private:
-    BListItemView(const BListItemView &item);
+    void CalcAndStoreCellHeight(const BFont *font, alignment alignment);
 
+    void AddRowHeight(int rowNum, float cellHeight);
+
+    float CalcTotalRowHeight();
+
+private:
+    Quote *fQuote;
+    ListItemDrawer *listItemDrawer;
+    float rowSizes[2];
 };
-
 
 #endif //STOCKS_QUOTELISTITEM_H

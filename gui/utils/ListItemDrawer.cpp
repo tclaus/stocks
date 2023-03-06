@@ -38,7 +38,13 @@ ListItemDrawer::TextColor(bool isSelected) {
 void
 ListItemDrawer::DrawString(const char *text, DrawItemSettings settings) {
     const BFont *font = settings.font == NULL ? be_plain_font : settings.font;
-    DrawString(text, settings.frame, font, settings.align, settings.color);
+
+    BRect drawingFrame = settings.frame;
+    if (settings.verticalAlignment == B_ALIGN_BOTTOM) {
+        drawingFrame.OffsetBySelf(0, Height(settings));
+    }
+
+    DrawString(text, drawingFrame, font, settings.align, settings.color);
 }
 
 float ListItemDrawer::Height(DrawItemSettings settings) {
