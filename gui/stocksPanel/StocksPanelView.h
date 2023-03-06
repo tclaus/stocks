@@ -24,6 +24,8 @@ private:
     QuoteListItem *buildItem1();
 
     QuoteListItem *buildItem2();
+
+    QuoteListItem *buildItem3();
 };
 
 #endif // StocksPanelView_H

@@ -21,13 +21,16 @@ ListItemDrawer::SetInsets(BSize insets) {
 
 rgb_color
 ListItemDrawer::BackgroundColor(bool isSelected) {
-    if (isSelected == false) {
-        BScreen screen;
-        rgb_color color = screen.DesktopColor();
-        color.alpha = 140;
-        return color;
+    if (isSelected) {
+        rgb_color selectedColor;
+        selectedColor.set_to(210, 206, 205);
+        return selectedColor;
     }
-    return ui_color(B_LIST_BACKGROUND_COLOR);
+
+    rgb_color selectedColor;
+    selectedColor.set_to(232, 228, 225);
+    return selectedColor;
+
 }
 
 rgb_color

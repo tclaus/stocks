@@ -14,7 +14,9 @@ QuoteListItem::QuoteListItem(Quote *quote)
 }
 
 QuoteListItem::QuoteListItem()
-        : BListItem() {}
+        : BListItem() {
+
+}
 
 QuoteListItem::~QuoteListItem() {
     delete fQuote;
@@ -46,10 +48,8 @@ QuoteListItem::DrawItem(BView *owner, BRect rect, bool complete) {
     }
 
     parent->SetDrawingMode(B_OP_OVER);
+    DrawBackground(parent, frame, listItemDrawer);
 
-    BFont font(be_plain_font);
-    font.SetFace(B_REGULAR_FACE);
-    font.SetSize(FONT_SIZE_SYMBOL_NAME);
     // Color: white
     // DrawItemSettings settings = {frame, &font, nullptr, B_ALIGN_LEFT, B_ALIGN_TOP};
     // frame.OffsetBySelf(0, listItemDrawer->Height(settings));
@@ -64,6 +64,26 @@ QuoteListItem::DrawItem(BView *owner, BRect rect, bool complete) {
     float newHeight = CalcTotalRowHeight();
     parent->FrameResized(frame.Width(), newHeight);
     printf("Draw listitem \n");
+}
+
+void
+QuoteListItem::DrawBackground(BListView *parent, BRect frame, ListItemDrawer *drawer) {
+
+    const int32 index = parent->IndexOf(this);
+    rgb_color backgroundColor = drawer->BackgroundColor(IsSelected());
+
+    if (IsSelected()) {
+        backgroundColor = ui_color(B_LIST_SELECTED_BACKGROUND_COLOR);
+    } else if (index % 2 == 0) {
+        backgroundColor = tint_color(backgroundColor, 1.02);
+    }
+
+    parent->SetHighColor(backgroundColor);
+
+    parent->SetDrawingMode(B_OP_COPY);
+    parent->FillRect(frame);
+
+    parent->SetLowColor(backgroundColor);
 }
 
 void

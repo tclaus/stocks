@@ -21,6 +21,7 @@ StocksPanelView::StocksPanelView()
 
     listView->AddItem(buildItem1());
     listView->AddItem(buildItem2());
+    listView->AddItem(buildItem3());
 
     BScrollView *scrollView =
             new BScrollView("scrollView", listView, B_FOLLOW_ALL, 0, false, true);
@@ -49,5 +50,15 @@ QuoteListItem *StocksPanelView::buildItem2() {
     stockListBuilder->SetProfitLoss(2.01f); //Prozent?
     stockListBuilder->SetClosingPrice(22.80f);
     stockListBuilder->SetStockExchangeName("XETRA");
+    return stockListBuilder->Build();
+}
+
+QuoteListItem *StocksPanelView::buildItem3() {
+    auto stockListBuilder = new StockListItemBuilder();
+    stockListBuilder->SetCompanyName("Vimeo, Inc");
+    stockListBuilder->SetStockTickerName("VMEO");
+    stockListBuilder->SetProfitLoss(6.81f); //Prozent?
+    stockListBuilder->SetClosingPrice(3.920f); // bei kleinen zahlen drei nachkommas?
+    stockListBuilder->SetStockExchangeName("NYSE");
     return stockListBuilder->Build();
 }

@@ -7,6 +7,7 @@
 
 #include <View.h>
 #include <ListItem.h>
+#include <ListView.h>
 #include "Quote.h"
 #include "ListItemDrawer.h"
 
@@ -47,6 +48,8 @@ public:
 protected:
 
 private:
+    void DrawBackground(BListView *parent, BRect frame, ListItemDrawer *drawer);
+
     void CalcAndStoreCellHeight(const BFont *font, alignment alignment);
 
     void AddRowHeight(int rowNum, float cellHeight);
