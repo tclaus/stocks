@@ -16,6 +16,8 @@ static const int FONT_SIZE_COMPANY_NAME = 12;
 static const int FONT_SIZE_SYMBOL_NAME = 15;
 static const int FONT_SIZE_PRICE = 15;
 
+static const int INSETS_WIDTH = 10;
+
 class QuoteListItem : public BListItem {
 
 public:
@@ -28,16 +30,18 @@ public:
     void DrawItem(BView *owner, BRect frame,
                   bool complete) override;
 
-    void DrawSymbol(BRect frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
+    void DrawDividingLine(BView *owner, const BRect &frame);
+
+    void DrawSymbol(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
     void Update(BView *owner, const BFont *font) override;
 
-    void DrawCompanyName(BRect frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
+    void DrawCompanyName(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
     // (DrawChart(BRect frame))
-    void DrawLatestPrice(BRect frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
+    void DrawLatestPrice(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
-    void DrawChange(BRect frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
+    void DrawChange(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
     void DrawText(BRect frame, DrawItemSettings settings);
 
@@ -48,7 +52,7 @@ public:
 protected:
 
 private:
-    void DrawBackground(BListView *parent, BRect frame, ListItemDrawer *drawer);
+    void DrawBackground(BListView *parent, const BRect &frame, ListItemDrawer *drawer);
 
     void CalcAndStoreCellHeight(const BFont *font, alignment alignment);
 
@@ -60,6 +64,12 @@ private:
     Quote *fQuote;
     ListItemDrawer *listItemDrawer;
     float rowSizes[2];
+
+    void MakeLineColor(BView *owner) const;
+
+    BPoint CalcLineLeftTop(const BRect &frame) const;
+
+    BPoint CalcLineRightTop(const BRect &frame) const;
 };
 
 #endif //STOCKS_QUOTELISTITEM_H

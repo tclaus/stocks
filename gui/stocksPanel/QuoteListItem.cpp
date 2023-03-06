@@ -44,16 +44,15 @@ QuoteListItem::DrawItem(BView *owner, BRect rect, bool complete) {
 
     if (listItemDrawer == nullptr) {
         listItemDrawer = new ListItemDrawer(parent);
-        listItemDrawer->SetInsets(BSize(10, 0));
+        listItemDrawer->SetInsets(BSize(INSETS_WIDTH, 0));
     }
 
-    parent->SetDrawingMode(B_OP_OVER);
     DrawBackground(parent, frame, listItemDrawer);
+    parent->SetDrawingMode(B_OP_OVER);
 
-    // Color: white
-    // DrawItemSettings settings = {frame, &font, nullptr, B_ALIGN_LEFT, B_ALIGN_TOP};
-    // frame.OffsetBySelf(0, listItemDrawer->Height(settings));
-    // Wenn nicht das erste Item, dann horizontale Linie zeichnen
+    if (index > 0) {
+        DrawDividingLine(parent, frame);
+    }
     DrawSymbol(frame, B_ALIGN_LEFT, B_ALIGN_TOP);
     DrawLatestPrice(frame, B_ALIGN_RIGHT, B_ALIGN_TOP);
 
@@ -63,11 +62,10 @@ QuoteListItem::DrawItem(BView *owner, BRect rect, bool complete) {
 
     float newHeight = CalcTotalRowHeight();
     parent->FrameResized(frame.Width(), newHeight);
-    printf("Draw listitem \n");
 }
 
 void
-QuoteListItem::DrawBackground(BListView *parent, BRect frame, ListItemDrawer *drawer) {
+QuoteListItem::DrawBackground(BListView *parent, const BRect &frame, ListItemDrawer *drawer) {
 
     const int32 index = parent->IndexOf(this);
     rgb_color backgroundColor = drawer->BackgroundColor(IsSelected());
@@ -87,6 +85,38 @@ QuoteListItem::DrawBackground(BListView *parent, BRect frame, ListItemDrawer *dr
 }
 
 void
+QuoteListItem::DrawDividingLine(BView *owner, const BRect &frame) {
+    MakeLineColor(owner);
+    float currentPenSize = owner->PenSize();
+    owner->SetPenSize(1.5f);
+
+    BPoint leftTop = CalcLineLeftTop(frame);
+    BPoint rightTop = CalcLineRightTop(frame);
+
+    owner->StrokeLine(leftTop, rightTop);
+    owner->SetPenSize(currentPenSize);
+}
+
+BPoint QuoteListItem::CalcLineRightTop(const BRect &frame) const {
+    BPoint rightTop = frame.RightTop();
+    rightTop.x -= INSETS_WIDTH;
+    rightTop.y += 2.0;
+    return rightTop;
+}
+
+BPoint QuoteListItem::CalcLineLeftTop(const BRect &frame) const {
+    BPoint leftTop = frame.LeftTop();
+    leftTop.x += INSETS_WIDTH;
+    leftTop.y += 2.0;
+    return leftTop;
+}
+
+void QuoteListItem::MakeLineColor(BView *owner) const {
+    rgb_color line_color = tint_color(ui_color(B_LIST_SELECTED_BACKGROUND_COLOR), 1.2f);
+    owner->SetHighColor(line_color);
+}
+
+void
 QuoteListItem::Update(BView *owner, const BFont *font) {
     (void) owner;
     (void) font;
@@ -94,13 +124,13 @@ QuoteListItem::Update(BView *owner, const BFont *font) {
     font_height fh{};
     font->GetHeight(&fh);
     float cellHeight = fh.ascent + fh.descent + fh.leading;
-    cellHeight *= 2.0;
+    cellHeight *= 3.0;
     SetHeight(cellHeight);
-    printf("Update listitem \n");
 }
 
 void
-QuoteListItem::DrawCompanyName(BRect frame, alignment horizontal_alignment, vertical_alignment vertical_alignment) {
+QuoteListItem::DrawCompanyName(const BRect &frame, alignment horizontal_alignment,
+                               vertical_alignment vertical_alignment) {
     BFont font(be_plain_font);
     font.SetFace(B_LIGHT_FACE);
     font.SetSize(FONT_SIZE_COMPANY_NAME);
@@ -112,19 +142,18 @@ QuoteListItem::DrawCompanyName(BRect frame, alignment horizontal_alignment, vert
 }
 
 void
-QuoteListItem::DrawSymbol(BRect frame, alignment horizontal_alignment, vertical_alignment vertical_alignment) {
+QuoteListItem::DrawSymbol(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment) {
     BFont font(be_plain_font);
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_SYMBOL_NAME);
     CalcAndStoreCellHeight(&font, horizontal_alignment);
-    // Color: white
     DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment};
     listItemDrawer->DrawString(fQuote->symbol->String(), settings);
-
 }
 
 void
-QuoteListItem::DrawLatestPrice(BRect frame, alignment horizontal_alignment, vertical_alignment vertical_alignment) {
+QuoteListItem::DrawLatestPrice(const BRect &frame, alignment horizontal_alignment,
+                               vertical_alignment vertical_alignment) {
     BFont font(be_bold_font);
     font.SetFace(B_BOLD_FACE);
     font.SetSize(FONT_SIZE_PRICE);
@@ -137,7 +166,7 @@ QuoteListItem::DrawLatestPrice(BRect frame, alignment horizontal_alignment, vert
 }
 
 void
-QuoteListItem::DrawChange(BRect frame, alignment horizontal_alignment, vertical_alignment vertical_alignment) {
+QuoteListItem::DrawChange(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment) {
     BFont font(be_plain_font);
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_PRICE - 2); // A bit smaller than price

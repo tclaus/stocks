@@ -57,7 +57,7 @@ float ListItemDrawer::Height(DrawItemSettings settings) {
 
     font_height fh{};
     settings.font->GetHeight(&fh);
-    return fh.ascent + fh.descent + fh.leading + 2.0;
+    return fh.ascent + fh.descent + fh.leading + 2.0f;
 }
 
 void
