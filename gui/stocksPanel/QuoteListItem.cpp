@@ -118,14 +118,15 @@ void QuoteListItem::MakeLineColor(BView *owner) const {
 
 void
 QuoteListItem::Update(BView *owner, const BFont *font) {
-    (void) owner;
-    (void) font;
-
     font_height fh{};
     font->GetHeight(&fh);
     float cellHeight = fh.ascent + fh.descent + fh.leading;
     cellHeight *= 3.0;
     SetHeight(cellHeight);
+    if (lastWidth != owner->Frame().Width()) {
+        lastWidth = owner->Frame().Width();
+        owner->Invalidate();
+    }
 }
 
 void

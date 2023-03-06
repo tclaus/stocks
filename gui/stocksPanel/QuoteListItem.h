@@ -64,12 +64,14 @@ private:
     Quote *fQuote;
     ListItemDrawer *listItemDrawer;
     float rowSizes[2];
+    float lastWidth;
 
     void MakeLineColor(BView *owner) const;
 
     BPoint CalcLineLeftTop(const BRect &frame) const;
 
     BPoint CalcLineRightTop(const BRect &frame) const;
+
 };
 
 #endif //STOCKS_QUOTELISTITEM_H
