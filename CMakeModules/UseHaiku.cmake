@@ -12,10 +12,10 @@
 #
 #	Use the standard non-packaged directory if no prefix was given to cmake
 #
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     execute_process(COMMAND finddir B_USER_NONPACKAGED_DIRECTORY OUTPUT_VARIABLE B_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
     set(CMAKE_INSTALL_PREFIX "${B_PREFIX}" CACHE PATH "Default non-packaged install path" FORCE)
-endif()
+endif ()
 
 
 #
@@ -34,7 +34,7 @@ option(HAIKU_ENABLE_TARGET_ATTRS "Enable setting custom BFS attributes on built 
 #
 #	Set up some top-level targets if localization is enabled
 #
-if(HAIKU_ENABLE_I18N)
+if (HAIKU_ENABLE_I18N)
 
     add_custom_target("catkeys")
     add_custom_target("catalogs")
@@ -46,9 +46,9 @@ if(HAIKU_ENABLE_I18N)
 
     if (NOT DEFINED CMAKE_INSTALL_LOCALEDIR)
         set(CMAKE_INSTALL_LOCALEDIR "data/locale")
-    endif()
+    endif ()
 
-endif()
+endif ()
 
 
 #
@@ -56,28 +56,28 @@ endif()
 #
 function(haiku_add_executable TARGET)
 
-    foreach(arg ${ARGN})
+    foreach (arg ${ARGN})
         if (${arg} MATCHES ".*rdef$")
             list(APPEND rdeflist ${arg})
-        elseif(${arg} MATCHES ".*rsrc$")
+        elseif (${arg} MATCHES ".*rsrc$")
             list(APPEND rsrclist "${CMAKE_CURRENT_SOURCE_DIR}/${arg}")
-        else()
+        else ()
             list(APPEND REAL_SOURCES ${arg})
-        endif()
-    endforeach()
+        endif ()
+    endforeach ()
 
     # Call the original function with the filtered source list.
     add_executable(${TARGET} ${REAL_SOURCES})
 
     # rdef/rsrc targets must be added after the main target has been created with _add_executable()
-    foreach(rdef ${rdeflist})
+    foreach (rdef ${rdeflist})
         haiku_add_resource_def(${TARGET} ${rdef})
-    endforeach()
+    endforeach ()
 
     # any precompiled resources that were given to us
-    foreach(rsrc ${rsrclist})
+    foreach (rsrc ${rsrclist})
         haiku_add_resource(${TARGET} ${rsrc})
-    endforeach()
+    endforeach ()
 
     haiku_mimeset_target(${TARGET})
 
@@ -89,15 +89,15 @@ endfunction()
 #
 function(haiku_add_addon TARGET)
 
-    foreach(arg ${ARGN})
+    foreach (arg ${ARGN})
         if (${arg} MATCHES ".*rdef$")
             list(APPEND rdeflist ${arg})
-        elseif(${arg} MATCHES ".*rsrc$")
+        elseif (${arg} MATCHES ".*rsrc$")
             list(APPEND rsrclist "${CMAKE_CURRENT_SOURCE_DIR}/${arg}")
-        else()
+        else ()
             list(APPEND REAL_SOURCES ${arg})
-        endif()
-    endforeach()
+        endif ()
+    endforeach ()
 
     # Call the original function with the filtered source list.
     add_library(${TARGET} MODULE ${REAL_SOURCES})
@@ -108,14 +108,14 @@ function(haiku_add_addon TARGET)
             SUFFIX "")
 
     # rdef/rsrc targets must be added after the main target has been created with _add_executable()
-    foreach(rdef ${rdeflist})
+    foreach (rdef ${rdeflist})
         haiku_add_resource_def(${TARGET} ${rdef})
-    endforeach()
+    endforeach ()
 
     # any precompiled resources that were given to us
-    foreach(rsrc ${rsrclist})
+    foreach (rsrc ${rsrclist})
         haiku_add_resource(${TARGET} ${rsrc})
-    endforeach()
+    endforeach ()
 
     haiku_mimeset_target(${TARGET})
 
@@ -127,15 +127,15 @@ endfunction()
 #
 function(haiku_add_i18n TARGET)
 
-    if(NOT DEFINED "${TARGET}-APP_MIME_SIG")
+    if (NOT DEFINED "${TARGET}-APP_MIME_SIG")
         message(WARNING "No APP_MIME_SIG property for ${TARGET}. Using 'application/x-vnd.Foo-Bar'")
         set("${TARGET}-APP_MIME_SIG" "application/x-vnd.Foo-Bar")
-    endif()
+    endif ()
 
-    if(NOT DEFINED "${TARGET}-LOCALES")
+    if (NOT DEFINED "${TARGET}-LOCALES")
         message(WARNING "No LOCALES property for ${TARGET}. Using 'en'")
         set("${TARGET}-LOCALES" "en")
-    endif()
+    endif ()
 
     haiku_generate_base_catkeys(${TARGET})
     haiku_compile_catalogs(${TARGET} "${${TARGET}-LOCALES}")
@@ -235,7 +235,7 @@ endfunction()
 #
 function(haiku_add_target_attr TARGET ANAME AVALUE)
 
-    #TODO allow overriding the working diretory
+    #TODO allow overriding the working directory
     add_custom_command(
             TARGET ${TARGET}
             POST_BUILD
@@ -278,13 +278,13 @@ function(haiku_compile_catalogs TARGET)
 
     haiku_get_app_mime_subtype("${${TARGET}-APP_MIME_SIG}" SUBTYPE)
 
-    if(DEFINED HAIKU_CATALOG_BUILD_DIR)
+    if (DEFINED HAIKU_CATALOG_BUILD_DIR)
         set(catalogspath "${HAIKU_CATALOG_BUILD_DIR}/locale/catalogs/${SUBTYPE}")
-    else()
+    else ()
         set(catalogspath "${CMAKE_CURRENT_BINARY_DIR}/locale/catalogs/${SUBTYPE}")
-    endif()
+    endif ()
 
-    foreach(lang ${ARGN})
+    foreach (lang ${ARGN})
         set(catalogoutput "${catalogspath}/${lang}.catalog")
         set(catkeyspath "${CMAKE_CURRENT_SOURCE_DIR}/locales/${lang}.catkeys")
 
@@ -297,7 +297,7 @@ function(haiku_compile_catalogs TARGET)
 
         add_custom_target("${TARGET}-${lang}.catalog" DEPENDS ${catalogoutput})
         add_dependencies("catalogs" "${TARGET}-${lang}.catalog")
-    endforeach()
+    endforeach ()
 
 endfunction()
 
@@ -307,7 +307,7 @@ endfunction()
 #
 function(haiku_bind_catalogs TARGET)
 
-    foreach(lang ${ARGN})
+    foreach (lang ${ARGN})
         set(catkeyspath "${CMAKE_CURRENT_SOURCE_DIR}/locales/${lang}.catkeys")
 
         add_custom_target(
@@ -317,7 +317,7 @@ function(haiku_bind_catalogs TARGET)
                 COMMENT "Binding ${lang}.catalog to ${TARGET}")
 
         add_dependencies("bindcatalogs" "${TARGET}-bind-${lang}.catalog")
-    endforeach()
+    endforeach ()
 
 endfunction()
 
@@ -329,18 +329,18 @@ function(haiku_install_catalogs TARGET)
 
     haiku_get_app_mime_subtype("${${TARGET}-APP_MIME_SIG}" SUBTYPE)
 
-    if(DEFINED HAIKU_CATALOG_BUILD_DIR)
+    if (DEFINED HAIKU_CATALOG_BUILD_DIR)
         set(catalogspath "${HAIKU_CATALOG_BUILD_DIR}/locale/catalogs/${SUBTYPE}")
-    else()
+    else ()
         set(catalogspath "${CMAKE_CURRENT_BINARY_DIR}/locale/catalogs/${SUBTYPE}")
-    endif()
+    endif ()
 
-    foreach(lang ${ARGN})
+    foreach (lang ${ARGN})
         install(FILES "${catalogspath}/${lang}.catalog"
                 DESTINATION "${CMAKE_INSTALL_LOCALEDIR}/catalogs/${SUBTYPE}"
                 COMPONENT "locales"
                 EXCLUDE_FROM_ALL)
-    endforeach()
+    endforeach ()
 
 endfunction()
 
@@ -353,10 +353,10 @@ function(haiku_get_app_mime_subtype APP_MIME_SIG OUTVAR)
     # ensure that we have a shortened mimetype without the application/ prefix
     # find the last / and split the mime string
     string(FIND "${${TARGET}-APP_MIME_SIG}" "/" SUBPOS REVERSE)
-    if("${SUBPOS}" EQUAL "-1")
+    if ("${SUBPOS}" EQUAL "-1")
         set("${OUTVAR}" "${${TARGET}-APP_MIME_SIG}" PARENT_SCOPE)
         return()
-    endif()
+    endif ()
 
     math(EXPR SUBPOS "${SUBPOS}+1")
     string(SUBSTRING "${${TARGET}-APP_MIME_SIG}" "${SUBPOS}+1" "-1" SUBTYPE)

@@ -3,6 +3,7 @@
 //
 
 #include "QuoteListItem.h"
+#include "QuoteFormatter.h"
 #include <View.h>
 #include <algorithm>
 #include <iostream>
@@ -10,17 +11,20 @@
 
 QuoteListItem::QuoteListItem(Quote *quote)
         : BListItem(),
-          fQuote(quote) {
+          fQuote(quote),
+          listItemDrawer(nullptr),
+          lastWidth(0.0) {
+    this->fQuoteFormatter = new QuoteFormatter(quote);
 }
 
 QuoteListItem::QuoteListItem()
         : BListItem() {
-
 }
 
 QuoteListItem::~QuoteListItem() {
     delete fQuote;
     delete listItemDrawer;
+    delete fQuoteFormatter;
 }
 
 void
@@ -137,7 +141,7 @@ QuoteListItem::DrawCompanyName(const BRect &frame, alignment horizontal_alignmen
     font.SetSize(FONT_SIZE_COMPANY_NAME);
     // Color: lightGray
     CalcAndStoreCellHeight(&font, horizontal_alignment);
-    DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment};
+    DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment, nullptr};
     listItemDrawer->DrawString(fQuote->companyName->String(), settings);
 
 }
@@ -148,7 +152,7 @@ QuoteListItem::DrawSymbol(const BRect &frame, alignment horizontal_alignment, ve
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_SYMBOL_NAME);
     CalcAndStoreCellHeight(&font, horizontal_alignment);
-    DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment};
+    DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment, nullptr};
     listItemDrawer->DrawString(fQuote->symbol->String(), settings);
 }
 
@@ -162,7 +166,7 @@ QuoteListItem::DrawLatestPrice(const BRect &frame, alignment horizontal_alignmen
     std::sprintf(priceString, "%.2f", fQuote->latestPrice);
 
     CalcAndStoreCellHeight(&font, horizontal_alignment);
-    DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment};
+    DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment, nullptr};
     listItemDrawer->DrawString(priceString, settings);
 }
 
@@ -172,12 +176,19 @@ QuoteListItem::DrawChange(const BRect &frame, alignment horizontal_alignment, ve
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_PRICE - 2); // A bit smaller than price
 
-    char changeString[12];
-    std::sprintf(changeString, "%+.2f", fQuote->change);
+    const char *changeString = fQuoteFormatter->ChangeToString();
 
     CalcAndStoreCellHeight(&font, horizontal_alignment);
-    DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment};
+    const rgb_color *whiteTextColor = new rgb_color{255, 255, 255, 255};
+    const rgb_color *rectColor = fQuoteFormatter->ChangeBackground();
+
+    DrawItemSettings settings = {frame, &font, const_cast<rgb_color *>(whiteTextColor), horizontal_alignment,
+                                 vertical_alignment,
+                                 const_cast<rgb_color *>(rectColor)};
+
     listItemDrawer->DrawString(changeString, settings);
+    delete changeString;
+    delete rectColor;
 }
 
 void
@@ -187,7 +198,6 @@ QuoteListItem::CalcAndStoreCellHeight(const BFont *font, alignment alignment) {
     float cellHeight = fh.ascent + fh.descent + fh.leading;
     int rowNumber;
     switch (alignment) {
-
         case B_ALIGN_LEFT: {
             rowNumber = 0;
             break;
@@ -199,7 +209,7 @@ QuoteListItem::CalcAndStoreCellHeight(const BFont *font, alignment alignment) {
         default: {
             break;
         }
-    };
+    }
     AddRowHeight(rowNumber, cellHeight);
 }
 

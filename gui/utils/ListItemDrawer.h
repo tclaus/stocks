@@ -17,6 +17,7 @@ struct DrawItemSettings {
     rgb_color *color;
     alignment align;
     vertical_alignment verticalAlignment;
+    rgb_color *rounded_rec_background_color;
 };
 
 class ListItemDrawer {
@@ -37,10 +38,15 @@ public:
 
 private:
 
-    void DrawString(const char *text, BRect frame, const BFont *font, alignment align, rgb_color *color = NULL);
+    void DrawString(const char *text, BRect frame, const BFont *font, alignment align, rgb_color *color,
+                    rgb_color *rounded_rec_background_color);
+
+    void DrawRoundedRec(const BRect &frame, const rgb_color &rounded_rec_background_color);
 
     BView *fParent;
     BSize fInsets;
+
+    BRect calculateRect(float stringWidth) const;
 };
 
 #endif //STOCKS_LISTITEMDRAWER_H

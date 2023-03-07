@@ -47,7 +47,7 @@ QuoteListItem *StocksPanelView::buildItem2() {
     auto stockListBuilder = new StockListItemBuilder();
     stockListBuilder->SetCompanyName("2G Energy AG");
     stockListBuilder->SetStockTickerName("2GB.DE");
-    stockListBuilder->SetProfitLoss(2.01f); //Prozent?
+    stockListBuilder->SetProfitLoss(-2.01f); //Prozent?
     stockListBuilder->SetClosingPrice(22.80f);
     stockListBuilder->SetStockExchangeName("XETRA");
     return stockListBuilder->Build();

@@ -18,8 +18,7 @@ public:
     virtual ~StocksPanelView();
 
 private:
-    BListView *fListView;
-
+    
     // Textfield
     QuoteListItem *buildItem1();
 

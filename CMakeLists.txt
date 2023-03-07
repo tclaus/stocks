@@ -38,6 +38,8 @@ haiku_add_executable(${PROJECT_NAME}
         gui/stocksPanel/StockListItemBuilder.cpp
         gui/utils/ListItemDrawer.h
         gui/utils/ListItemDrawer.cpp
+        gui/utils/QuoteFormatter.h
+        gui/utils/QuoteFormatter.cpp
         model/Quote.h
         model/Quote.cpp
         )

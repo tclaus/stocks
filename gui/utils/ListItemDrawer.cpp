@@ -40,18 +40,19 @@ ListItemDrawer::TextColor(bool isSelected) {
 
 void
 ListItemDrawer::DrawString(const char *text, DrawItemSettings settings) {
-    const BFont *font = settings.font == NULL ? be_plain_font : settings.font;
+    const BFont *font = settings.font == nullptr ? be_plain_font : settings.font;
 
     BRect drawingFrame = settings.frame;
     if (settings.verticalAlignment == B_ALIGN_BOTTOM) {
         drawingFrame.OffsetBySelf(0, Height(settings));
     }
 
-    DrawString(text, drawingFrame, font, settings.align, settings.color);
+    DrawString(text, drawingFrame, font, settings.align, settings.color, settings.rounded_rec_background_color);
 }
 
+
 float ListItemDrawer::Height(DrawItemSettings settings) {
-    if (settings.font == NULL) {
+    if (settings.font == nullptr) {
         return settings.frame.Height();
     }
 
@@ -61,7 +62,8 @@ float ListItemDrawer::Height(DrawItemSettings settings) {
 }
 
 void
-ListItemDrawer::DrawString(const char *text, BRect frame, const BFont *font, alignment align, rgb_color *color) {
+ListItemDrawer::DrawString(const char *text, BRect frame, const BFont *font, alignment align, rgb_color *color,
+                           rgb_color *rounded_rec_background_color) {
 
     fParent->SetFont(font);
 
@@ -70,6 +72,7 @@ ListItemDrawer::DrawString(const char *text, BRect frame, const BFont *font, ali
 
     const float fontHeight = fh.ascent + fh.descent + fh.leading;
     const float horizontalCenter = ((frame.Height() - fontHeight) / 2) + fh.descent;
+    const float stringWidth = font->StringWidth(text);
 
     switch (align) {
         case B_ALIGN_LEFT: {
@@ -77,13 +80,12 @@ ListItemDrawer::DrawString(const char *text, BRect frame, const BFont *font, ali
             break;
         }
         case B_ALIGN_RIGHT: {
-            const float width = font->StringWidth(text);
-            fParent->MovePenTo(frame.RightBottom().x - width - fInsets.width, frame.RightBottom().y - horizontalCenter);
+            fParent->MovePenTo(frame.RightBottom().x - stringWidth - fInsets.width,
+                               frame.RightBottom().y - horizontalCenter);
             break;
         }
         case B_ALIGN_CENTER: {
-            const float width = font->StringWidth(text);
-            const float center = (frame.Width() - width) / 2.0f;
+            const float center = (frame.Width() - stringWidth) / 2.0f;
             fParent->MovePenTo(center, frame.RightBottom().y - horizontalCenter);
             break;
         }
@@ -94,10 +96,41 @@ ListItemDrawer::DrawString(const char *text, BRect frame, const BFont *font, ali
         }
     }
 
-    if (color == NULL) {
+    if (rounded_rec_background_color) {
+        BRect backgroundFrame = calculateRect(stringWidth);
+        DrawRoundedRec(backgroundFrame, *rounded_rec_background_color);
+    }
+
+    if (color == nullptr) {
         fParent->SetHighColor(TextColor(false));
     } else {
         fParent->SetHighColor(*color);
     }
     fParent->DrawString(text);
+}
+
+BRect ListItemDrawer::calculateRect(const float stringWidth) const {
+    font_height fh{};
+    auto *font = new BFont();
+    fParent->GetFont(font);
+    font->GetHeight(&fh);
+    const float standardChangeLength = font->StringWidth("W99.99%");
+
+    BPoint penLocation = fParent->PenLocation();
+    float rectLeft = (penLocation.x + stringWidth) - standardChangeLength;
+    float rectTop = penLocation.y - fh.ascent + 2;
+    float rectRight = penLocation.x + stringWidth;
+    float rectBottom = penLocation.y + 2;
+    BRect backgroundFrame = {rectLeft, rectTop, rectRight, rectBottom};
+    return backgroundFrame;
+}
+
+void
+ListItemDrawer::DrawRoundedRec(const BRect &frame, const rgb_color &rounded_rec_background_color) {
+
+    fParent->SetHighColor(rounded_rec_background_color);
+
+    fParent->FillRoundRect(frame,
+                           5.0f,
+                           5.0f);
 }

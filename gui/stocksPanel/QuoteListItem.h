@@ -5,11 +5,13 @@
 #ifndef STOCKS_QUOTELISTITEM_H
 #define STOCKS_QUOTELISTITEM_H
 
+#include "ListItemDrawer.h"
+#include "QuoteFormatter.h"
+
 #include <View.h>
 #include <ListItem.h>
 #include <ListView.h>
 #include "Quote.h"
-#include "ListItemDrawer.h"
 
 
 static const int FONT_SIZE_COMPANY_NAME = 12;
@@ -21,11 +23,11 @@ static const int INSETS_WIDTH = 10;
 class QuoteListItem : public BListItem {
 
 public:
-    QuoteListItem(Quote *quote);
+    explicit QuoteListItem(Quote *quote);
 
     QuoteListItem();
 
-    ~QuoteListItem();
+    ~QuoteListItem() override;
 
     void DrawItem(BView *owner, BRect frame,
                   bool complete) override;
@@ -62,6 +64,7 @@ private:
 
 private:
     Quote *fQuote;
+    QuoteFormatter *fQuoteFormatter;
     ListItemDrawer *listItemDrawer;
     float rowSizes[2];
     float lastWidth;

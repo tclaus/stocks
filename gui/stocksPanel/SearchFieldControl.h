@@ -10,15 +10,16 @@
 
 class SearchFieldControl : public BTextControl {
 public:
-  SearchFieldControl();
-  virtual ~SearchFieldControl();
+    SearchFieldControl();
+
+    virtual ~SearchFieldControl();
 
 private:
 };
 
 enum {
-  M_SET_STOCK = 'setS'
+    M_SET_STOCK = 'setS'
 
 };
 
-#endif // SEARCH_FIELD_H
+#endif // SEARCHFIELD_H
