@@ -6,9 +6,11 @@
 #include "StocksPanelView.h"
 #include "SearchFieldControl.h"
 #include "StockListItemBuilder.h"
+#include "../../api/ApiBuilder.h"
 
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
+
 
 StocksPanelView::StocksPanelView()
         : BView(BRect(), "stocksView", B_FOLLOW_ALL, B_WILL_DRAW) {
@@ -29,6 +31,16 @@ StocksPanelView::StocksPanelView()
     BLayoutBuilder::Group<>(this, B_VERTICAL)
             .Add(searchFieldControl)
             .Add(scrollView);
+
+    SearchForSymbol();
+
+}
+
+void StocksPanelView::SearchForSymbol() {
+    ApiBuilder apiBuilder = ApiBuilder();
+    StockConnector *stockConnector = apiBuilder.CreateStockConnector();
+    const char *searchSymbol = "APPL";
+    stockConnector->Search(searchSymbol);
 }
 
 StocksPanelView::~StocksPanelView() {}

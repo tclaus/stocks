@@ -18,13 +18,16 @@ public:
     virtual ~StocksPanelView();
 
 private:
-    
-    // Textfield
+
+    void SearchForSymbol();
+
     QuoteListItem *buildItem1();
 
     QuoteListItem *buildItem2();
 
     QuoteListItem *buildItem3();
+
+    void SearchForSymbol() const;
 };
 
 #endif // StocksPanelView_H
