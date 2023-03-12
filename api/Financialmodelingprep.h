@@ -7,20 +7,26 @@
 
 #include "StockConnector.h"
 #include "HttpFields.h"
-
+#include "HttpSession.h"
 
 using BPrivate::Network::BHttpFields;
+using BPrivate::Network::BHttpSession;
 
 class Financialmodelingprep : public StockConnector {
 public:
+    Financialmodelingprep();
+
+    ~Financialmodelingprep();
+
     void Search(const char *searchQuery) override;
 
 private:
-    void AddApiKey(BHttpFields &fields);
+    void AddApiKey(BString &request);
 
 private:
     static const char *baseUrl;
     static const char *apiKey;
+    BHttpSession *session;
 };
 
 
