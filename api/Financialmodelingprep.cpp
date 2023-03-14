@@ -17,8 +17,9 @@ using BPrivate::Network::BHttpRequest;
 using BPrivate::Network::BHttpSession;
 using BPrivate::Network::BHttpResult;
 
-Financialmodelingprep::Financialmodelingprep() {
+Financialmodelingprep::Financialmodelingprep(BHandler *receivingHandler) {
     session = new BHttpSession();
+    handler = receivingHandler;
 }
 
 Financialmodelingprep::~Financialmodelingprep() {
@@ -47,12 +48,13 @@ void Financialmodelingprep::Search(const char *searchQuery) {
     url->SetPath("/api/v3/search");
     url->SetRequest(requestString);
 
-    std::printf("URL Request:  %s", url->UrlString().String());
+    std::printf("URL Request: %s \n", url->UrlString().String());
 
     auto request = BHttpRequest(*url);
     // Creating and sharing a session
+    printf("Is valíd: %d\n", BMessenger(handler).IsValid());
 
-    BHttpResult result = session->Execute(std::move(request));
+    BHttpResult result = session->Execute(std::move(request), nullptr, BMessenger(handler));
     std::printf("Result: %s", result.Body().text->String());
     delete url;
 }

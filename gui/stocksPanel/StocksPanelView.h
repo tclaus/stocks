@@ -17,7 +17,10 @@ public:
 
     virtual ~StocksPanelView();
 
+    void FillCustomStocksList();
+
 private:
+    void LoadDemoStocks();
 
     void SearchForSymbol();
 
@@ -28,6 +31,9 @@ private:
     QuoteListItem *buildItem3();
 
     void SearchForSymbol() const;
+
+private:
+    BListView *listView;
 };
 
 #endif // StocksPanelView_H

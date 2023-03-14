@@ -9,6 +9,7 @@
 class StockConnector {
 
 public:
+
     virtual void
     Search(const char *searchQuery) = 0;
     //

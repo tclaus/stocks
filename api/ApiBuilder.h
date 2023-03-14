@@ -6,11 +6,13 @@
 #define STOCKS_APIBUILDER_H
 
 
+#include <Handler.h>
 #include "StockConnector.h"
 
 class ApiBuilder {
 public:
-    StockConnector *CreateStockConnector();
+
+    StockConnector *CreateStockConnector(BHandler *handler);
 };
 
 

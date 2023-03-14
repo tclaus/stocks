@@ -5,6 +5,7 @@
 #ifndef STOCKS_FINANCIALMODELINGPREP_H
 #define STOCKS_FINANCIALMODELINGPREP_H
 
+#include <Handler.h>
 #include "StockConnector.h"
 #include "HttpFields.h"
 #include "HttpSession.h"
@@ -14,7 +15,7 @@ using BPrivate::Network::BHttpSession;
 
 class Financialmodelingprep : public StockConnector {
 public:
-    Financialmodelingprep();
+    Financialmodelingprep(BHandler *receivingHandler);
 
     ~Financialmodelingprep();
 
@@ -27,6 +28,7 @@ private:
     static const char *baseUrl;
     static const char *apiKey;
     BHttpSession *session;
+    BHandler *handler;
 };
 
 
