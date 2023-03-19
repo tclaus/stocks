@@ -2,13 +2,14 @@
 // Created by Thorsten Claus on 09.03.23.
 //
 
-#include "Financialmodelingprep.h"
+#include <cstdio>
 
+#include "Financialmodelingprep.h"
 #include "private/netservices2/HttpRequest.h"
 #include "private/netservices2/HttpSession.h"
 #include "private/netservices2/HttpResult.h"
 #include "Url.h"
-#include <cstdio>
+#include "NetRequester.h"
 
 const char *Financialmodelingprep::apiKey = "0e82c6b63df6e216f628f5c68a5e09a2";
 const char *Financialmodelingprep::baseUrl = "https://financialmodelingprep.com/api/v3";
@@ -16,20 +17,21 @@ const char *Financialmodelingprep::baseUrl = "https://financialmodelingprep.com/
 using BPrivate::Network::BHttpRequest;
 using BPrivate::Network::BHttpSession;
 using BPrivate::Network::BHttpResult;
+using BPrivate::Network::BHttpBody;
 
-Financialmodelingprep::Financialmodelingprep(BHandler *receivingHandler) {
-    session = new BHttpSession();
-    handler = receivingHandler;
+Financialmodelingprep::Financialmodelingprep(BHandler *receivingHandler)
+        :
+        fHandler(receivingHandler) {
 }
 
 Financialmodelingprep::~Financialmodelingprep() {
-    delete session;
+    delete fHandler;
 }
 
 void Financialmodelingprep::Search(const char *searchQuery) {
     // search?query=appl&apikey=skjxxwm// search
 /**
- * Search result:
+ * Search fResult:
     {
         "symbol": "APC.F",
                 "name": "Apple Inc.",
@@ -44,19 +46,16 @@ void Financialmodelingprep::Search(const char *searchQuery) {
 
     AddApiKey(requestString);
 
-    BUrl *url = new BUrl(baseUrl);
+    auto url = new BUrl(baseUrl);
     url->SetPath("/api/v3/search");
     url->SetRequest(requestString);
 
-    std::printf("URL Request: %s \n", url->UrlString().String());
+    printf("URL Request: %s \n", url->UrlString().String());
 
     auto request = BHttpRequest(*url);
-    // Creating and sharing a session
-    printf("Is valíd: %d\n", BMessenger(handler).IsValid());
+    auto &requester = NetRequester::Instance();
+    requester.AddRequest(&request, fHandler);
 
-    BHttpResult result = session->Execute(std::move(request), nullptr, BMessenger(handler));
-    std::printf("Result: %s", result.Body().text->String());
-    delete url;
 }
 
 void

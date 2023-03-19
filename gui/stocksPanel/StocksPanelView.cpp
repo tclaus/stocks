@@ -12,6 +12,8 @@
 #include <ScrollView.h>
 #include <private/netservices2/NetServicesDefs.h>
 
+using BPrivate::Network::UrlEvent::RequestCompleted;
+
 StocksPanelView::StocksPanelView()
         : BView(BRect(), "stocksView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
@@ -29,16 +31,36 @@ StocksPanelView::StocksPanelView()
             .Add(scrollView);
 
     LoadDemoStocks();
-}
-
-void StocksPanelView::SearchForSymbol() {
-    ApiBuilder apiBuilder = ApiBuilder();
-    StockConnector *stockConnector = apiBuilder.CreateStockConnector(this->Window());
-    const char *searchSymbol = "APPL";
-    stockConnector->Search(searchSymbol);
+    CreateApiConnection();
 }
 
 StocksPanelView::~StocksPanelView() {}
+
+void StocksPanelView::MessageReceived(BMessage *message) {
+    switch (message->what) {
+        case RequestCompleted: {
+            auto identifier = message->GetInt32(BPrivate::Network::UrlEventData::Id, -1);
+            printf("Search Message received: %d", identifier);
+            break;
+        }
+        default: {
+            BView::MessageReceived(message);
+            break;
+        }
+    }
+}
+
+void StocksPanelView::CreateApiConnection() {
+    ApiBuilder apiBuilder = ApiBuilder();
+    stockConnector = apiBuilder.CreateStockConnector(this);
+}
+
+void StocksPanelView::SearchForSymbol() {
+
+    const char *searchSymbol = "APPL";
+    stockConnector->Search(searchSymbol);
+
+}
 
 void StocksPanelView::LoadDemoStocks() {
     listView->AddItem(buildItem1());

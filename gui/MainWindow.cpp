@@ -1,7 +1,8 @@
 #include "MainWindow.h"
 
-#include "chartView/ChartView.h"
+#include "NetRequester.h"
 
+#include "chartView/ChartView.h"
 #include <Application.h>
 #include <InterfaceKit.h>
 #include <Layout.h>
@@ -9,6 +10,7 @@
 #include <View.h>
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
+#include <iostream>
 
 MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
@@ -35,7 +37,12 @@ void MainWindow::FillStocksList() {
 void MainWindow::MessageReceived(BMessage *msg) {
     switch (msg->what) {
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
-            printf("request Completed \n");
+            // request ist nun da.
+            // Im NetRequster sollte ich darauf zugreifen können
+
+
+
+            std::cout << "Request Completed " << std::endl;
             break;
         }
         default: {

@@ -5,6 +5,7 @@
 #ifndef StocksPanelView_H
 #define StocksPanelView_H
 
+#include "StockConnector.h"
 #include "QuoteListItem.h"
 #include <SupportDefs.h>
 #include <ListView.h>
@@ -19,8 +20,12 @@ public:
 
     void FillCustomStocksList();
 
+    void MessageReceived(BMessage *message) override;
+
 private:
     void LoadDemoStocks();
+
+    void CreateApiConnection();
 
     void SearchForSymbol();
 
@@ -34,6 +39,7 @@ private:
 
 private:
     BListView *listView;
+    StockConnector *stockConnector;
 };
 
 #endif // StocksPanelView_H
