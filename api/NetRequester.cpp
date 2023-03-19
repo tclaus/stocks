@@ -4,6 +4,8 @@
 
 #include "NetRequester.h"
 
+NetRequester NetRequester::instance = NetRequester();
+
 NetRequester &NetRequester::Instance() {
     return instance;
 }
@@ -21,7 +23,7 @@ NetRequester::NetRequester()
 BString *
 NetRequester::Result() {
     auto &httpResult = fHttpResultContainer.back();
+    fHttpResultContainer.pop_back();
+
     return new BString(httpResult.Body().text.value());
 }
-
-NetRequester NetRequester::instance = NetRequester();

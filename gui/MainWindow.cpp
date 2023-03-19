@@ -7,7 +7,6 @@
 #include <InterfaceKit.h>
 #include <Layout.h>
 #include <LayoutBuilder.h>
-#include <View.h>
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
 #include <iostream>
@@ -37,12 +36,11 @@ void MainWindow::FillStocksList() {
 void MainWindow::MessageReceived(BMessage *msg) {
     switch (msg->what) {
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
-            // request ist nun da.
-            // Im NetRequster sollte ich darauf zugreifen können
-
-
-
             std::cout << "Request Completed " << std::endl;
+
+            // Problem ist aber: auf welchem request ist da die Antwort?
+            NetRequester &requester = NetRequester::Instance();
+            std::cout << requester.Result()->String() << std::endl;
             break;
         }
         default: {

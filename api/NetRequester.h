@@ -37,10 +37,11 @@ protected:
 private:
     NetRequester();
 
+
 private :
+    static NetRequester instance;
     BHttpSession *fHttpSession;
     std::list<BHttpResult> fHttpResultContainer; // Es gibt auch ne Map!
-    static NetRequester instance;
 };
 
 
