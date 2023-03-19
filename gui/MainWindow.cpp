@@ -3,6 +3,7 @@
 #include "NetRequester.h"
 
 #include "chartView/ChartView.h"
+#include "../api/NetRequester.h"
 #include <Application.h>
 #include <InterfaceKit.h>
 #include <Layout.h>
@@ -15,13 +16,13 @@ MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
                   B_ASYNCHRONOUS_CONTROLS) {
 
-    stocksPanelView = new StocksPanelView();
-    mainView = new ChartView();
+    stocksPanelView = new StocksPanelView(); // Update wenn Suche, update, wenn Aktien aktualisert werrden
+    chartView = new ChartView();                // Update des Images
 
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
             .Add(stocksPanelView, 1)
-            .Add(mainView, 3);
+            .Add(chartView, 3);
 }
 
 void MainWindow::Show() {
@@ -37,10 +38,7 @@ void MainWindow::MessageReceived(BMessage *msg) {
     switch (msg->what) {
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
             std::cout << "Request Completed " << std::endl;
-
-            // Problem ist aber: auf welchem request ist da die Antwort?
-            NetRequester &requester = NetRequester::Instance();
-            std::cout << requester.Result()->String() << std::endl;
+            ResultHandler(msg->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             break;
         }
         default: {
@@ -48,6 +46,14 @@ void MainWindow::MessageReceived(BMessage *msg) {
             break;
         }
     }
+}
+
+void
+MainWindow::ResultHandler(int requestId) {
+    std::cout << "Request with ID " << requestId << " completed." << std::endl;
+    stocksPanelView->HandleResult(requestId);
+    //chartView->HandleResult(result);
+    // Weiterleiten an andere Interessenten
 }
 
 bool MainWindow::QuitRequested() {

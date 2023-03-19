@@ -14,11 +14,17 @@ public:
 
     void MessageReceived(BMessage *msg) override;
 
+    /**
+     * Handles the completed api request
+     * @param requestId
+     */
+    void ResultHandler(int requestId);
+
     bool QuitRequested() override;
 
 private:
     StocksPanelView *stocksPanelView;
-    BView *mainView;
+    BView *chartView;
 };
 
 #endif

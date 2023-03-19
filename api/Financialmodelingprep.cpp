@@ -28,7 +28,8 @@ Financialmodelingprep::~Financialmodelingprep() {
     delete fHandler;
 }
 
-void Financialmodelingprep::Search(const char *searchQuery) {
+int
+Financialmodelingprep::Search(const char *searchQuery) {
     // search?query=appl&apikey=skjxxwm// search
 /**
  * Search fResult:
@@ -54,8 +55,7 @@ void Financialmodelingprep::Search(const char *searchQuery) {
 
     auto request = BHttpRequest(*url);
     auto &requester = NetRequester::Instance();
-    requester.AddRequest(&request, fHandler);
-
+    return requester.AddRequest(&request, fHandler);
 }
 
 void

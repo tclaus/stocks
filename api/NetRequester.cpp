@@ -3,6 +3,7 @@
 //
 
 #include "NetRequester.h"
+#include <iostream>
 
 NetRequester NetRequester::instance = NetRequester();
 
@@ -10,10 +11,15 @@ NetRequester &NetRequester::Instance() {
     return instance;
 }
 
-void NetRequester::AddRequest(BHttpRequest *request, BHandler *handler) {
+int
+NetRequester::AddRequest(BHttpRequest *request, BHandler *handler) {
+    BHttpResult expectingResult = fHttpSession->Execute(std::move(*request), nullptr, BMessenger(handler));
+    int id = expectingResult.Identity();
     fHttpResultContainer.push_back(
-            fHttpSession->Execute(std::move(*request), nullptr, BMessenger(handler))
+            std::move(expectingResult)
     );
+    std::cout << "New request with Id: " << id << " created" << std::endl;
+    return id;
 }
 
 NetRequester::NetRequester()
@@ -21,9 +27,12 @@ NetRequester::NetRequester()
           fHttpResultContainer() {}
 
 BString *
-NetRequester::Result() {
+NetRequester::Result(int resultId) {
+    (void) resultId;
+    // TODO: Returns a request by its Id, not just the latest!
     auto &httpResult = fHttpResultContainer.back();
+    auto resultBody = new BString(httpResult.Body().text.value());
     fHttpResultContainer.pop_back();
 
-    return new BString(httpResult.Body().text.value());
+    return resultBody;
 }

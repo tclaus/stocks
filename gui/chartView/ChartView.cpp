@@ -5,7 +5,7 @@
 #include <View.h>
 
 ChartView::ChartView()
-        : BView(BRect(0, 0, 300, 200), "mainView", B_FOLLOW_ALL, B_WILL_DRAW) {
+        : BView(BRect(0, 0, 300, 200), "chartView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
     this->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 

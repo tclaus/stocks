@@ -5,11 +5,13 @@
 #ifndef StocksPanelView_H
 #define StocksPanelView_H
 
-#include "StockConnector.h"
 #include "QuoteListItem.h"
+#include "../../api/StockConnector.h"
 #include <SupportDefs.h>
 #include <ListView.h>
 #include <View.h>
+#include <list>
+#include "../../model/SearchResultList.h"
 
 class StocksPanelView : public BView {
 
@@ -18,16 +20,24 @@ public:
 
     virtual ~StocksPanelView();
 
+    /**
+     * Handles the completed request with id requestID.
+     * @param requestId
+     */
+    void HandleResult(int requestId);
+
     void FillCustomStocksList();
 
-    void MessageReceived(BMessage *message) override;
-
 private:
-    void LoadDemoStocks();
-
     void CreateApiConnection();
 
     void SearchForSymbol();
+
+    void HandleSearchResult(int searchRequestId);
+
+    void ListSearchResultsInListView();
+
+    void LoadDemoStocks();
 
     QuoteListItem *buildItem1();
 
@@ -40,6 +50,8 @@ private:
 private:
     BListView *listView;
     StockConnector *stockConnector;
+    int searchRequestId;
+    SearchResultList *searchResultList;
 };
 
 #endif // StocksPanelView_H

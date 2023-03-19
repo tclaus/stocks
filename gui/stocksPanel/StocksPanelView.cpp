@@ -2,6 +2,7 @@
  * Copyright 2018, Your Name <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
+#include <iostream>
 
 #include "StocksPanelView.h"
 #include "SearchFieldControl.h"
@@ -11,19 +12,21 @@
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
 #include <private/netservices2/NetServicesDefs.h>
+#include "../../api/NetRequester.h"
 
 using BPrivate::Network::UrlEvent::RequestCompleted;
 
 StocksPanelView::StocksPanelView()
-        : BView(BRect(), "stocksView", B_FOLLOW_ALL, B_WILL_DRAW) {
+        : BView(BRect(), "stocksView", B_FOLLOW_ALL, B_WILL_DRAW),
+          searchResultList(new SearchResultList()) {
 
-    SearchFieldControl *searchFieldControl = new SearchFieldControl();
+    auto *searchFieldControl = new SearchFieldControl();
 
     listView = new BListView(BRect(), "stocksList",
                              B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);
     listView->SetSelectionMessage(new BMessage(M_SET_STOCK));
 
-    BScrollView *scrollView =
+    auto *scrollView =
             new BScrollView("scrollView", listView, B_FOLLOW_ALL, 0, false, true);
 
     BLayoutBuilder::Group<>(this, B_VERTICAL)
@@ -34,20 +37,8 @@ StocksPanelView::StocksPanelView()
     CreateApiConnection();
 }
 
-StocksPanelView::~StocksPanelView() {}
-
-void StocksPanelView::MessageReceived(BMessage *message) {
-    switch (message->what) {
-        case RequestCompleted: {
-            auto identifier = message->GetInt32(BPrivate::Network::UrlEventData::Id, -1);
-            printf("Search Message received: %d", identifier);
-            break;
-        }
-        default: {
-            BView::MessageReceived(message);
-            break;
-        }
-    }
+StocksPanelView::~StocksPanelView() {
+    delete searchResultList;
 }
 
 void StocksPanelView::CreateApiConnection() {
@@ -55,22 +46,50 @@ void StocksPanelView::CreateApiConnection() {
     stockConnector = apiBuilder.CreateStockConnector(this);
 }
 
+void StocksPanelView::FillCustomStocksList() {
+
+    SearchForSymbol();
+}
+
 void StocksPanelView::SearchForSymbol() {
 
     const char *searchSymbol = "APPL";
-    stockConnector->Search(searchSymbol);
+    searchRequestId = stockConnector->Search(searchSymbol);
+}
 
+void
+StocksPanelView::HandleResult(int requestId) {
+    std::cout << "Handle result in StockPanelView" << std::endl;
+    if (requestId == searchRequestId) {
+        HandleSearchResult(requestId);
+    }
+}
+
+void
+StocksPanelView::HandleSearchResult(int searchResultId) {
+    BString *searchResult = NetRequester::Instance().Result(searchResultId);
+    searchResultList->ListFromJson(searchResult);
+    ListSearchResultsInListView();
+    searchRequestId = 0;
+}
+
+void StocksPanelView::ListSearchResultsInListView() {
+    auto itemsList = searchResultList->List();
+    std::cout << "Start creating the search list view" << std::endl;
+
+    auto *foundSharesList = new BList();
+    for (auto &foundShare: *itemsList) {
+        foundSharesList->AddItem(new BStringItem(foundShare->DisplayText()->String()));
+    }
+
+    listView->MakeEmpty();
+    listView->AddList(foundSharesList);
 }
 
 void StocksPanelView::LoadDemoStocks() {
     listView->AddItem(buildItem1());
     listView->AddItem(buildItem2());
     listView->AddItem(buildItem3());
-}
-
-void StocksPanelView::FillCustomStocksList() {
-
-    SearchForSymbol();
 }
 
 QuoteListItem *StocksPanelView::buildItem1() {

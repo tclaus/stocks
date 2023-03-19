@@ -26,17 +26,22 @@ public:
 
     static NetRequester &Instance();
 
-    void AddRequest(BHttpRequest *request, BHandler *handler);
+    /**
+     * Adds a request to the pipeline and returns the request id.
+     * @param request
+     * @param handler
+     * @return
+     */
+    int
+    AddRequest(BHttpRequest *request, BHandler *handler);
 
-    // Return result (by id?)
-
-    BString *Result();
+    BString *
+    Result(int resultId);
 
 protected:
 
 private:
     NetRequester();
-
 
 private :
     static NetRequester instance;

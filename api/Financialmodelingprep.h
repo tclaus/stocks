@@ -22,7 +22,8 @@ public:
 
     ~Financialmodelingprep();
 
-    void Search(const char *searchQuery) override;
+    int
+    Search(const char *searchQuery) override;
 
 
 private:
