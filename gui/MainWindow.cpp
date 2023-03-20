@@ -14,13 +14,20 @@ MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
                   B_ASYNCHRONOUS_CONTROLS) {
 
+    SetWindowSizes();
+
     stocksPanelView = new StocksPanelView();
     chartView = new ChartView();
-
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
             .Add(stocksPanelView, 1)
             .Add(chartView, 3);
+}
+
+void
+MainWindow::SetWindowSizes() {
+    BRect screenFrame = (BScreen(this)).Frame();
+    SetSizeLimits(700.0, screenFrame.Width(),500.0, screenFrame.Height());
 }
 
 void MainWindow::Show() {
