@@ -8,6 +8,8 @@ class MainWindow : public BWindow {
 public:
     MainWindow();
 
+    void SetWindowSizes();
+
     void Show() override;
 
     void FillStocksList();
