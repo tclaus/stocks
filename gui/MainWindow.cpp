@@ -1,7 +1,5 @@
 #include "MainWindow.h"
 
-#include "NetRequester.h"
-
 #include "chartView/ChartView.h"
 #include "../api/NetRequester.h"
 #include <Application.h>
@@ -16,8 +14,8 @@ MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
                   B_ASYNCHRONOUS_CONTROLS) {
 
-    stocksPanelView = new StocksPanelView(); // Update wenn Suche, update, wenn Aktien aktualisert werrden
-    chartView = new ChartView();                // Update des Images
+    stocksPanelView = new StocksPanelView();
+    chartView = new ChartView();
 
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
@@ -53,7 +51,7 @@ MainWindow::ResultHandler(int requestId) {
     std::cout << "Request with ID " << requestId << " completed." << std::endl;
     stocksPanelView->HandleResult(requestId);
     //chartView->HandleResult(result);
-    // Weiterleiten an andere Interessenten
+    // Weiterleiten an andere Interessenten, als Schnittstelle definieren?
 }
 
 bool MainWindow::QuitRequested() {

@@ -18,7 +18,7 @@ using BPrivate::Network::BHttpBody;
 
 class Financialmodelingprep : public StockConnector {
 public:
-    Financialmodelingprep(BHandler *receivingHandler);
+    explicit Financialmodelingprep(BHandler *receivingHandler);
 
     ~Financialmodelingprep();
 

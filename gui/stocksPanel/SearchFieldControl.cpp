@@ -6,7 +6,7 @@
 #include "SearchFieldControl.h"
 
 SearchFieldControl::SearchFieldControl()
-        : BTextControl(BRect(), "searchField", "", "Search...", NULL,
+        : BTextControl(BRect(), "searchField", "", "Search...", nullptr,
                        B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP) {
 
     SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));

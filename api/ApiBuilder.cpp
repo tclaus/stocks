@@ -7,5 +7,5 @@
 
 StockConnector *ApiBuilder::CreateStockConnector(BHandler *handler) {
     // A kind of factory here
-    return new Financialmodelingprep(handler, BHttpResult(Network::BHttpResult()));
+    return new Financialmodelingprep(handler);
 }

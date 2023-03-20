@@ -63,7 +63,6 @@ haiku_add_executable(${PROJECT_NAME}
         gui/utils/QuoteFormatter.h
         gui/utils/QuoteFormatter.cpp
         api/StockConnector.h
-        api/StockConnector.cpp
         api/Financialmodelingprep.h
         api/Financialmodelingprep.cpp
         api/NetRequester.h
