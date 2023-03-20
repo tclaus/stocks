@@ -30,6 +30,13 @@ include_directories(AFTER SYSTEM
         gui/utils
         api)
 
+include(FetchContent)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz
+        DOWNLOAD_EXTRACT_TIMESTAMP true)
+
+FetchContent_MakeAvailable(json)
+
 find_library(network NAMES network PATHS /boot/system/develop/lib/ REQUIRED)
 find_library(bnetapi NAMES bnetapi PATHS /boot/system/develop/lib/ REQUIRED)
 find_library(netservices2 NAMES netservices2 PATHS /boot/system/develop/lib REQUIRED)
@@ -55,9 +62,7 @@ haiku_add_executable(${PROJECT_NAME}
         gui/utils/ListItemDrawer.cpp
         gui/utils/QuoteFormatter.h
         gui/utils/QuoteFormatter.cpp
-        model/Quote.h
         api/StockConnector.h
-        api/StockConnector.cpp
         api/Financialmodelingprep.h
         api/Financialmodelingprep.cpp
         api/NetRequester.h
@@ -65,10 +70,15 @@ haiku_add_executable(${PROJECT_NAME}
         api/ApiBuilder.h
         api/ApiBuilder.cpp
         model/Quote.cpp
+        model/Quote.h
         model/Portfolio.h
         model/Portfolio.cpp
+        model/SearchResultItem.h
+        model/SearchResultItem.cpp
+        model/SearchResultList.h
+        model/SearchResultList.cpp
         )
 
 target_link_directories(${PROJECT_NAME} PRIVATE /boot/system/develop/lib)
-target_link_libraries(${PROJECT_NAME} be ${STDCPPLIBS} network netservices2 bnetapi)
+target_link_libraries(${PROJECT_NAME} be ${STDCPPLIBS} network netservices2 bnetapi nlohmann_json::nlohmann_json)
 

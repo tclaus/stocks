@@ -10,8 +10,9 @@
 
 class ChartView : public BView {
 public:
-  ChartView();
-  virtual ~ChartView();
+    ChartView();
+
+    virtual ~ChartView();
 
 private:
 };

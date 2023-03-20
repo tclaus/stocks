@@ -7,12 +7,9 @@
 
 ListItemDrawer::ListItemDrawer(BView *parent)
         : fParent(parent), fInsets(BSize(5, 5)) {
-
 }
 
-ListItemDrawer::~ListItemDrawer() {
-
-}
+ListItemDrawer::~ListItemDrawer() {}
 
 void
 ListItemDrawer::SetInsets(BSize insets) {
