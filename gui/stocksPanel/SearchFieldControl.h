@@ -14,12 +14,18 @@ public:
 
     virtual ~SearchFieldControl();
 
+    void Init();
+
+    void AttachedToWindow() override;
+
+    void MessageReceived(BMessage *message);
+
 private:
 };
 
 enum {
-    M_SET_STOCK = 'setS'
-
+    M_SET_STOCK = 'setS',
+    M_START_SHARES_SEARCH = 'MSSS'
 };
 
 #endif // SEARCHFIELD_H

@@ -2,6 +2,7 @@
 
 #include "chartView/ChartView.h"
 #include "../api/NetRequester.h"
+#include "stocksPanel/SearchFieldControl.h"
 #include <Application.h>
 #include <InterfaceKit.h>
 #include <Layout.h>
@@ -46,6 +47,15 @@ void MainWindow::MessageReceived(BMessage *msg) {
             ResultHandler(msg->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             break;
         }
+        case (M_START_SHARES_SEARCH) : {
+            std::cout << "A textfield change" << std::endl;
+            BString searchTerm;
+            if (msg->FindString("search terms", &searchTerm) != B_OK) {
+                searchTerm = "";
+            }
+            RequestForSearch(searchTerm);
+            break;
+        }
         default: {
             BWindow::MessageReceived(msg);
             break;
@@ -59,6 +69,16 @@ MainWindow::ResultHandler(int requestId) {
     stocksPanelView->HandleResult(requestId);
     //chartView->HandleResult(result);
     // Weiterleiten an andere Interessenten, als Schnittstelle definieren?
+}
+
+void
+MainWindow::RequestForSearch(BString searchTerm) {
+    (void) searchTerm;
+    // Mindestens 2 Zeichen =?
+    // Setzte LastSearchModificationTimeStamp zurück
+    // Lokal abspeicehrn
+
+    // Irgend ein Thread / Timer sollte sich den Search Term ansehen und die suche auslösen
 }
 
 bool MainWindow::QuitRequested() {
