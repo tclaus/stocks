@@ -3,6 +3,7 @@
 
 #include <Window.h>
 #include "stocksPanel/StocksPanelView.h"
+#include "utils/DelayedQueryTimer.h"
 
 class MainWindow : public BWindow {
 public:
@@ -33,7 +34,7 @@ public:
 private:
     StocksPanelView *stocksPanelView;
     BView *chartView;
-    // letzter Zeitstempel für die Suche
+    DelayedQueryTimer *delayedQueryTimer;
 };
 
 #endif

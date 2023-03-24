@@ -18,7 +18,7 @@ public:
 
     void AttachedToWindow() override;
 
-    void MessageReceived(BMessage *message);
+    void MessageReceived(BMessage *message) override;
 
 private:
 };

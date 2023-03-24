@@ -7,17 +7,24 @@
 
 #include <chrono>
 #include <thread>
+#include "Messenger.h"
 
 using namespace std::chrono_literals;
 typedef std::chrono::time_point<std::chrono::high_resolution_clock> timepoint;
 typedef std::chrono::duration<double, std::milli> timeDiffInMilli;
 
-class Timer {
+class DelayedQueryTimer {
 public:
-    Timer();
+    explicit DelayedQueryTimer(const BMessenger &messenger);
 
-    ~Timer();
+    ~DelayedQueryTimer();
 
+    /**
+     * Starts a query after a delay with the new queryString.
+     * If this methods is called again with a different query string before the internal delay has been reached,
+     * the delay timer restarts again.
+     * @param queryString
+     */
     void RunQuery(std::string *queryString);
 
 private:
@@ -25,7 +32,10 @@ private:
     void RunQueryAfterLastCharacterDelay();
 
 private:
-    std::thread fTheThread;
+    const std::thread fTheThread;
+
+    static
+    BMessenger &fMessenger;
 
     static
     bool fStopThread;
@@ -38,9 +48,6 @@ private:
 
     static
     timepoint fLastCharacterReceived;
-
-    static
-    std::thread fThread;
 
     constexpr static
     std::chrono::duration<double, std::milli> fDelayBeforeSendQuery = 300ms;

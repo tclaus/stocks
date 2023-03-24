@@ -13,10 +13,10 @@
 
 MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
-                  B_ASYNCHRONOUS_CONTROLS) {
+                  B_ASYNCHRONOUS_CONTROLS){
 
     SetWindowSizes();
-
+    delayedQueryTimer = new DelayedQueryTimer(BMessenger(this));
     stocksPanelView = new StocksPanelView();
     chartView = new ChartView();
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
@@ -67,18 +67,12 @@ void
 MainWindow::ResultHandler(int requestId) {
     std::cout << "Request with ID " << requestId << " completed." << std::endl;
     stocksPanelView->HandleResult(requestId);
-    //chartView->HandleResult(result);
-    // Weiterleiten an andere Interessenten, als Schnittstelle definieren?
 }
 
 void
 MainWindow::RequestForSearch(BString searchTerm) {
     (void) searchTerm;
-    // Mindestens 2 Zeichen =?
-    // Setzte LastSearchModificationTimeStamp zurück
-    // Lokal abspeicehrn
-
-    // Irgend ein Thread / Timer sollte sich den Search Term ansehen und die suche auslösen
+    delayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
 }
 
 bool MainWindow::QuitRequested() {
