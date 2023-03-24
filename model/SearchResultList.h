@@ -6,10 +6,12 @@
 #define STOCKS_SEARCHRESULTLIST_H
 
 
+#include "SearchResultItem.h"
+#include "nlohmann/json.hpp"
+
 #include <List.h>
 #include <list>
 #include <String.h>
-#include "SearchResultItem.h"
 
 class SearchResultList {
 public:
@@ -22,6 +24,9 @@ public:
      */
     void
     ListFromJson(BString *jsonString);
+
+    bool
+    IsValid(nlohmann::basic_json<> &jsonElement);
 
     void
     Clear();

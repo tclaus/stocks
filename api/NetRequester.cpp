@@ -18,7 +18,6 @@ NetRequester::AddRequest(BHttpRequest *request, BHandler *handler) {
     fHttpResultContainer.push_back(
             std::move(expectingResult)
     );
-    std::cout << "New request with Id: " << id << " created" << std::endl;
     return id;
 }
 

@@ -62,6 +62,8 @@ haiku_add_executable(${PROJECT_NAME}
         gui/utils/ListItemDrawer.cpp
         gui/utils/QuoteFormatter.h
         gui/utils/QuoteFormatter.cpp
+        gui/utils/DelayedQueryTimer.h
+        gui/utils/DelayedQueryTimer.cpp
         api/StockConnector.h
         api/Financialmodelingprep.h
         api/Financialmodelingprep.cpp

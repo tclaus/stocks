@@ -26,12 +26,11 @@ public:
      */
     void HandleResult(int requestId);
 
-    void FillCustomStocksList();
+    void SearchForSymbol(const char *searchSymbol);
 
 private:
-    void CreateApiConnection();
 
-    void SearchForSymbol();
+    void CreateApiConnection();
 
     void HandleSearchResult(int searchRequestId);
 
@@ -44,8 +43,6 @@ private:
     QuoteListItem *buildItem2();
 
     QuoteListItem *buildItem3();
-
-    void SearchForSymbol() const;
 
 private:
     BListView *listView;
