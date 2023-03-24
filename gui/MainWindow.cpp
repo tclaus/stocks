@@ -16,13 +16,22 @@ MainWindow::MainWindow()
                   B_ASYNCHRONOUS_CONTROLS){
 
     SetWindowSizes();
-    delayedQueryTimer = new DelayedQueryTimer(BMessenger(this));
     stocksPanelView = new StocksPanelView();
     chartView = new ChartView();
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
             .Add(stocksPanelView, 1)
             .Add(chartView, 3);
+    Init();
+}
+
+MainWindow::~MainWindow() {
+    delayedQueryTimer->StopThread();
+}
+
+void MainWindow::Init() {
+    delayedQueryTimer = new DelayedQueryTimer( this);
+    delayedQueryTimer->StartThread();
 }
 
 void
@@ -33,11 +42,6 @@ MainWindow::SetWindowSizes() {
 
 void MainWindow::Show() {
     BWindow::Show();
-    FillStocksList();
-}
-
-void MainWindow::FillStocksList() {
-    stocksPanelView->FillCustomStocksList();
 }
 
 void MainWindow::MessageReceived(BMessage *msg) {
@@ -47,13 +51,18 @@ void MainWindow::MessageReceived(BMessage *msg) {
             ResultHandler(msg->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             break;
         }
-        case (M_START_SHARES_SEARCH) : {
-            std::cout << "A textfield change" << std::endl;
+        case (SearchFieldMessages::M_START_SHARES_SEARCH) : {
             BString searchTerm;
-            if (msg->FindString("search terms", &searchTerm) != B_OK) {
+            if (msg->FindString(SEARCH_TERM, &searchTerm) != B_OK) {
                 searchTerm = "";
             }
             RequestForSearch(searchTerm);
+            break;
+        }
+        case (DelayedQueryTimerMessages::CHARACTER_DELAY_EXPIRED) : {
+            const char* searchQuery = msg->FindString(SEARCH_FOR_TEXT);
+            std::cout << "Now run the query with: " << searchQuery << std::endl;
+            stocksPanelView->SearchForSymbol(searchQuery);
             break;
         }
         default: {
@@ -70,8 +79,7 @@ MainWindow::ResultHandler(int requestId) {
 }
 
 void
-MainWindow::RequestForSearch(BString searchTerm) {
-    (void) searchTerm;
+MainWindow::RequestForSearch(BString& searchTerm) {
     delayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
 }
 

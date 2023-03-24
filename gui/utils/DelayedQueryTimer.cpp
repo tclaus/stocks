@@ -8,44 +8,103 @@
 
 using namespace std::chrono_literals;
 
-DelayedQueryTimer::DelayedQueryTimer(const BMessenger &messenger) {
-    DelayedQueryTimer::fMessenger = messenger;
-    std::thread worker(RunQueryAfterLastCharacterDelay);
+DelayedQueryTimer::DelayedQueryTimer(const BHandler *handler)
+        : fMessenger(new BMessenger(handler)),
+          fStopThread(false),
+          fQueryString((std::string *) ""),
+          fLastSearchedQueryString((std::string *) "") {
+}
+
+void
+DelayedQueryTimer::StartThread() {
+    fThread = new std::thread([this]() { RunQueryAfterLastCharacterDelay(); });
+}
+
+void
+DelayedQueryTimer::StopThread() {
+    fStopThread = true;
 }
 
 DelayedQueryTimer::~DelayedQueryTimer() {
     fStopThread = true;
+    delete fThread;
 }
 
-void DelayedQueryTimer::RunQueryAfterLastCharacterDelay() {
+void
+DelayedQueryTimer::RunQuery(std::string *queryString) {
+    fQueryString = queryString;
+    fLastCharacterReceived = std::chrono::high_resolution_clock::now();
+}
+
+void
+DelayedQueryTimer::RunQueryAfterLastCharacterDelay() {
     while (!fStopThread) {
-
-        // Warte bis der Query string sich verändert hat
-        while (fLastSearchedQueryString->compare(*fQueryString)) {
-            std::this_thread::sleep_for(DelayedQueryTimer::fDelayBeforeSendQuery);
-            std::cout << "Query string changed" << std::endl;
-        }
-
-        // Ist die Zeitspanne abgelaufen? wenn nein, warte noch ein bischen
-        timepoint now = std::chrono::high_resolution_clock::now();
-        while ((now - fLastCharacterReceived) < fDelayBeforeSendQuery) {
-            std::cout << "Wait until delay reached" << std::endl;
-            timeDiffInMilli sleepTime =
-                    fDelayBeforeSendQuery - (now - fLastCharacterReceived);
-            if (sleepTime > 0ms) {
-                std::this_thread::sleep_for(sleepTime);
-            }
-        }
-        // Zweite Schranke, in de Zwischenzeit könnte ja ein neues Zeichen reingekommn sein
-        if ((now - fLastCharacterReceived) < fDelayBeforeSendQuery) {
-            fLastSearchedQueryString = fQueryString;
-            std::cout << "Run Query now" << std::endl;
-            // Run Query
-        }
+        WaitForChangedQueryString();
+        WaitUntilCharacterDelayExpired();
+        NotifyForQueryWhenElapsed();
     }
 }
 
-void DelayedQueryTimer::RunQuery(std::string *queryString) {
-    fQueryString = queryString;
-    fLastCharacterReceived = std::chrono::high_resolution_clock::now();
+void
+DelayedQueryTimer::WaitForChangedQueryString() const {
+    while (fLastSearchedQueryString == fQueryString) {
+        std::this_thread::sleep_for(fDelayBeforeSendQuery);
+        std::cout << ".";
+    }
+}
+
+void
+DelayedQueryTimer::WaitUntilCharacterDelayExpired() const {
+    timeDiffMs timeSinceLastCharacterReceived = CalculateElapsedTimeDifference();
+    while (timeSinceLastCharacterReceived < fDelayBeforeSendQuery) {
+        std::cout << "DQT: Wait until delay expired" << std::endl;
+        timeDiffMs sleepTime = fDelayBeforeSendQuery - timeSinceLastCharacterReceived;
+        if (sleepTime > 1ms && sleepTime < fDelayBeforeSendQuery) {
+            std::this_thread::sleep_for(sleepTime);
+        }
+        timeSinceLastCharacterReceived = CalculateElapsedTimeDifference();
+    }
+}
+
+timeDiffMs
+DelayedQueryTimer::CalculateElapsedTimeDifference() const {
+    timePoint now = std::chrono::high_resolution_clock::now();
+    timeDiffMs timeSinceLastCharacterReceived = (now - fLastCharacterReceived);
+    return timeSinceLastCharacterReceived;
+}
+
+void
+DelayedQueryTimer::NotifyForQueryWhenElapsed() {
+    timePoint now = std::chrono::high_resolution_clock::now();
+    if ((now - fLastCharacterReceived) > fDelayBeforeSendQuery) {
+        fLastSearchedQueryString = fQueryString;
+        std::cout << "DQT: Run Query now" << std::endl;
+        NotifyForQuery();
+    }
+}
+
+void
+DelayedQueryTimer::NotifyForQuery() const {
+    if (IsQueryValid(fQueryString)) {
+        BMessage message(CHARACTER_DELAY_EXPIRED);
+        message.AddString(SEARCH_FOR_TEXT, fQueryString->c_str());
+        fMessenger->SendMessage(&message);
+    }
+}
+
+bool
+DelayedQueryTimer::IsQueryValid(const std::string *query) const {
+    if (query->empty()) {
+        return false;
+    }
+    if (query->find(' ') != std::string::npos) {
+        return false;
+    }
+    if (query->find('?') != std::string::npos) {
+        return false;
+    }
+    if (query->find('&') != std::string::npos) {
+        return false;
+    }
+    return true;
 }

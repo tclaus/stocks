@@ -10,14 +10,18 @@
 #include "Messenger.h"
 
 using namespace std::chrono_literals;
-typedef std::chrono::time_point<std::chrono::high_resolution_clock> timepoint;
-typedef std::chrono::duration<double, std::milli> timeDiffInMilli;
+typedef std::chrono::time_point<std::chrono::high_resolution_clock> timePoint;
+typedef std::chrono::duration<double, std::milli> timeDiffMs;
 
 class DelayedQueryTimer {
 public:
-    explicit DelayedQueryTimer(const BMessenger &messenger);
+    explicit DelayedQueryTimer(const BHandler *handler);
 
     ~DelayedQueryTimer();
+
+    void StartThread();
+
+    void StopThread();
 
     /**
      * Starts a query after a delay with the new queryString.
@@ -28,30 +32,36 @@ public:
     void RunQuery(std::string *queryString);
 
 private:
-    static
+
     void RunQueryAfterLastCharacterDelay();
 
+    void WaitUntilCharacterDelayExpired() const;
+
+    void WaitForChangedQueryString() const;
+
+    timeDiffMs CalculateElapsedTimeDifference() const;
+
+    void NotifyForQuery() const;
+
+    void NotifyForQueryWhenElapsed();
+
+    bool IsQueryValid(const std::string *query) const;
+
 private:
-    const std::thread fTheThread;
-
-    static
-    BMessenger &fMessenger;
-
-    static
+    std::thread *fThread;
+    BMessenger *fMessenger;
     bool fStopThread;
-
-    static
     std::string *fQueryString;
-
-    static
     std::string *fLastSearchedQueryString;
-
-    static
-    timepoint fLastCharacterReceived;
-
+    timePoint fLastCharacterReceived;
     constexpr static
-    std::chrono::duration<double, std::milli> fDelayBeforeSendQuery = 300ms;
+    std::chrono::duration<double, std::milli> fDelayBeforeSendQuery = 400ms;
 };
 
+enum DelayedQueryTimerMessages {
+    CHARACTER_DELAY_EXPIRED = 'DTSS',
+    SEARCH_TEXT = 'DTST'
+};
 
+static const char *const SEARCH_FOR_TEXT = "SearchForText";
 #endif //STOCKS_TIMER_H

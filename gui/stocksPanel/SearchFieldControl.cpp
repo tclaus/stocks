@@ -4,7 +4,6 @@
  */
 
 #include "SearchFieldControl.h"
-#include <iostream>
 #include "Window.h"
 
 SearchFieldControl::SearchFieldControl()
@@ -17,7 +16,7 @@ SearchFieldControl::SearchFieldControl()
 SearchFieldControl::~SearchFieldControl() {}
 
 void SearchFieldControl::Init() {
-    SetModificationMessage(new BMessage(M_START_SHARES_SEARCH));
+    SetModificationMessage(new BMessage(SearchFieldMessages::M_START_SHARES_SEARCH));
     SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 }
 
@@ -30,9 +29,8 @@ void
 SearchFieldControl::MessageReceived(BMessage *message) {
     switch (message->what) {
         case (M_START_SHARES_SEARCH): {
-            std::cout << "Forward message with text: " << this->Text() << std::endl;
-            BMessage searchTerms(M_START_SHARES_SEARCH);
-            searchTerms.AddString("search terms", this->Text());
+            BMessage searchTerms(SearchFieldMessages::M_START_SHARES_SEARCH);
+            searchTerms.AddString(SEARCH_TERM, this->Text());
             Window()->PostMessage(&searchTerms);
             break;
         }

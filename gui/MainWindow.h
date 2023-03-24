@@ -9,11 +9,13 @@ class MainWindow : public BWindow {
 public:
     MainWindow();
 
+    ~MainWindow() override;
+
     void SetWindowSizes();
 
-    void Show() override;
+    void Init();
 
-    void FillStocksList();
+    void Show() override;
 
     void MessageReceived(BMessage *msg) override;
 
@@ -27,7 +29,7 @@ public:
      * Handles a change in the search field. Starts a new search for shares.
      * @param searchTerm
      */
-    void RequestForSearch(BString searchTerm);
+    void RequestForSearch(BString &searchTerm);
 
     bool QuitRequested() override;
 

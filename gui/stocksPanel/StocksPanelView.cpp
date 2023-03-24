@@ -24,7 +24,7 @@ StocksPanelView::StocksPanelView()
 
     listView = new BListView(BRect(), "stocksList",
                              B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);
-    listView->SetSelectionMessage(new BMessage(M_SET_STOCK));
+    listView->SetSelectionMessage(new BMessage(SearchFieldMessages::M_SET_STOCK));
 
     auto *scrollView =
             new BScrollView("scrollView", listView, B_FOLLOW_ALL, 0, false, true);
@@ -46,14 +46,7 @@ void StocksPanelView::CreateApiConnection() {
     stockConnector = apiBuilder.CreateStockConnector(this);
 }
 
-void StocksPanelView::FillCustomStocksList() {
-
-    SearchForSymbol();
-}
-
-void StocksPanelView::SearchForSymbol() {
-
-    const char *searchSymbol = "APPL";
+void StocksPanelView::SearchForSymbol(const char *searchSymbol) {
     searchRequestId = stockConnector->Search(searchSymbol);
 }
 

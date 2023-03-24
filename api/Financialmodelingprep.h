@@ -29,6 +29,8 @@ public:
 private:
     void AddApiKey(BString &request);
 
+    void AddLimit(BString &request);
+
 private:
     static const char *baseUrl;
     static const char *apiKey;

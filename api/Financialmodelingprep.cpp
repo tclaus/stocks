@@ -46,6 +46,7 @@ Financialmodelingprep::Search(const char *searchQuery) {
     requestString.Append(searchQuery);
 
     AddApiKey(requestString);
+    AddLimit(requestString);
 
     auto url = new BUrl(baseUrl);
     url->SetPath("/api/v3/search");
@@ -62,4 +63,9 @@ void
 Financialmodelingprep::AddApiKey(BString &request) {
     request.Append("&apikey=");
     request.Append(apiKey);
+}
+
+void
+Financialmodelingprep::AddLimit(BString &request) {
+    request.Append("&limit=25");
 }

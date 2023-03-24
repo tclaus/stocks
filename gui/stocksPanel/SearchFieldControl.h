@@ -23,9 +23,10 @@ public:
 private:
 };
 
-enum {
+enum SearchFieldMessages {
     M_SET_STOCK = 'setS',
     M_START_SHARES_SEARCH = 'MSSS'
 };
 
+static const char *const SEARCH_TERM = "search terms";
 #endif // SEARCHFIELD_H
