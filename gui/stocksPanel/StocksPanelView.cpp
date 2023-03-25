@@ -53,7 +53,6 @@ void StocksPanelView::SearchForSymbol(const char *searchSymbol) {
 
 void
 StocksPanelView::HandleResult(int requestId) {
-    std::cout << "Handle result in StockPanelView" << std::endl;
     if (requestId == searchRequestId) {
         HandleSearchResult(requestId);
     }
@@ -69,8 +68,6 @@ StocksPanelView::HandleSearchResult(int searchResultId) {
 
 void StocksPanelView::ListSearchResultsInListView() {
     auto itemsList = searchResultList->List();
-    std::cout << "Start creating the search list view" << std::endl;
-
     auto *foundSharesList = new BList();
     for (auto &foundShare: *itemsList) {
         foundSharesList->AddItem(new BStringItem(foundShare->DisplayText()->String()));

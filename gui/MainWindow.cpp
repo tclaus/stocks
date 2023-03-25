@@ -47,7 +47,6 @@ void MainWindow::Show() {
 void MainWindow::MessageReceived(BMessage *msg) {
     switch (msg->what) {
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
-            std::cout << "Request Completed " << std::endl;
             ResultHandler(msg->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             break;
         }
@@ -61,7 +60,6 @@ void MainWindow::MessageReceived(BMessage *msg) {
         }
         case (DelayedQueryTimerMessages::CHARACTER_DELAY_EXPIRED) : {
             const char *searchQuery = msg->FindString(SEARCH_FOR_TEXT);
-            std::cout << "Now run the query with: " << searchQuery << std::endl;
             stocksPanelView->SearchForSymbol(searchQuery);
             break;
         }
@@ -74,7 +72,6 @@ void MainWindow::MessageReceived(BMessage *msg) {
 
 void
 MainWindow::ResultHandler(int requestId) {
-    std::cout << "Request with ID " << requestId << " completed." << std::endl;
     stocksPanelView->HandleResult(requestId);
 }
 
