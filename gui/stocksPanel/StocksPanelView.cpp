@@ -39,6 +39,7 @@ StocksPanelView::StocksPanelView()
 
 StocksPanelView::~StocksPanelView() {
     delete searchResultList;
+    delete stockConnector;
 }
 
 void StocksPanelView::CreateApiConnection() {

@@ -9,10 +9,10 @@ ListItemDrawer::ListItemDrawer(BView *parent)
         : fParent(parent), fInsets(BSize(5, 5)) {
 }
 
-ListItemDrawer::~ListItemDrawer() {}
+ListItemDrawer::~ListItemDrawer() = default;
 
 void
-ListItemDrawer::SetInsets(BSize insets) {
+ListItemDrawer::SetInsets(const BSize insets) {
     fInsets = insets;
 }
 
@@ -36,7 +36,7 @@ ListItemDrawer::TextColor(bool isSelected) {
 }
 
 void
-ListItemDrawer::DrawString(const char *text, DrawItemSettings settings) {
+ListItemDrawer::DrawString(const char *text, const DrawItemSettings &settings) {
     const BFont *font = settings.font == nullptr ? be_plain_font : settings.font;
 
     BRect drawingFrame = settings.frame;
@@ -48,7 +48,7 @@ ListItemDrawer::DrawString(const char *text, DrawItemSettings settings) {
 }
 
 
-float ListItemDrawer::Height(DrawItemSettings settings) {
+float ListItemDrawer::Height(const DrawItemSettings &settings) {
     if (settings.font == nullptr) {
         return settings.frame.Height();
     }

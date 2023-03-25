@@ -10,9 +10,7 @@
 
 class QuoteFormatter {
 public:
-    QuoteFormatter(Quote *quote);
-
-    ~QuoteFormatter() {};
+    explicit QuoteFormatter(Quote *quote);
 
     const char *ChangeToString() const;
 

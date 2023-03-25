@@ -40,7 +40,6 @@ public:
 
     void DrawCompanyName(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
-    // (DrawChart(BRect frame))
     void DrawLatestPrice(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
     void DrawChange(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);

@@ -12,8 +12,6 @@ class ChartView : public BView {
 public:
     ChartView();
 
-    virtual ~ChartView();
-
 private:
 };
 

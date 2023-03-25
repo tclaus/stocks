@@ -18,5 +18,3 @@ ChartView::ChartView()
             .Add(placeholderText, 1, 1)
             .AddGlue(2, 1);
 }
-
-ChartView::~ChartView() = default;
