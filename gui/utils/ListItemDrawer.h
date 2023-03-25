@@ -22,7 +22,7 @@ struct DrawItemSettings {
 
 class ListItemDrawer {
 public:
-    ListItemDrawer(BView *parent);
+    explicit ListItemDrawer(BView *parent);
 
     ~ListItemDrawer();
 
@@ -30,11 +30,11 @@ public:
 
     rgb_color TextColor(bool isSelected);
 
-    void SetInsets(BSize insets);
+    void SetInsets(const BSize insets);
 
-    float Height(DrawItemSettings settings);
+    float Height(const DrawItemSettings &settings);
 
-    void DrawString(const char *text, DrawItemSettings settings);
+    void DrawString(const char *text, const DrawItemSettings &settings);
 
 private:
 

@@ -18,7 +18,7 @@ class StocksPanelView : public BView {
 public:
     StocksPanelView();
 
-    virtual ~StocksPanelView();
+    ~StocksPanelView() override;
 
     /**
      * Handles the completed request with id requestID.

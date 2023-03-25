@@ -9,7 +9,8 @@
 using namespace std::chrono_literals;
 
 DelayedQueryTimer::DelayedQueryTimer(const BHandler *handler)
-        : fMessenger(new BMessenger(handler)),
+        : fThread(nullptr),
+          fMessenger(new BMessenger(handler)),
           fStopThread(false),
           fQueryString((std::string *) ""),
           fLastSearchedQueryString((std::string *) "") {

@@ -12,8 +12,6 @@ class SearchFieldControl : public BTextControl {
 public:
     SearchFieldControl();
 
-    virtual ~SearchFieldControl();
-
     void Init();
 
     void AttachedToWindow() override;

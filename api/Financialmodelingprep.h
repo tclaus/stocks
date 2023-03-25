@@ -20,7 +20,7 @@ class Financialmodelingprep : public StockConnector {
 public:
     explicit Financialmodelingprep(BHandler *receivingHandler);
 
-    ~Financialmodelingprep();
+    ~Financialmodelingprep() override;
 
     int
     Search(const char *searchQuery) override;

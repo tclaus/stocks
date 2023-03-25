@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 
 #include "chartView/ChartView.h"
-#include "../api/NetRequester.h"
 #include "stocksPanel/SearchFieldControl.h"
 #include <Application.h>
 #include <InterfaceKit.h>
@@ -13,11 +12,13 @@
 
 MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
-                  B_ASYNCHRONOUS_CONTROLS){
+                  B_ASYNCHRONOUS_CONTROLS) {
 
     SetWindowSizes();
     stocksPanelView = new StocksPanelView();
     chartView = new ChartView();
+    delayedQueryTimer = new DelayedQueryTimer(this);
+
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
             .Add(stocksPanelView, 1)
@@ -30,14 +31,13 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::Init() {
-    delayedQueryTimer = new DelayedQueryTimer( this);
     delayedQueryTimer->StartThread();
 }
 
 void
 MainWindow::SetWindowSizes() {
     BRect screenFrame = (BScreen(this)).Frame();
-    SetSizeLimits(700.0, screenFrame.Width(),500.0, screenFrame.Height());
+    SetSizeLimits(700.0, screenFrame.Width(), 500.0, screenFrame.Height());
 }
 
 void MainWindow::Show() {
@@ -60,7 +60,7 @@ void MainWindow::MessageReceived(BMessage *msg) {
             break;
         }
         case (DelayedQueryTimerMessages::CHARACTER_DELAY_EXPIRED) : {
-            const char* searchQuery = msg->FindString(SEARCH_FOR_TEXT);
+            const char *searchQuery = msg->FindString(SEARCH_FOR_TEXT);
             std::cout << "Now run the query with: " << searchQuery << std::endl;
             stocksPanelView->SearchForSymbol(searchQuery);
             break;
@@ -79,7 +79,7 @@ MainWindow::ResultHandler(int requestId) {
 }
 
 void
-MainWindow::RequestForSearch(BString& searchTerm) {
+MainWindow::RequestForSearch(BString &searchTerm) {
     delayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
 }
 

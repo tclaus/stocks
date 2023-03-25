@@ -39,7 +39,7 @@ private:
 
     void WaitForChangedQueryString() const;
 
-    timeDiffMs CalculateElapsedTimeDifference() const;
+    [[nodiscard]] timeDiffMs CalculateElapsedTimeDifference() const;
 
     void NotifyForQuery() const;
 
@@ -59,8 +59,7 @@ private:
 };
 
 enum DelayedQueryTimerMessages {
-    CHARACTER_DELAY_EXPIRED = 'DTSS',
-    SEARCH_TEXT = 'DTST'
+    CHARACTER_DELAY_EXPIRED = 'DTSS'
 };
 
 static const char *const SEARCH_FOR_TEXT = "SearchForText";

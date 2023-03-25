@@ -14,6 +14,7 @@ QuoteListItem::QuoteListItem(Quote *quote)
           fQuote(quote),
           listItemDrawer(nullptr),
           lastWidth(0.0) {
+
     this->fQuoteFormatter = new QuoteFormatter(quote);
 }
 

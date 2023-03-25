@@ -11,9 +11,7 @@ SearchFieldControl::SearchFieldControl()
                        B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP) {
 
     Init();
-};
-
-SearchFieldControl::~SearchFieldControl() {}
+}
 
 void SearchFieldControl::Init() {
     SetModificationMessage(new BMessage(SearchFieldMessages::M_START_SHARES_SEARCH));
