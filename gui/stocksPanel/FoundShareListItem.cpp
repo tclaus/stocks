@@ -15,6 +15,7 @@ FoundShareListItem::FoundShareListItem(Quote *quote)
           fQuote(quote),
           fListItemDrawer(nullptr),
           fLastWidth(0.0),
+          fCheckBoxAdded(false),
           fCheckbox(nullptr) {
 
     fQuoteFormatter = new QuoteFormatter(quote);
@@ -65,14 +66,13 @@ FoundShareListItem::DrawItem(BView *owner, BRect rect, bool complete) {
     const int32 index = parent->IndexOf(this);
 
     if (!IsCheckboxAChild(parent)) {
-        BPoint center = LeftHorizontalCenterForCheckbox(rect);
-        center.Set(center.x + INSETS_WIDTH, center.y);
-
-        fCheckbox->MoveTo(center);
+        BPoint checkboxPoint = LeftHorizontalCenterForCheckbox(rect);
+        checkboxPoint.Set(checkboxPoint.x + INSETS_WIDTH, checkboxPoint.y);
+        fCheckbox->MoveTo(checkboxPoint);
         parent->AddChild(fCheckbox);
-        fCheckBoxAdded = true;
-        fLeftOffset = fCheckbox->Bounds().Width() + 2 * INSETS_WIDTH;
     }
+    fCheckBoxAdded = true;
+    fSpaceForCheckbox = fCheckbox->Bounds().Width() + INSETS_WIDTH;
 
     InitItemDrawer(parent);
 
@@ -95,13 +95,8 @@ void FoundShareListItem::DrawSecondaryContent(const BRect &frame) {
 }
 
 BRect FoundShareListItem::getRectWithCheckboxOffset(const BRect &rect) const {
-    BRect frame = BRect(rect);
-    float leftOffset = rect.left + 2 * fLeftOffset;
-    BPoint leftTopWithOffset = BPoint(leftOffset, rect.top);
-    frame.SetLeftTop(leftTopWithOffset);
-    BPoint leftBottomWithOffset = BPoint(leftOffset, rect.bottom);
-    frame.SetLeftBottom(leftBottomWithOffset);
-    frame.SetRightBottom()
+    auto frame = BRect(rect);
+    frame.left += fSpaceForCheckbox;
     return frame;
 }
 

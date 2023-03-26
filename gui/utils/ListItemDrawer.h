@@ -40,7 +40,7 @@ public:
 
 private:
 
-    void DrawString(const char *text, BRect frame, const BFont *font, alignment align, rgb_color *color,
+    void DrawString(const char *text, BRect &frame, const BFont *font, alignment align, rgb_color *color,
                     rgb_color *rounded_rec_background_color);
 
     void DrawRoundedRec(const BRect &frame, const rgb_color &rounded_rec_background_color);

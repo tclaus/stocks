@@ -56,7 +56,7 @@ private:
     ListItemDrawer *fListItemDrawer;
     float fRowSizes[2];
     float fLastWidth;
-    float fLeftOffset;
+    float fSpaceForCheckbox;
     bool fCheckBoxAdded;
     BCheckBox *fCheckbox;
 
