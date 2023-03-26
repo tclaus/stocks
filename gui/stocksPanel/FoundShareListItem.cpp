@@ -5,6 +5,7 @@
 #include "FoundShareListItem.h"
 #include "QuoteFormatter.h"
 #include "ListItemConstants.h"
+#include <iostream>
 #include <View.h>
 #include <algorithm>
 #include "ListView.h"
@@ -18,6 +19,26 @@ FoundShareListItem::FoundShareListItem(Quote *quote)
 
     fQuoteFormatter = new QuoteFormatter(quote);
 
+    InitCheckbox(*quote);
+}
+
+void FoundShareListItem::InitCheckbox(const Quote &quote) {
+    BMessage *chkBoxMessage = new BMessage(CHECKBOX_CLICKED);
+    chkBoxMessage->SetString(SYMBOL_NAME, *quote.symbol);
+
+    std::string checkBoxName = GenerateCheckBoxName(quote);
+
+    fCheckbox = new BCheckBox(BRect(), checkBoxName.c_str(), "", chkBoxMessage);
+
+    fCheckbox->ResizeToPreferred();
+    fCheckbox->SetValue(B_CONTROL_OFF);
+}
+
+std::string FoundShareListItem::GenerateCheckBoxName(const Quote &quote) const {
+    std::string prefix = "chk";
+    std::string symbolName = quote.symbol->String();
+    std::string checkBoxName = (prefix + symbolName);
+    return checkBoxName;
 }
 
 FoundShareListItem::FoundShareListItem()
@@ -28,12 +49,7 @@ FoundShareListItem::~FoundShareListItem() {
     delete fQuote;
     delete fListItemDrawer;
     delete fQuoteFormatter;
-}
-
-void
-FoundShareListItem::SetQuote(Quote *quote) {
-    delete fQuote;
-    fQuote = quote;
+    delete fCheckbox;
 }
 
 Quote *
@@ -44,7 +60,6 @@ FoundShareListItem::GetQuote() {
 void
 FoundShareListItem::DrawItem(BView *owner, BRect rect, bool complete) {
     (void) complete;
-    (void) rect;
 
     auto *parent = dynamic_cast<BListView *>(owner);
     const int32 index = parent->IndexOf(this);
@@ -52,27 +67,36 @@ FoundShareListItem::DrawItem(BView *owner, BRect rect, bool complete) {
 
     InitItemDrawer(parent);
 
-    if (fCheckbox == nullptr) {
-        fCheckbox = new BCheckBox(rect, "chk", "", new BMessage(32));
-    }
-
     DrawBackground(parent, frame, fListItemDrawer);
     parent->SetDrawingMode(B_OP_OVER);
 
-    if (index > 0) {
-        DrawDividingLine(parent, frame);
-    }
+    DrawDividingLineBetweenElements(parent, index, frame);
 
-    // DrawCheckbox (linke seite
-
-    //TODO: Etwas nach rechts verschieben, eine Checkbox muss noch rein !
-    // Der Draw-Funktion ein Offset mitgeben
-
-    DrawFirstLine(frame);
+    DrawTopRow(frame);
     DrawCompanyName(frame, B_ALIGN_LEFT, B_ALIGN_BOTTOM);
+
+    if (IsCheckboxAChild(parent)) {
+        BPoint center(rect.LeftTop());
+        center.Set(center.x, rect.top + rect.Height() / 2 - fCheckbox->Bounds().Height() / 2);
+
+        fCheckbox->MoveTo(center);
+        parent->AddChild(fCheckbox);
+        fCheckBoxAdded = true;
+    }
 
     float newHeight = CalcTotalRowHeight();
     parent->FrameResized(frame.Width(), newHeight);
+}
+
+bool
+FoundShareListItem::IsCheckboxAChild(const BListView *parent) const {
+    return !(fCheckBoxAdded || parent->FindView(fCheckbox->Name()));
+}
+
+void FoundShareListItem::DrawDividingLineBetweenElements(BListView *parent, const int32 index, const BRect &frame) {
+    if (index > 0) {
+        DrawDividingLine(parent, frame);
+    }
 }
 
 void FoundShareListItem::InitItemDrawer(const BListView *parent) {
@@ -151,19 +175,19 @@ FoundShareListItem::Update(BView *owner, const BFont *font) {
 }
 
 void
-FoundShareListItem::DrawFirstLine(const BRect &frame) {
+FoundShareListItem::DrawTopRow(const BRect &frame) {
     BFont font(be_plain_font);
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_SYMBOL_NAME);
     CalcAndStoreCellHeight(&font, B_ALIGN_LEFT);
     DrawItemSettings settings = {frame, &font, nullptr, B_ALIGN_LEFT, B_ALIGN_TOP, nullptr};
 
-    BString *lineText = CreateFirstLineText();
+    BString *lineText = CreateTopRowString();
 
     fListItemDrawer->DrawString(lineText->String(), settings);
 }
 
-BString *FoundShareListItem::CreateFirstLineText() const {
+BString *FoundShareListItem::CreateTopRowString() const {
     auto *lineText = new BString(fQuote->symbol->String());
     lineText->Append(" * ");
     lineText->Append(fQuote->market->String());
