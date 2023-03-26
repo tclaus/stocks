@@ -40,7 +40,7 @@ public:
 protected:
 
 private:
-    void DrawTopRow(const BRect &frame);
+    void DrawTopContent(const BRect &frame);
 
     void DrawBackground(BListView *parent, const BRect &frame, ListItemDrawer *drawer);
 
@@ -56,6 +56,7 @@ private:
     ListItemDrawer *fListItemDrawer;
     float fRowSizes[2];
     float fLastWidth;
+    float fLeftOffset;
     bool fCheckBoxAdded;
     BCheckBox *fCheckbox;
 
@@ -76,6 +77,12 @@ private:
     void DrawDividingLineBetweenElements(BListView *parent, const int32 index, const BRect &frame);
 
     bool IsCheckboxAChild(const BListView *parent) const;
+
+    BPoint LeftHorizontalCenterForCheckbox(const BRect &rect) const;
+
+    BRect getRectWithCheckboxOffset(const BRect &rect) const;
+
+    void DrawSecondaryContent(const BRect &frame);
 };
 
 enum FoundShareListItemEnum {

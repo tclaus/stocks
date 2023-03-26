@@ -63,34 +63,57 @@ FoundShareListItem::DrawItem(BView *owner, BRect rect, bool complete) {
 
     auto *parent = dynamic_cast<BListView *>(owner);
     const int32 index = parent->IndexOf(this);
-    BRect frame = parent->ItemFrame(index);
 
-    InitItemDrawer(parent);
-
-    DrawBackground(parent, frame, fListItemDrawer);
-    parent->SetDrawingMode(B_OP_OVER);
-
-    DrawDividingLineBetweenElements(parent, index, frame);
-
-    DrawTopRow(frame);
-    DrawCompanyName(frame, B_ALIGN_LEFT, B_ALIGN_BOTTOM);
-
-    if (IsCheckboxAChild(parent)) {
-        BPoint center(rect.LeftTop());
-        center.Set(center.x, rect.top + rect.Height() / 2 - fCheckbox->Bounds().Height() / 2);
+    if (!IsCheckboxAChild(parent)) {
+        BPoint center = LeftHorizontalCenterForCheckbox(rect);
+        center.Set(center.x + INSETS_WIDTH, center.y);
 
         fCheckbox->MoveTo(center);
         parent->AddChild(fCheckbox);
         fCheckBoxAdded = true;
+        fLeftOffset = fCheckbox->Bounds().Width() + 2 * INSETS_WIDTH;
     }
 
+    InitItemDrawer(parent);
+
+    BRect frame = getRectWithCheckboxOffset(rect);
+
+    DrawBackground(parent, rect, fListItemDrawer);
+    parent->SetDrawingMode(B_OP_OVER);
+
+    DrawDividingLineBetweenElements(parent, index, rect);
+
+    DrawTopContent(frame);
+    DrawSecondaryContent(frame);
+
     float newHeight = CalcTotalRowHeight();
-    parent->FrameResized(frame.Width(), newHeight);
+    parent->FrameResized(rect.Width(), newHeight);
+}
+
+void FoundShareListItem::DrawSecondaryContent(const BRect &frame) {
+    DrawCompanyName(frame, B_ALIGN_LEFT, B_ALIGN_BOTTOM);
+}
+
+BRect FoundShareListItem::getRectWithCheckboxOffset(const BRect &rect) const {
+    BRect frame = BRect(rect);
+    float leftOffset = rect.left + 2 * fLeftOffset;
+    BPoint leftTopWithOffset = BPoint(leftOffset, rect.top);
+    frame.SetLeftTop(leftTopWithOffset);
+    BPoint leftBottomWithOffset = BPoint(leftOffset, rect.bottom);
+    frame.SetLeftBottom(leftBottomWithOffset);
+    frame.SetRightBottom()
+    return frame;
+}
+
+BPoint FoundShareListItem::LeftHorizontalCenterForCheckbox(const BRect &rect) const {
+    BPoint center(rect.LeftTop());
+    center.Set(center.x, rect.top + rect.Height() / 2 - fCheckbox->Bounds().Height() / 2);
+    return center;
 }
 
 bool
 FoundShareListItem::IsCheckboxAChild(const BListView *parent) const {
-    return !(fCheckBoxAdded || parent->FindView(fCheckbox->Name()));
+    return fCheckBoxAdded || parent->FindView(fCheckbox->Name());
 }
 
 void FoundShareListItem::DrawDividingLineBetweenElements(BListView *parent, const int32 index, const BRect &frame) {
@@ -117,6 +140,9 @@ FoundShareListItem::DrawBackground(BListView *parent, const BRect &frame, ListIt
     } else if (index % 2 == 0) {
         backgroundColor = tint_color(backgroundColor, 1.02);
     }
+
+    fCheckbox->SetHighColor(backgroundColor);
+    fCheckbox->SetLowColor(backgroundColor);
 
     parent->SetHighColor(backgroundColor);
 
@@ -175,7 +201,7 @@ FoundShareListItem::Update(BView *owner, const BFont *font) {
 }
 
 void
-FoundShareListItem::DrawTopRow(const BRect &frame) {
+FoundShareListItem::DrawTopContent(const BRect &frame) {
     BFont font(be_plain_font);
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_SYMBOL_NAME);
