@@ -12,7 +12,7 @@ ListItemDrawer::ListItemDrawer(BView *parent)
 ListItemDrawer::~ListItemDrawer() = default;
 
 void
-ListItemDrawer::SetInsets(const BSize insets) {
+ListItemDrawer::SetInsets(const BSize &insets) {
     fInsets = insets;
 }
 
@@ -130,4 +130,8 @@ ListItemDrawer::DrawRoundedRec(const BRect &frame, const rgb_color &rounded_rec_
     fParent->FillRoundRect(frame,
                            5.0f,
                            5.0f);
+}
+
+void ListItemDrawer::DrawOnPenPosition(const char *text) {
+    fParent->DrawString(text);
 }

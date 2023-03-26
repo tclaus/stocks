@@ -2,41 +2,36 @@
 // Created by Thorsten Claus on 15.02.23.
 //
 
-#ifndef STOCKS_QUOTELISTITEM_H
-#define STOCKS_QUOTELISTITEM_H
+#ifndef STOCKS_FOUNDSHARELISTITEM_H
+#define STOCKS_FOUNDSHARELISTITEM_H
 
 #include "ListItemDrawer.h"
-#include "QuoteFormatter.h"
-#include "ListItemConstants.h"
+#include "../../model/Quote.h"
 
+#include "QuoteFormatter.h"
 #include <View.h>
 #include <ListItem.h>
 #include <ListView.h>
-#include "Quote.h"
+#include <CheckBox.h>
 
-class QuoteListItem : public BListItem {
+class FoundShareListItem : public BListItem {
 
 public:
-    explicit QuoteListItem(Quote *quote);
+    explicit FoundShareListItem(Quote *quote);
 
-    QuoteListItem();
+    FoundShareListItem();
 
-    ~QuoteListItem() override;
+    ~FoundShareListItem() override;
 
     void DrawItem(BView *owner, BRect frame,
                   bool complete) override;
 
     void DrawDividingLine(BView *owner, const BRect &frame);
 
-    void DrawSymbol(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
     void Update(BView *owner, const BFont *font) override;
 
     void DrawCompanyName(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
-
-    void DrawLatestPrice(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
-
-    void DrawChange(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
     void SetQuote(Quote *quote);
 
@@ -45,6 +40,8 @@ public:
 protected:
 
 private:
+    void DrawFirstLine(const BRect &frame);
+
     void DrawBackground(BListView *parent, const BRect &frame, ListItemDrawer *drawer);
 
     void CalcAndStoreCellHeight(const BFont *font, alignment alignment);
@@ -56,16 +53,21 @@ private:
 private:
     Quote *fQuote;
     QuoteFormatter *fQuoteFormatter;
-    ListItemDrawer *listItemDrawer;
-    float rowSizes[2];
-    float lastWidth;
+    ListItemDrawer *fListItemDrawer;
+    float fRowSizes[2];
+    float fLastWidth;
+
+    BCheckBox *fCheckbox;
 
     void MakeLineColor(BView *owner) const;
 
-    BPoint CalcLineLeftTop(const BRect &frame) const;
+    BPoint CalcPointLeftTop(const BRect &frame) const;
 
-    BPoint CalcLineRightTop(const BRect &frame) const;
+    BPoint CalcPointRightTop(const BRect &frame) const;
 
+    BString *CreateFirstLineText() const;
+
+    void InitItemDrawer(const BListView *parent);
 };
 
-#endif //STOCKS_QUOTELISTITEM_H
+#endif //STOCKS_FOUNDSHARELISTITEM_H

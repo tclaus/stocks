@@ -30,11 +30,13 @@ public:
 
     rgb_color TextColor(bool isSelected);
 
-    void SetInsets(const BSize insets);
+    void SetInsets(const BSize &insets);
 
     float Height(const DrawItemSettings &settings);
 
     void DrawString(const char *text, const DrawItemSettings &settings);
+
+    void DrawOnPenPosition(const char *text);
 
 private:
 

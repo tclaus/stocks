@@ -67,5 +67,5 @@ Financialmodelingprep::AddApiKey(BString &request) {
 
 void
 Financialmodelingprep::AddLimit(BString &request) {
-    request.Append("&limit=25");
+    request.Append("&limit=50");
 }

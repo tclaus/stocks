@@ -1,5 +1,5 @@
 /*
- * Copyright 2018, Your Name <your@email.address>
+ * Copyright 2023, Your Name <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #include <iostream>
@@ -8,7 +8,7 @@
 #include "SearchFieldControl.h"
 #include "StockListItemBuilder.h"
 #include "../../api/ApiBuilder.h"
-
+#include "../../model/Quote.h"
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
 #include <private/netservices2/NetServicesDefs.h>
@@ -70,11 +70,22 @@ void StocksPanelView::ListSearchResultsInListView() {
     auto itemsList = searchResultList->List();
     auto *foundSharesList = new BList();
     for (auto &foundShare: *itemsList) {
-        foundSharesList->AddItem(new BStringItem(foundShare->DisplayText()->String()));
+        foundSharesList->AddItem(BuildFoundShareItem(*foundShare));
     }
 
     listView->MakeEmpty();
     listView->AddList(foundSharesList);
+}
+
+FoundShareListItem *StocksPanelView::BuildFoundShareItem(const SearchResultItem &searchResultItem) {
+    Quote *quote = new Quote();
+    quote->change = 0.0;
+    quote->symbol = new BString(*searchResultItem.symbol);
+    quote->latestPrice = 0;
+    quote->companyName = new BString(*searchResultItem.name);
+    quote->market = new BString(*searchResultItem.stockExchange);
+    quote->currency = new BString(*searchResultItem.currency);
+    return new FoundShareListItem(quote);
 }
 
 void StocksPanelView::LoadDemoStocks() {
