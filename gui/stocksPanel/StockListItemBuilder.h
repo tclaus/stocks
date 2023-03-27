@@ -5,7 +5,6 @@
 #ifndef STOCK_LIST_ITEM_H
 #define STOCK_LIST_ITEM_H
 
-
 #include <SupportDefs.h>
 #include <View.h>
 #include "QuoteListItem.h"

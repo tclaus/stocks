@@ -5,21 +5,19 @@
 #ifndef STOCKS_FOUNDSHARELISTITEM_H
 #define STOCKS_FOUNDSHARELISTITEM_H
 
+#include "ShareListItem.h"
 #include "ListItemDrawer.h"
 #include "../../model/Quote.h"
 #include <string>
 #include "QuoteFormatter.h"
 #include <View.h>
-#include <ListItem.h>
 #include <ListView.h>
 #include <CheckBox.h>
 
-class FoundShareListItem : public BListItem {
+class FoundShareListItem : public ShareListItem {
 
 public:
     explicit FoundShareListItem(Quote *quote);
-
-    FoundShareListItem();
 
     ~FoundShareListItem() override;
 
@@ -28,12 +26,11 @@ public:
 
     void DrawDividingLine(BView *owner, const BRect &frame);
 
-
-    void Update(BView *owner, const BFont *font) override;
+    void DetachFromParent() override;
 
     void DrawCompanyName(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
-    Quote *GetQuote();
+    void Update(BView *owner, const BFont *font) override;
 
     const char *SYMBOL_NAME = "Symbol name";
 
@@ -51,7 +48,7 @@ private:
     float CalcTotalRowHeight();
 
 private:
-    Quote *fQuote;
+
     QuoteFormatter *fQuoteFormatter;
     ListItemDrawer *fListItemDrawer;
     float fRowSizes[2];

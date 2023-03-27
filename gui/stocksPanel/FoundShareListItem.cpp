@@ -11,13 +11,13 @@
 #include "ListView.h"
 
 FoundShareListItem::FoundShareListItem(Quote *quote)
-        : BListItem(),
-          fQuote(quote),
+        : ShareListItem(),
           fListItemDrawer(nullptr),
           fLastWidth(0.0),
           fCheckBoxAdded(false),
           fCheckbox(nullptr) {
 
+    fQuote = quote;
     fQuoteFormatter = new QuoteFormatter(quote);
 
     InitCheckbox(*quote);
@@ -42,20 +42,11 @@ std::string FoundShareListItem::GenerateCheckBoxName(const Quote &quote) const {
     return checkBoxName;
 }
 
-FoundShareListItem::FoundShareListItem()
-        : BListItem() {
-}
-
 FoundShareListItem::~FoundShareListItem() {
     delete fQuote;
     delete fListItemDrawer;
     delete fQuoteFormatter;
     delete fCheckbox;
-}
-
-Quote *
-FoundShareListItem::GetQuote() {
-    return fQuote;
 }
 
 void
@@ -180,6 +171,14 @@ void
 FoundShareListItem::MakeLineColor(BView *owner) const {
     rgb_color line_color = tint_color(ui_color(B_LIST_SELECTED_BACKGROUND_COLOR), 1.2f);
     owner->SetHighColor(line_color);
+}
+
+void
+FoundShareListItem::DetachFromParent() {
+    if (fCheckbox && fCheckbox->Parent()) {
+        fCheckbox->Parent()->RemoveChild(fCheckbox);
+        delete fCheckbox;
+    }
 }
 
 void

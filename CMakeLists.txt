@@ -61,6 +61,8 @@ haiku_add_executable(${PROJECT_NAME}
         gui/stocksPanel/FoundShareListItem.h
         gui/stocksPanel/FoundShareListItem.cpp
         gui/stocksPanel/ListItemConstants.h
+        gui/stocksPanel/ShareListItem.h
+        gui/stocksPanel/ShareListItem.cpp
         gui/stocksPanel/StockListItemBuilder.h
         gui/stocksPanel/StockListItemBuilder.cpp
         gui/utils/ListItemDrawer.h

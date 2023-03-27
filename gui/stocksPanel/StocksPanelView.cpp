@@ -2,8 +2,11 @@
  * Copyright 2023, Your Name <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
+
+
 #include <iostream>
 
+#include "ShareListItem.h"
 #include "StocksPanelView.h"
 #include "SearchFieldControl.h"
 #include "StockListItemBuilder.h"
@@ -73,9 +76,18 @@ void StocksPanelView::ListSearchResultsInListView() {
         foundSharesList->AddItem(BuildFoundShareItem(*foundShare));
     }
 
+    listView->DoForEach([](BListItem *item) {
+        if (auto foundShareListItem = dynamic_cast<ShareListItem *>(item)) {
+            foundShareListItem->DetachFromParent();
+        }
+        return true;
+    });
+
+
     listView->MakeEmpty();
     listView->AddList(foundSharesList);
 }
+
 
 FoundShareListItem *StocksPanelView::BuildFoundShareItem(const SearchResultItem &searchResultItem) {
     Quote *quote = new Quote();
