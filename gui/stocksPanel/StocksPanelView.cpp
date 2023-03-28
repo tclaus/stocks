@@ -6,16 +6,16 @@
 
 #include <iostream>
 
-#include "ShareListItem.h"
+#include "listView/ShareListItem.h"
 #include "StocksPanelView.h"
 #include "SearchFieldControl.h"
 #include "StockListItemBuilder.h"
 #include "../../api/ApiBuilder.h"
-#include "../../model/Quote.h"
+#include "../../api/NetRequester.h"
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
+#include <ListView.h>
 #include <private/netservices2/NetServicesDefs.h>
-#include "../../api/NetRequester.h"
 
 using BPrivate::Network::UrlEvent::RequestCompleted;
 
@@ -80,10 +80,9 @@ void StocksPanelView::ListSearchResultsInListView() {
         if (auto foundShareListItem = dynamic_cast<ShareListItem *>(item)) {
             foundShareListItem->DetachFromParent();
         }
-        return true;
+        return false;
     });
-
-
+    
     listView->MakeEmpty();
     listView->AddList(foundSharesList);
 }

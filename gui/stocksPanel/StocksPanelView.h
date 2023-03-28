@@ -5,8 +5,8 @@
 #ifndef StocksPanelView_H
 #define StocksPanelView_H
 
-#include "QuoteListItem.h"
-#include "FoundShareListItem.h"
+#include "listView/QuoteListItem.h"
+#include "listView/FoundShareListItem.h"
 #include "../../api/StockConnector.h"
 #include "../../model/SearchResultList.h"
 #include <SupportDefs.h>

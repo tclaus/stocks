@@ -7,7 +7,7 @@
 
 #include <SupportDefs.h>
 #include <View.h>
-#include "QuoteListItem.h"
+#include "listView/QuoteListItem.h"
 
 class StockListItemBuilder {
 

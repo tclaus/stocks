@@ -7,7 +7,7 @@
 
 #include "ShareListItem.h"
 #include "ListItemDrawer.h"
-#include "../../model/Quote.h"
+#include "Quote.h"
 #include <string>
 #include "QuoteFormatter.h"
 #include <View.h>

@@ -28,6 +28,7 @@ include_directories(AFTER
         /boot/system/develop/headers/private/netservices2
         model
         gui/stocksPanel
+        gui/stocksPanel/listView
         gui/chartView
         gui/utils
         api)
@@ -56,13 +57,13 @@ haiku_add_executable(${PROJECT_NAME}
         gui/stocksPanel/StocksPanelView.cpp
         gui/stocksPanel/SearchFieldControl.h
         gui/stocksPanel/SearchFieldControl.cpp
-        gui/stocksPanel/QuoteListItem.h
-        gui/stocksPanel/QuoteListItem.cpp
-        gui/stocksPanel/FoundShareListItem.h
-        gui/stocksPanel/FoundShareListItem.cpp
+        gui/stocksPanel/listView/QuoteListItem.h
+        gui/stocksPanel/listView/QuoteListItem.cpp
+        gui/stocksPanel/listView/FoundShareListItem.h
+        gui/stocksPanel/listView/FoundShareListItem.cpp
         gui/stocksPanel/ListItemConstants.h
-        gui/stocksPanel/ShareListItem.h
-        gui/stocksPanel/ShareListItem.cpp
+        gui/stocksPanel/listView/ShareListItem.h
+        gui/stocksPanel/listView/ShareListItem.cpp
         gui/stocksPanel/StockListItemBuilder.h
         gui/stocksPanel/StockListItemBuilder.cpp
         gui/utils/ListItemDrawer.h
