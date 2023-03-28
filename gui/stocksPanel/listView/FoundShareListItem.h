@@ -51,7 +51,7 @@ private:
 
     QuoteFormatter *fQuoteFormatter;
     ListItemDrawer *fListItemDrawer;
-    float fRowSizes[2];
+    float fRowSizes[2]{};
     float fLastWidth;
     float fSpaceForCheckbox;
     bool fCheckBoxAdded;
@@ -71,7 +71,7 @@ private:
 
     std::string GenerateCheckBoxName(const Quote &quote) const;
 
-    void DrawDividingLineBetweenElements(BListView *parent, const int32 index, const BRect &frame);
+    void DrawDividingLineBetweenElements(BListView *parent, const int32 &index, const BRect &frame);
 
     bool IsCheckboxAChild(const BListView *parent) const;
 

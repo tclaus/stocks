@@ -8,7 +8,6 @@
 #include <LayoutBuilder.h>
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
-#include <iostream>
 
 MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,

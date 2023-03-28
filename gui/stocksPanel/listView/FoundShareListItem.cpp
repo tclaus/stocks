@@ -5,19 +5,18 @@
 #include "FoundShareListItem.h"
 #include "QuoteFormatter.h"
 #include "ListItemConstants.h"
-#include <iostream>
 #include <View.h>
 #include <algorithm>
 #include "ListView.h"
 
 FoundShareListItem::FoundShareListItem(Quote *quote)
-        : ShareListItem(),
+        : ShareListItem(quote),
           fListItemDrawer(nullptr),
           fLastWidth(0.0),
+          fSpaceForCheckbox(0.0),
           fCheckBoxAdded(false),
           fCheckbox(nullptr) {
 
-    fQuote = quote;
     fQuoteFormatter = new QuoteFormatter(quote);
 
     InitCheckbox(*quote);
@@ -106,7 +105,7 @@ FoundShareListItem::IsCheckboxAChild(const BListView *parent) const {
 }
 
 void
-FoundShareListItem::DrawDividingLineBetweenElements(BListView *parent, const int32 index, const BRect &frame) {
+FoundShareListItem::DrawDividingLineBetweenElements(BListView *parent, const int32 &index, const BRect &frame) {
     if (index > 0) {
         DrawDividingLine(parent, frame);
     }

@@ -4,8 +4,6 @@
  */
 
 
-#include <iostream>
-
 #include "listView/ShareListItem.h"
 #include "StocksPanelView.h"
 #include "SearchFieldControl.h"
@@ -82,11 +80,10 @@ void StocksPanelView::ListSearchResultsInListView() {
         }
         return false;
     });
-    
+
     listView->MakeEmpty();
     listView->AddList(foundSharesList);
 }
-
 
 FoundShareListItem *StocksPanelView::BuildFoundShareItem(const SearchResultItem &searchResultItem) {
     Quote *quote = new Quote();

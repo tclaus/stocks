@@ -10,7 +10,7 @@
 #include "ListView.h"
 
 QuoteListItem::QuoteListItem(Quote *quote)
-        : ShareListItem(),
+        : ShareListItem(quote),
           listItemDrawer(nullptr),
           lastWidth(0.0) {
 

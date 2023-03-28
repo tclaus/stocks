@@ -4,9 +4,9 @@
 
 #include "ShareListItem.h"
 
-ShareListItem::ShareListItem()
-        :
-        BListItem() {}
+ShareListItem::ShareListItem(Quote *quote)
+        : BListItem(),
+          fQuote(quote) {}
 
 Quote *ShareListItem::GetQuote() {
     return fQuote;
