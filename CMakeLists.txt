@@ -4,11 +4,13 @@ project(Stocks)
 
 set(CMAKE_MODULE_PATH "${Stocks_SOURCE_DIR}/CMakeModules")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set(CMAKE_EXPORT_COMPILE_COMMANDS On)
+
 
 include(UseHaiku)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED False) # Set to true once we know better what to do
+set(CMAKE_CXX_STANDARD_REQUIRED)
 
 option(STRICT_WARNINGS "Compile with extra warnings and errors" ON)
 if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 2.96 AND STRICT_WARNINGS)
@@ -22,10 +24,11 @@ if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 2.96 AND STRICT_WARNINGS)
     endif ()
 endif ()
 
-include_directories(AFTER SYSTEM
+include_directories(AFTER
         /boot/system/develop/headers/private/netservices2
         model
         gui/stocksPanel
+        gui/stocksPanel/listView
         gui/chartView
         gui/utils
         api)
@@ -54,8 +57,13 @@ haiku_add_executable(${PROJECT_NAME}
         gui/stocksPanel/StocksPanelView.cpp
         gui/stocksPanel/SearchFieldControl.h
         gui/stocksPanel/SearchFieldControl.cpp
-        gui/stocksPanel/QuoteListItem.h
-        gui/stocksPanel/QuoteListItem.cpp
+        gui/stocksPanel/listView/QuoteListItem.h
+        gui/stocksPanel/listView/QuoteListItem.cpp
+        gui/stocksPanel/listView/FoundShareListItem.h
+        gui/stocksPanel/listView/FoundShareListItem.cpp
+        gui/stocksPanel/ListItemConstants.h
+        gui/stocksPanel/listView/ShareListItem.h
+        gui/stocksPanel/listView/ShareListItem.cpp
         gui/stocksPanel/StockListItemBuilder.h
         gui/stocksPanel/StockListItemBuilder.cpp
         gui/utils/ListItemDrawer.h

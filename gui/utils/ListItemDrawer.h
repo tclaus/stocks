@@ -30,15 +30,17 @@ public:
 
     rgb_color TextColor(bool isSelected);
 
-    void SetInsets(const BSize insets);
+    void SetInsets(const BSize &insets);
 
     float Height(const DrawItemSettings &settings);
 
     void DrawString(const char *text, const DrawItemSettings &settings);
 
+    void DrawOnPenPosition(const char *text);
+
 private:
 
-    void DrawString(const char *text, BRect frame, const BFont *font, alignment align, rgb_color *color,
+    void DrawString(const char *text, BRect &frame, const BFont *font, alignment align, rgb_color *color,
                     rgb_color *rounded_rec_background_color);
 
     void DrawRoundedRec(const BRect &frame, const rgb_color &rounded_rec_background_color);

@@ -1,10 +1,10 @@
-#ifndef _APP_CPP_
-#define _APP_CPP_
+#ifndef APP_CPP_
+#define APP_CPP_
 
 #include "App.h"
 #include "gui/MainWindow.h"
 
-App::App() : BApplication("application/x-vnd.dw-StocksApp") {
+App::App() : BApplication("application/x-vnd.tclaus-StocksApp") {
     window = new MainWindow();
     window->Show();
 }
@@ -16,4 +16,4 @@ int main() {
     return 0;
 }
 
-#endif // _APP_CPP_
+#endif // APP_CPP_

@@ -5,27 +5,19 @@
 #ifndef STOCKS_QUOTELISTITEM_H
 #define STOCKS_QUOTELISTITEM_H
 
+#include "ShareListItem.h"
 #include "ListItemDrawer.h"
 #include "QuoteFormatter.h"
+#include "ListItemConstants.h"
 
 #include <View.h>
-#include <ListItem.h>
 #include <ListView.h>
 #include "Quote.h"
 
-
-static const int FONT_SIZE_COMPANY_NAME = 12;
-static const int FONT_SIZE_SYMBOL_NAME = 15;
-static const int FONT_SIZE_PRICE = 15;
-
-static const int INSETS_WIDTH = 10;
-
-class QuoteListItem : public BListItem {
+class QuoteListItem : public ShareListItem {
 
 public:
     explicit QuoteListItem(Quote *quote);
-
-    QuoteListItem();
 
     ~QuoteListItem() override;
 
@@ -36,19 +28,13 @@ public:
 
     void DrawSymbol(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
-    void Update(BView *owner, const BFont *font) override;
-
     void DrawCompanyName(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
     void DrawLatestPrice(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
     void DrawChange(const BRect &frame, alignment horizontal_alignment, vertical_alignment vertical_alignment);
 
-    void DrawText(BRect frame, DrawItemSettings settings);
-
-    void SetQuote(Quote *quote);
-
-    Quote *GetQuote();
+    void Update(BView *owner, const BFont *font) override;
 
 protected:
 
@@ -62,7 +48,6 @@ private:
     float CalcTotalRowHeight();
 
 private:
-    Quote *fQuote;
     QuoteFormatter *fQuoteFormatter;
     ListItemDrawer *listItemDrawer;
     float rowSizes[2];

@@ -13,6 +13,7 @@ public:
     BString *symbol;
     BString *market;
     BString *companyName;
+    BString *currency;
     double change;
     double latestPrice;
     double high;

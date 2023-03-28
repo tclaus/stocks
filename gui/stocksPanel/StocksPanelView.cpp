@@ -1,18 +1,19 @@
 /*
- * Copyright 2018, Your Name <your@email.address>
+ * Copyright 2023, Your Name <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
-#include <iostream>
 
+
+#include "listView/ShareListItem.h"
 #include "StocksPanelView.h"
 #include "SearchFieldControl.h"
 #include "StockListItemBuilder.h"
 #include "../../api/ApiBuilder.h"
-
+#include "../../api/NetRequester.h"
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
+#include <ListView.h>
 #include <private/netservices2/NetServicesDefs.h>
-#include "../../api/NetRequester.h"
 
 using BPrivate::Network::UrlEvent::RequestCompleted;
 
@@ -53,7 +54,6 @@ void StocksPanelView::SearchForSymbol(const char *searchSymbol) {
 
 void
 StocksPanelView::HandleResult(int requestId) {
-    std::cout << "Handle result in StockPanelView" << std::endl;
     if (requestId == searchRequestId) {
         HandleSearchResult(requestId);
     }
@@ -69,15 +69,31 @@ StocksPanelView::HandleSearchResult(int searchResultId) {
 
 void StocksPanelView::ListSearchResultsInListView() {
     auto itemsList = searchResultList->List();
-    std::cout << "Start creating the search list view" << std::endl;
-
     auto *foundSharesList = new BList();
     for (auto &foundShare: *itemsList) {
-        foundSharesList->AddItem(new BStringItem(foundShare->DisplayText()->String()));
+        foundSharesList->AddItem(BuildFoundShareItem(*foundShare));
     }
+
+    listView->DoForEach([](BListItem *item) {
+        if (auto foundShareListItem = dynamic_cast<ShareListItem *>(item)) {
+            foundShareListItem->DetachFromParent();
+        }
+        return false;
+    });
 
     listView->MakeEmpty();
     listView->AddList(foundSharesList);
+}
+
+FoundShareListItem *StocksPanelView::BuildFoundShareItem(const SearchResultItem &searchResultItem) {
+    Quote *quote = new Quote();
+    quote->change = 0.0;
+    quote->symbol = new BString(*searchResultItem.symbol);
+    quote->latestPrice = 0;
+    quote->companyName = new BString(*searchResultItem.name);
+    quote->market = new BString(*searchResultItem.stockExchange);
+    quote->currency = new BString(*searchResultItem.currency);
+    return new FoundShareListItem(quote);
 }
 
 void StocksPanelView::LoadDemoStocks() {

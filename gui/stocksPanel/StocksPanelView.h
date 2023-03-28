@@ -1,17 +1,18 @@
 /*
- * Copyright 2018, Your Name <your@email.address>
+ * Copyright 2023, Your Name <your@email.address>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 #ifndef StocksPanelView_H
 #define StocksPanelView_H
 
-#include "QuoteListItem.h"
+#include "listView/QuoteListItem.h"
+#include "listView/FoundShareListItem.h"
 #include "../../api/StockConnector.h"
+#include "../../model/SearchResultList.h"
 #include <SupportDefs.h>
 #include <ListView.h>
 #include <View.h>
 #include <list>
-#include "../../model/SearchResultList.h"
 
 class StocksPanelView : public BView {
 
@@ -35,6 +36,8 @@ private:
     void HandleSearchResult(int searchRequestId);
 
     void ListSearchResultsInListView();
+
+    FoundShareListItem *BuildFoundShareItem(const SearchResultItem &searchResultItem);
 
     void LoadDemoStocks();
 

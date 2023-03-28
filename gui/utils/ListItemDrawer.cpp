@@ -12,7 +12,7 @@ ListItemDrawer::ListItemDrawer(BView *parent)
 ListItemDrawer::~ListItemDrawer() = default;
 
 void
-ListItemDrawer::SetInsets(const BSize insets) {
+ListItemDrawer::SetInsets(const BSize &insets) {
     fInsets = insets;
 }
 
@@ -59,7 +59,7 @@ float ListItemDrawer::Height(const DrawItemSettings &settings) {
 }
 
 void
-ListItemDrawer::DrawString(const char *text, BRect frame, const BFont *font, alignment align, rgb_color *color,
+ListItemDrawer::DrawString(const char *text, BRect &frame, const BFont *font, alignment align, rgb_color *color,
                            rgb_color *rounded_rec_background_color) {
 
     fParent->SetFont(font);
@@ -68,27 +68,27 @@ ListItemDrawer::DrawString(const char *text, BRect frame, const BFont *font, ali
     font->GetHeight(&fh);
 
     const float fontHeight = fh.ascent + fh.descent + fh.leading;
-    const float horizontalCenter = ((frame.Height() - fontHeight) / 2) + fh.descent;
+    const float verticalCenter = ((frame.Height() - fontHeight) / 2) + fh.descent;
     const float stringWidth = font->StringWidth(text);
 
     switch (align) {
         case B_ALIGN_LEFT: {
-            fParent->MovePenTo(fInsets.width, frame.LeftBottom().y - horizontalCenter);
+            fParent->MovePenTo(frame.left + fInsets.width, frame.LeftBottom().y - verticalCenter);
             break;
         }
         case B_ALIGN_RIGHT: {
             fParent->MovePenTo(frame.RightBottom().x - stringWidth - fInsets.width,
-                               frame.RightBottom().y - horizontalCenter);
+                               frame.RightBottom().y - verticalCenter);
             break;
         }
         case B_ALIGN_CENTER: {
             const float center = (frame.Width() - stringWidth) / 2.0f;
-            fParent->MovePenTo(center, frame.RightBottom().y - horizontalCenter);
+            fParent->MovePenTo(center, frame.RightBottom().y - verticalCenter);
             break;
         }
         default: {
             // Assume "Left"
-            fParent->MovePenTo(fInsets.width, frame.LeftBottom().y - horizontalCenter);
+            fParent->MovePenTo(frame.left + fInsets.width, frame.LeftBottom().y - verticalCenter);
             break;
         }
     }
@@ -130,4 +130,8 @@ ListItemDrawer::DrawRoundedRec(const BRect &frame, const rgb_color &rounded_rec_
     fParent->FillRoundRect(frame,
                            5.0f,
                            5.0f);
+}
+
+void ListItemDrawer::DrawOnPenPosition(const char *text) {
+    fParent->DrawString(text);
 }

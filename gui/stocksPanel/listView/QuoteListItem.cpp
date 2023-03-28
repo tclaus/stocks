@@ -10,32 +10,18 @@
 #include "ListView.h"
 
 QuoteListItem::QuoteListItem(Quote *quote)
-        : BListItem(),
-          fQuote(quote),
+        : ShareListItem(quote),
           listItemDrawer(nullptr),
           lastWidth(0.0) {
 
-    this->fQuoteFormatter = new QuoteFormatter(quote);
-}
-
-QuoteListItem::QuoteListItem()
-        : BListItem() {
+    fQuote = quote;
+    fQuoteFormatter = new QuoteFormatter(quote);
 }
 
 QuoteListItem::~QuoteListItem() {
     delete fQuote;
     delete listItemDrawer;
     delete fQuoteFormatter;
-}
-
-void
-QuoteListItem::SetQuote(Quote *quote) {
-    delete fQuote;
-    fQuote = quote;
-}
-
-Quote *QuoteListItem::GetQuote() {
-    return fQuote;
 }
 
 void

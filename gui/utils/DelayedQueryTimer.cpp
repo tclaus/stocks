@@ -50,7 +50,6 @@ void
 DelayedQueryTimer::WaitForChangedQueryString() const {
     while (fLastSearchedQueryString == fQueryString) {
         std::this_thread::sleep_for(fDelayBeforeSendQuery);
-        std::cout << ".";
     }
 }
 
@@ -58,7 +57,6 @@ void
 DelayedQueryTimer::WaitUntilCharacterDelayExpired() const {
     timeDiffMs timeSinceLastCharacterReceived = CalculateElapsedTimeDifference();
     while (timeSinceLastCharacterReceived < fDelayBeforeSendQuery) {
-        std::cout << "DQT: Wait until delay expired" << std::endl;
         timeDiffMs sleepTime = fDelayBeforeSendQuery - timeSinceLastCharacterReceived;
         if (sleepTime > 1ms && sleepTime < fDelayBeforeSendQuery) {
             std::this_thread::sleep_for(sleepTime);
@@ -79,7 +77,6 @@ DelayedQueryTimer::NotifyForQueryWhenElapsed() {
     timePoint now = std::chrono::high_resolution_clock::now();
     if ((now - fLastCharacterReceived) > fDelayBeforeSendQuery) {
         fLastSearchedQueryString = fQueryString;
-        std::cout << "DQT: Run Query now" << std::endl;
         NotifyForQuery();
     }
 }
