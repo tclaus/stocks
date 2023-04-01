@@ -35,8 +35,8 @@ void FoundShareListItem::InitCheckbox(const Quote &quote) {
 }
 
 std::string FoundShareListItem::GenerateCheckBoxName(const Quote &quote) const {
-    std::string prefix = "chk";
-    std::string symbolName = quote.symbol->String();
+    std::string const prefix = "chk";
+    std::string const symbolName = quote.symbol->String();
     std::string checkBoxName = (prefix + symbolName);
     return checkBoxName;
 }
