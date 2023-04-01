@@ -18,12 +18,18 @@ public:
 
     void MessageReceived(BMessage *message) override;
 
+    /**
+     * Clears the textfield.
+     */
+    void ResetField();
+
 private:
 };
 
 enum SearchFieldMessages {
-    M_SET_STOCK = 'setS',
-    M_START_SHARES_SEARCH = 'MSSS'
+    M_SET_STOCK = 'SSET',
+    M_START_SHARES_SEARCH = 'MSSS',
+    M_DISMISS_SEARCH = 'SDIS'
 };
 
 static const char *const SEARCH_TERM = "search terms";

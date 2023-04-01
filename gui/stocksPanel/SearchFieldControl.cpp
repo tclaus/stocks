@@ -3,6 +3,7 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
+#include <iostream>
 #include "SearchFieldControl.h"
 #include "Window.h"
 
@@ -21,6 +22,11 @@ void SearchFieldControl::Init() {
 void
 SearchFieldControl::AttachedToWindow() {
     SetTarget(this);
+}
+
+void
+SearchFieldControl::ResetField() {
+    SetText("");
 }
 
 void

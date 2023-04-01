@@ -20,11 +20,8 @@ class Financialmodelingprep : public StockConnector {
 public:
     explicit Financialmodelingprep(BHandler *receivingHandler);
 
-    ~Financialmodelingprep() override;
-
     int
     Search(const char *searchQuery) override;
-
 
 private:
     void AddApiKey(BString &request);

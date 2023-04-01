@@ -4,8 +4,8 @@
 #include "stocksPanel/SearchFieldControl.h"
 #include <Application.h>
 #include <InterfaceKit.h>
-#include <Layout.h>
 #include <LayoutBuilder.h>
+#include "utils/EscapeCancelFilter.h"
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
 
@@ -31,6 +31,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::Init() {
     delayedQueryTimer->StartThread();
+    AddCommonFilter(new EscapeCancelFilter());
 }
 
 void
@@ -55,6 +56,10 @@ void MainWindow::MessageReceived(BMessage *msg) {
                 searchTerm = "";
             }
             RequestForSearch(searchTerm);
+            break;
+        }
+        case (SearchFieldMessages::M_DISMISS_SEARCH) : {
+            stocksPanelView->DismissSearch();
             break;
         }
         case (DelayedQueryTimerMessages::CHARACTER_DELAY_EXPIRED) : {
