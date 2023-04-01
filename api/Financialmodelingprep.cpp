@@ -24,10 +24,6 @@ Financialmodelingprep::Financialmodelingprep(BHandler *receivingHandler)
         fHandler(receivingHandler) {
 }
 
-Financialmodelingprep::~Financialmodelingprep() {
-    delete fHandler;
-}
-
 int
 Financialmodelingprep::Search(const char *searchQuery) {
     // search?query=appl&apikey=skjxxwm// search

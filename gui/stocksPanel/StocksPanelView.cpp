@@ -19,9 +19,10 @@ using BPrivate::Network::UrlEvent::RequestCompleted;
 
 StocksPanelView::StocksPanelView()
         : BView(BRect(), "stocksView", B_FOLLOW_ALL, B_WILL_DRAW),
-          searchResultList(new SearchResultList()) {
+          searchResultList(new SearchResultList()),
+          fCurrentViewState(statePortfolioList) {
 
-    auto *searchFieldControl = new SearchFieldControl();
+    fSearchFieldControl = new SearchFieldControl();
 
     listView = new BListView(BRect(), "stocksList",
                              B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);
@@ -31,7 +32,7 @@ StocksPanelView::StocksPanelView()
             new BScrollView("scrollView", listView, B_FOLLOW_ALL, 0, false, true);
 
     BLayoutBuilder::Group<>(this, B_VERTICAL)
-            .Add(searchFieldControl)
+            .Add(fSearchFieldControl)
             .Add(scrollView);
 
     LoadDemoStocks();
@@ -73,15 +74,8 @@ void StocksPanelView::ListSearchResultsInListView() {
     for (auto &foundShare: *itemsList) {
         foundSharesList->AddItem(BuildFoundShareItem(*foundShare));
     }
-
-    listView->DoForEach([](BListItem *item) {
-        if (auto foundShareListItem = dynamic_cast<ShareListItem *>(item)) {
-            foundShareListItem->DetachFromParent();
-        }
-        return false;
-    });
-
-    listView->MakeEmpty();
+    fCurrentViewState = stateSearchResultsList;
+    ClearList();
     listView->AddList(foundSharesList);
 }
 
@@ -96,10 +90,36 @@ FoundShareListItem *StocksPanelView::BuildFoundShareItem(const SearchResultItem 
     return new FoundShareListItem(quote);
 }
 
+void
+StocksPanelView::DismissSearch() {
+    if (fCurrentViewState == stateSearchResultsList) {
+        fSearchFieldControl->ResetField();
+        fCurrentViewState = statePortfolioList;
+        ShowPortfolio();
+    }
+}
+
+void
+StocksPanelView::ShowPortfolio() {
+    LoadDemoStocks(); //TODO:  Here to load stored portfolio
+}
+
 void StocksPanelView::LoadDemoStocks() {
+    ClearList();
     listView->AddItem(buildItem1());
     listView->AddItem(buildItem2());
     listView->AddItem(buildItem3());
+}
+
+void StocksPanelView::ClearList() {
+    listView->DoForEach([](BListItem *item) {
+        if (auto foundShareListItem = dynamic_cast<ShareListItem *>(item)) {
+            foundShareListItem->DetachFromParent();
+        }
+        return false;
+    });
+
+    listView->MakeEmpty();
 }
 
 QuoteListItem *StocksPanelView::buildItem1() {

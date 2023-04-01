@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include <iostream>
 
 #include "chartView/ChartView.h"
 #include "stocksPanel/SearchFieldControl.h"
@@ -6,6 +7,7 @@
 #include <InterfaceKit.h>
 #include <Layout.h>
 #include <LayoutBuilder.h>
+#include "utils/EscapeCancelFilter.h"
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
 
@@ -31,6 +33,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::Init() {
     delayedQueryTimer->StartThread();
+    AddCommonFilter(new EscapeCancelFilter());
 }
 
 void
@@ -44,6 +47,7 @@ void MainWindow::Show() {
 }
 
 void MainWindow::MessageReceived(BMessage *msg) {
+    std::cout << "Message " << msg->what << std::endl;
     switch (msg->what) {
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
             ResultHandler(msg->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
@@ -55,6 +59,10 @@ void MainWindow::MessageReceived(BMessage *msg) {
                 searchTerm = "";
             }
             RequestForSearch(searchTerm);
+            break;
+        }
+        case (SearchFieldMessages::M_DISMISS_SEARCH) : {
+            stocksPanelView->DismissSearch();
             break;
         }
         case (DelayedQueryTimerMessages::CHARACTER_DELAY_EXPIRED) : {

@@ -9,6 +9,7 @@
 #include "listView/FoundShareListItem.h"
 #include "../../api/StockConnector.h"
 #include "../../model/SearchResultList.h"
+#include "SearchFieldControl.h"
 #include <SupportDefs.h>
 #include <ListView.h>
 #include <View.h>
@@ -29,6 +30,16 @@ public:
 
     void SearchForSymbol(const char *searchSymbol);
 
+    /**
+     * Cancels a running search and shows the portfolio list.
+     */
+    void DismissSearch();
+
+    /**
+     * Clears the current list and shows all share items of the portfolio.
+     */
+    void ShowPortfolio();
+
 private:
 
     void CreateApiConnection();
@@ -38,6 +49,11 @@ private:
     void ListSearchResultsInListView();
 
     FoundShareListItem *BuildFoundShareItem(const SearchResultItem &searchResultItem);
+
+    /**
+     * Clears the listview.
+     */
+    void ClearList();
 
     void LoadDemoStocks();
 
@@ -51,7 +67,19 @@ private:
     BListView *listView;
     StockConnector *stockConnector;
     int searchRequestId;
+    SearchFieldControl *fSearchFieldControl;
     SearchResultList *searchResultList;
+
+    enum ViewState {
+        stateSearchResultsList,
+        statePortfolioList
+    };
+/**
+ * Provides the current state what the list shows. If a search result is currently showing and a esc key is pressed by the user,
+ * no new reload of the list should be done.
+ */
+    ViewState fCurrentViewState;
+
 };
 
 #endif // StocksPanelView_H

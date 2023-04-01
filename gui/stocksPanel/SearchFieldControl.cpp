@@ -3,6 +3,7 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
+#include <iostream>
 #include "SearchFieldControl.h"
 #include "Window.h"
 
@@ -24,7 +25,13 @@ SearchFieldControl::AttachedToWindow() {
 }
 
 void
+SearchFieldControl::ResetField() {
+    SetText("");
+}
+
+void
 SearchFieldControl::MessageReceived(BMessage *message) {
+    std::cout << "Received Message: " << message->what << std::endl;
     switch (message->what) {
         case (M_START_SHARES_SEARCH): {
             BMessage searchTerms(SearchFieldMessages::M_START_SHARES_SEARCH);

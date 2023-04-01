@@ -72,6 +72,8 @@ haiku_add_executable(${PROJECT_NAME}
         gui/utils/QuoteFormatter.cpp
         gui/utils/DelayedQueryTimer.h
         gui/utils/DelayedQueryTimer.cpp
+        gui/utils/EscapeCancelFilter.h
+        gui/utils/EscapeCancelFilter.cpp
         api/StockConnector.h
         api/Financialmodelingprep.h
         api/Financialmodelingprep.cpp
