@@ -1,11 +1,9 @@
 #include "MainWindow.h"
-#include <iostream>
 
 #include "chartView/ChartView.h"
 #include "stocksPanel/SearchFieldControl.h"
 #include <Application.h>
 #include <InterfaceKit.h>
-#include <Layout.h>
 #include <LayoutBuilder.h>
 #include "utils/EscapeCancelFilter.h"
 #include <Window.h>
@@ -47,7 +45,6 @@ void MainWindow::Show() {
 }
 
 void MainWindow::MessageReceived(BMessage *msg) {
-    std::cout << "Message " << msg->what << std::endl;
     switch (msg->what) {
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
             ResultHandler(msg->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
