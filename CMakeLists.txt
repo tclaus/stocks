@@ -7,14 +7,21 @@ project(
 )
 
 set(CMAKE_MODULE_PATH "${Stocks_SOURCE_DIR}/CMakeModules")
+if (CMAKE_PROJECT_NAME STREQUAL ${PROJECT_NAME})
+    set(CMAKE_EXPORT_COMPILE_COMMANDS On)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED)
+
+    # Let's nicely support folders in IDEs
+    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+endif ()
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-set(CMAKE_EXPORT_COMPILE_COMMANDS On)
 
 
 include(UseHaiku)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED)
 
 option(STRICT_WARNINGS "Compile with extra warnings and errors" ON)
 if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 2.96 AND STRICT_WARNINGS)
@@ -30,12 +37,12 @@ endif ()
 
 include_directories(AFTER
         /boot/system/develop/headers/private/netservices2
-        model
-        gui/stocksPanel
-        gui/stocksPanel/listView
-        gui/chartView
-        gui/utils
-        api)
+        source/model
+        source/gui/stocksPanel
+        source/gui/stocksPanel/listView
+        source/gui/chartView
+        source/gui/utils
+        source/api)
 
 # JSON Parser
 include(FetchContent)
@@ -53,48 +60,48 @@ find_library(netservices2 NAMES netservices2 PATHS /boot/system/develop/lib REQU
 link_directories(/boot/system/develop/lib/)
 
 haiku_add_executable(${PROJECT_NAME}
-        App.cpp
-        App.h
-        gui/MainWindow.h
-        gui/MainWindow.cpp
-        gui/chartView/ChartView.h
-        gui/chartView/ChartView.cpp
-        gui/stocksPanel/StocksPanelView.h
-        gui/stocksPanel/StocksPanelView.cpp
-        gui/stocksPanel/SearchFieldControl.h
-        gui/stocksPanel/SearchFieldControl.cpp
-        gui/stocksPanel/listView/QuoteListItem.h
-        gui/stocksPanel/listView/QuoteListItem.cpp
-        gui/stocksPanel/listView/FoundShareListItem.h
-        gui/stocksPanel/listView/FoundShareListItem.cpp
-        gui/stocksPanel/ListItemConstants.h
-        gui/stocksPanel/listView/ShareListItem.h
-        gui/stocksPanel/listView/ShareListItem.cpp
-        gui/stocksPanel/StockListItemBuilder.h
-        gui/stocksPanel/StockListItemBuilder.cpp
-        gui/utils/ListItemDrawer.h
-        gui/utils/ListItemDrawer.cpp
-        gui/utils/QuoteFormatter.h
-        gui/utils/QuoteFormatter.cpp
-        gui/utils/DelayedQueryTimer.h
-        gui/utils/DelayedQueryTimer.cpp
-        gui/utils/EscapeCancelFilter.h
-        gui/utils/EscapeCancelFilter.cpp
-        api/StockConnector.h
-        api/Financialmodelingprep.h
-        api/Financialmodelingprep.cpp
-        api/NetRequester.h
-        api/NetRequester.cpp
-        api/ApiBuilder.h
-        api/ApiBuilder.cpp
-        model/Quote.cpp
-        model/Quote.h
-        model/Portfolio.h
-        model/Portfolio.cpp
-        model/SearchResultItem.h
-        model/SearchResultItem.cpp
-        model/SearchResultList.h
-        model/SearchResultList.cpp
+        source/App.cpp
+        source/App.h
+        source/gui/MainWindow.h
+        source/gui/MainWindow.cpp
+        source/gui/chartView/ChartView.h
+        source/gui/chartView/ChartView.cpp
+        source/gui/stocksPanel/StocksPanelView.h
+        source/gui/stocksPanel/StocksPanelView.cpp
+        source/gui/stocksPanel/SearchFieldControl.h
+        source/gui/stocksPanel/SearchFieldControl.cpp
+        source/gui/stocksPanel/StockListItemBuilder.h
+        source/gui/stocksPanel/StockListItemBuilder.cpp
+        source/gui/stocksPanel/ListItemConstants.h
+        source/gui/stocksPanel/listView/QuoteListItem.h
+        source/gui/stocksPanel/listView/QuoteListItem.cpp
+        source/gui/stocksPanel/listView/FoundShareListItem.h
+        source/gui/stocksPanel/listView/FoundShareListItem.cpp
+        source/gui/stocksPanel/listView/ShareListItem.h
+        source/gui/stocksPanel/listView/ShareListItem.cpp
+        source/gui/utils/ListItemDrawer.h
+        source/gui/utils/ListItemDrawer.cpp
+        source/gui/utils/QuoteFormatter.h
+        source/gui/utils/QuoteFormatter.cpp
+        source/gui/utils/DelayedQueryTimer.h
+        source/gui/utils/DelayedQueryTimer.cpp
+        source/gui/utils/EscapeCancelFilter.h
+        source/gui/utils/EscapeCancelFilter.cpp
+        source/api/StockConnector.h
+        source/api/Financialmodelingprep.h
+        source/api/Financialmodelingprep.cpp
+        source/api/NetRequester.h
+        source/api/NetRequester.cpp
+        source/api/ApiBuilder.h
+        source/api/ApiBuilder.cpp
+        source/model/Quote.cpp
+        source/model/Quote.h
+        source/model/Portfolio.h
+        source/model/Portfolio.cpp
+        source/model/SearchResultItem.h
+        source/model/SearchResultItem.cpp
+        source/model/SearchResultList.h
+        source/model/SearchResultList.cpp
         )
 
 target_link_directories(${PROJECT_NAME} PRIVATE /boot/system/develop/lib)
