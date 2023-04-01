@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(Stocks)
+project(
+        Stocks
+        VERSION 0.1
+        DESCRIPTION "A stocks application to set up a portfolio and see updated data"
+)
 
 set(CMAKE_MODULE_PATH "${Stocks_SOURCE_DIR}/CMakeModules")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
@@ -33,9 +37,11 @@ include_directories(AFTER
         gui/utils
         api)
 
+# JSON Parser
 include(FetchContent)
-
-FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz
+FetchContent_Declare(
+        json
+        URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz
         DOWNLOAD_EXTRACT_TIMESTAMP true)
 
 FetchContent_MakeAvailable(json)
