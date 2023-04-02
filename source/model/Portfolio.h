@@ -7,17 +7,37 @@
 
 
 #include "Quote.h"
-#include "List.h"
+#include <map>
+#include <clocale>
+#include <string>
 
 class Portfolio {
 public:
+    Portfolio(const Portfolio &) = delete;
+
+    static Portfolio &Instance();
+
     void AddQuote(Quote *quote);
 
-    void RemoveQuote(Quote *quote);
+    void RemoveQuote(Quote &quote);
 
-    // Iterator ?
+    void RemoveSymbol(std::string &symbol);
+
+    /**
+     * Returns a copy of the list
+     * @return
+     */
+    BList *List();
+
+    // Save to disk
+    // Load from disk
+
 private:
-    BList *list;
+    Portfolio();
+
+private:
+    static Portfolio instance;
+    std::map<std::string, Quote *> *fQuotesMap;
 };
 
 

@@ -28,6 +28,7 @@ private:
 
 enum SearchFieldMessages {
     M_SET_STOCK = 'SSET',
+    M_ACCEPT_SELECTION = 'SASS',
     M_START_SHARES_SEARCH = 'MSSS',
     M_DISMISS_SEARCH = 'SDIS'
 };

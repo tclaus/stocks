@@ -19,6 +19,7 @@ public:
     double high;
     double low;
 
+    // Timestamp / Chrono / long (milliseconds?)
 };
 
 

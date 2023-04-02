@@ -5,9 +5,15 @@
 #include "NetRequester.h"
 #include <iostream>
 
-NetRequester NetRequester::instance = NetRequester();
+NetRequester
+        NetRequester::instance = NetRequester();
 
-NetRequester &NetRequester::Instance() {
+NetRequester::NetRequester()
+        : fHttpSession(new BHttpSession()),
+          fHttpResultContainer() {}
+
+NetRequester &
+NetRequester::Instance() {
     return instance;
 }
 
@@ -20,10 +26,6 @@ NetRequester::AddRequest(BHttpRequest *request, BHandler *handler) {
     );
     return id;
 }
-
-NetRequester::NetRequester()
-        : fHttpSession(new BHttpSession()),
-          fHttpResultContainer() {}
 
 BString *
 NetRequester::Result(int resultId) {

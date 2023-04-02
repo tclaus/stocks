@@ -66,7 +66,7 @@ function(haiku_add_executable TARGET)
         endif ()
     endforeach ()
 
-    # Call the original function with the filtered source list.
+    # Call the original function with the filtered source fList.
     add_executable(${TARGET} ${REAL_SOURCES})
 
     # rdef/rsrc targets must be added after the main target has been created with _add_executable()
@@ -99,7 +99,7 @@ function(haiku_add_addon TARGET)
         endif ()
     endforeach ()
 
-    # Call the original function with the filtered source list.
+    # Call the original function with the filtered source fList.
     add_library(${TARGET} MODULE ${REAL_SOURCES})
 
     set_target_properties(${TARGET}

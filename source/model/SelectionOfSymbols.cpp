@@ -6,7 +6,7 @@
 
 SelectionOfSymbols::SelectionOfSymbols()
         :
-        fUsersSelectionOfSymbols(new std::map<char, bool>) {
+        fUsersSelectionOfSymbols(new std::map<std::string, bool>) {
 }
 
 SelectionOfSymbols::~SelectionOfSymbols() {
@@ -18,8 +18,34 @@ SelectionOfSymbols::Clear() {
     fUsersSelectionOfSymbols->clear();
 }
 
+std::list<std::string> *
+SelectionOfSymbols::ListToBeAdded() {
+    auto *listOfSymbols = new std::list<std::string>();
+    for (auto const &pair: *fUsersSelectionOfSymbols) {
+        if (pair.second) {
+            listOfSymbols->push_back(
+                    std::string(pair.first)
+            );
+        }
+    }
+    return listOfSymbols;
+}
+
+std::list<std::string> *
+SelectionOfSymbols::ListToBeRemoved() {
+    auto *listOfSymbols = new std::list<std::string>();
+    for (auto const &pair: *fUsersSelectionOfSymbols) {
+        if (!pair.second) {
+            listOfSymbols->push_back(
+                    std::string(pair.first)
+            );
+        }
+    }
+    return listOfSymbols;
+}
+
 void
-SelectionOfSymbols::ToggleUserSelection(const char &symbol) {
+SelectionOfSymbols::ToggleUserSelection(const std::string &symbol) {
     auto value = fUsersSelectionOfSymbols->find(symbol);
     if (value == fUsersSelectionOfSymbols->end()) {
         fUsersSelectionOfSymbols->insert_or_assign(symbol, true);

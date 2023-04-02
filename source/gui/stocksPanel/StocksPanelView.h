@@ -15,6 +15,7 @@
 #include <ListView.h>
 #include <View.h>
 #include <list>
+#include <Button.h>
 
 class StocksPanelView : public BView {
 
@@ -32,12 +33,17 @@ public:
     void SearchForSymbol(const char *searchSymbol);
 
     /**
-     * Cancels a running search and shows the portfolio list.
+     * Cancels a running search and shows the portfolio fList.
      */
     void DismissSearch();
 
     /**
-     * Clears the current list and shows all share items of the portfolio.
+     * Accepts the search selection
+     */
+    void AcceptSearch();
+
+    /**
+     * Clears the current fList and shows all share items of the portfolio.
      */
     void ShowPortfolio();
 
@@ -69,21 +75,24 @@ private:
 private:
     BListView *listView;
     StockConnector *stockConnector;
-    int searchRequestId;
     SearchFieldControl *fSearchFieldControl;
+    BButton *fSearchReadyButton;
     SearchResultList *searchResultList;
     SelectionOfSymbols *fSelectionOfSymbols;
+    int searchRequestId;
     enum ViewState {
         stateSearchResultsList,
         statePortfolioList
     };
 /**
- * Provides the current state what the list shows. If a search result is currently showing and a esc key is pressed by the user,
- * no new reload of the list should be done.
+ * Provides the current state what the fList shows. If a search result is currently showing and a esc key is pressed by the user,
+ * no new reload of the fList should be done.
  */
     ViewState fCurrentViewState;
 
     void ClearUsersSelectionsWhenSearchStarts();
+
+    void InitSearchReadyButton();
 };
 
 #endif // StocksPanelView_H

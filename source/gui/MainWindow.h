@@ -17,7 +17,7 @@ public:
 
     void Show() override;
 
-    void MessageReceived(BMessage *msg) override;
+    void MessageReceived(BMessage *message) override;
 
     /**
      * Handles the completed api request

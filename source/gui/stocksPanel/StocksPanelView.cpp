@@ -6,6 +6,7 @@
 
 #include "listView/ShareListItem.h"
 #include "StocksPanelView.h"
+#include "Portfolio.h"
 #include "SearchFieldControl.h"
 #include "StockListItemBuilder.h"
 #include "../../api/ApiBuilder.h"
@@ -13,6 +14,7 @@
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
 #include <ListView.h>
+#include <Button.h>
 #include <private/netservices2/NetServicesDefs.h>
 #include <iostream>
 
@@ -31,12 +33,18 @@ StocksPanelView::StocksPanelView()
 
     auto *scrollView =
             new BScrollView("scrollView", listView, B_FOLLOW_ALL, 0, false, true);
+    fSearchReadyButton = new BButton("btnReady", "Fertig",
+                                     new BMessage(SearchFieldMessages::M_ACCEPT_SELECTION));
+    InitSearchReadyButton();
 
     BLayoutBuilder::Group<>(this, B_VERTICAL)
+            .AddGroup(B_HORIZONTAL)
             .Add(fSearchFieldControl)
+            .Add(fSearchReadyButton)
+            .End()
             .Add(scrollView);
 
-    LoadDemoStocks();
+    ShowPortfolio();
     CreateApiConnection();
 }
 
@@ -46,12 +54,19 @@ StocksPanelView::~StocksPanelView() {
     delete fSelectionOfSymbols;
 }
 
-void StocksPanelView::CreateApiConnection() {
+void
+StocksPanelView::InitSearchReadyButton() {
+    fSearchReadyButton->Hide();
+}
+
+void
+StocksPanelView::CreateApiConnection() {
     ApiBuilder apiBuilder = ApiBuilder();
     stockConnector = apiBuilder.CreateStockConnector(this);
 }
 
-void StocksPanelView::SearchForSymbol(const char *searchSymbol) {
+void
+StocksPanelView::SearchForSymbol(const char *searchSymbol) {
     searchRequestId = stockConnector->Search(searchSymbol);
 }
 
@@ -70,7 +85,8 @@ StocksPanelView::HandleSearchResult(int searchResultId) {
     searchRequestId = 0;
 }
 
-void StocksPanelView::ListSearchResultsInListView() {
+void
+StocksPanelView::ListSearchResultsInListView() {
     auto itemsList = searchResultList->List();
     auto *foundSharesList = new BList();
     for (auto &foundShare: *itemsList) {
@@ -81,14 +97,17 @@ void StocksPanelView::ListSearchResultsInListView() {
     listView->AddList(foundSharesList);
 }
 
-void StocksPanelView::ClearUsersSelectionsWhenSearchStarts() {
+void
+StocksPanelView::ClearUsersSelectionsWhenSearchStarts() {
     if (fCurrentViewState != stateSearchResultsList) {
         fCurrentViewState = stateSearchResultsList;
+        fSearchReadyButton->Show();
         fSelectionOfSymbols->Clear();
     }
 }
 
-FoundShareListItem *StocksPanelView::BuildFoundShareItem(const SearchResultItem &searchResultItem) {
+FoundShareListItem
+*StocksPanelView::BuildFoundShareItem(const SearchResultItem &searchResultItem) {
     Quote *quote = new Quote();
     quote->change = 0.0;
     quote->symbol = new BString(*searchResultItem.symbol);
@@ -102,9 +121,29 @@ FoundShareListItem *StocksPanelView::BuildFoundShareItem(const SearchResultItem 
 void
 StocksPanelView::DismissSearch() {
     if (fCurrentViewState == stateSearchResultsList) {
-        fSearchFieldControl->ResetField();
         fCurrentViewState = statePortfolioList;
+        fSearchReadyButton->Hide();
+        fSearchFieldControl->ResetField();
         ShowPortfolio();
+    }
+}
+
+void
+StocksPanelView::AcceptSearch() {
+
+    Portfolio &portfolio = Portfolio::Instance();
+
+    // Remove deselectd symbols
+    for (auto &symbol: *fSelectionOfSymbols->ListToBeRemoved()) {
+        portfolio.RemoveSymbol(symbol);
+    }
+
+    // Add new Symbols as empty quotes
+    // TODO: A quote should also carry a timestamp of last fetch (never/ null or timestamp)
+    for (auto &symbol: *fSelectionOfSymbols->ListToBeAdded()) {
+        Quote *newQuote = new Quote();
+        newQuote->symbol = new BString(symbol.data());
+        portfolio.AddQuote(newQuote);
     }
 }
 
@@ -113,14 +152,16 @@ StocksPanelView::ShowPortfolio() {
     LoadDemoStocks(); //TODO:  Here to load stored portfolio
 }
 
-void StocksPanelView::LoadDemoStocks() {
+void
+StocksPanelView::LoadDemoStocks() {
     ClearListView();
     listView->AddItem(buildItem1());
     listView->AddItem(buildItem2());
     listView->AddItem(buildItem3());
 }
 
-void StocksPanelView::ClearListView() {
+void
+StocksPanelView::ClearListView() {
     listView->DoForEach([](BListItem *item) {
         if (auto foundShareListItem = dynamic_cast<ShareListItem *>(item)) {
             foundShareListItem->DetachFromParent();
@@ -131,7 +172,8 @@ void StocksPanelView::ClearListView() {
     listView->MakeEmpty();
 }
 
-QuoteListItem *StocksPanelView::buildItem1() {
+QuoteListItem
+*StocksPanelView::buildItem1() {
     auto stockListBuilder = new StockListItemBuilder();
     stockListBuilder->SetCompanyName("Linde PLC");
     stockListBuilder->SetStockTickerName("LIN.DE");
@@ -141,7 +183,8 @@ QuoteListItem *StocksPanelView::buildItem1() {
     return stockListBuilder->Build();
 }
 
-QuoteListItem *StocksPanelView::buildItem2() {
+QuoteListItem
+*StocksPanelView::buildItem2() {
     auto stockListBuilder = new StockListItemBuilder();
     stockListBuilder->SetCompanyName("2G Energy AG");
     stockListBuilder->SetStockTickerName("2GB.DE");
@@ -151,7 +194,8 @@ QuoteListItem *StocksPanelView::buildItem2() {
     return stockListBuilder->Build();
 }
 
-QuoteListItem *StocksPanelView::buildItem3() {
+QuoteListItem
+*StocksPanelView::buildItem3() {
     auto stockListBuilder = new StockListItemBuilder();
     stockListBuilder->SetCompanyName("Vimeo, Inc");
     stockListBuilder->SetStockTickerName("VMEO");
@@ -161,12 +205,14 @@ QuoteListItem *StocksPanelView::buildItem3() {
     return stockListBuilder->Build();
 }
 
-void StocksPanelView::MessageReceived(BMessage *message) {
+void
+StocksPanelView::MessageReceived(BMessage *message) {
+    std::cout << "Panel:  Message: " << message->what << std::endl;
     switch (message->what) {
         case FoundShareListItemEnum::CHECKBOX_CLICKED: {
             const char *symbol = message->GetString(FoundShareListItem::SYMBOL_NAME);
             std::cout << "Symbol toggled: " << symbol << std::endl;
-            fSelectionOfSymbols->ToggleUserSelection(*symbol);
+            fSelectionOfSymbols->ToggleUserSelection(std::string(symbol));
             break;
         }
         default: {
