@@ -6,10 +6,16 @@
 #define STOCKS_QUOTE_H
 
 #include <String.h>
+#include <string>
 
 class Quote {
 
 public:
+
+    explicit Quote(BString &symbol);
+
+    explicit Quote(std::string *symbol);
+
     BString *symbol;
     BString *market;
     BString *companyName;

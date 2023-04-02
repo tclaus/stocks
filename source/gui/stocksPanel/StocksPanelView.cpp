@@ -140,9 +140,9 @@ StocksPanelView::AcceptSearch() {
 
     // Add new Symbols as empty quotes
     // TODO: A quote should also carry a timestamp of last fetch (never/ null or timestamp)
+    // TODO: Check this function
     for (auto &symbol: *fSelectionOfSymbols->ListToBeAdded()) {
-        Quote *newQuote = new Quote();
-        newQuote->symbol = new BString(symbol.data());
+        Quote *newQuote = new Quote(&symbol);
         portfolio.AddQuote(newQuote);
     }
 }
