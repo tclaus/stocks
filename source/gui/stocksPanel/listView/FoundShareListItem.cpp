@@ -23,12 +23,12 @@ FoundShareListItem::FoundShareListItem(Quote *quote)
 }
 
 void FoundShareListItem::InitCheckbox(const Quote &quote) {
-    BMessage *chkBoxMessage = new BMessage(CHECKBOX_CLICKED);
-    chkBoxMessage->SetString(SYMBOL_NAME, *quote.symbol);
+    BMessage *checkBoxMessage = new BMessage(CHECKBOX_CLICKED);
+    checkBoxMessage->SetString(SYMBOL_NAME, *quote.symbol);
 
-    std::string checkBoxName = GenerateCheckBoxName(quote);
+    std::string const checkBoxName = GenerateCheckBoxName(quote);
 
-    fCheckbox = new BCheckBox(BRect(), checkBoxName.c_str(), "", chkBoxMessage);
+    fCheckbox = new BCheckBox(BRect(), checkBoxName.c_str(), "", checkBoxMessage);
 
     fCheckbox->ResizeToPreferred();
     fCheckbox->SetValue(B_CONTROL_OFF);
@@ -60,13 +60,14 @@ FoundShareListItem::DrawItem(BView *owner, BRect rect, bool complete) {
         checkboxPoint.Set(checkboxPoint.x + INSETS_WIDTH, checkboxPoint.y);
         fCheckbox->MoveTo(checkboxPoint);
         parent->AddChild(fCheckbox);
+        fCheckbox->SetTarget(parent); // Needed for messaging
     }
     fCheckBoxAdded = true;
     fSpaceForCheckbox = fCheckbox->Bounds().Width() + INSETS_WIDTH;
 
     InitItemDrawer(parent);
 
-    BRect frame = getRectWithCheckboxOffset(rect);
+    BRect const frame = getRectWithCheckboxOffset(rect);
 
     DrawBackground(parent, rect, fListItemDrawer);
     parent->SetDrawingMode(B_OP_OVER);
@@ -76,7 +77,7 @@ FoundShareListItem::DrawItem(BView *owner, BRect rect, bool complete) {
     DrawTopContent(frame);
     DrawSecondaryContent(frame);
 
-    float newHeight = CalcTotalRowHeight();
+    float const newHeight = CalcTotalRowHeight();
     parent->FrameResized(rect.Width(), newHeight);
 }
 
@@ -145,13 +146,14 @@ FoundShareListItem::DrawBackground(BListView *parent, const BRect &frame, ListIt
 void
 FoundShareListItem::DrawDividingLine(BView *owner, const BRect &frame) {
     MakeLineColor(owner);
-    float currentPenSize = owner->PenSize();
+
+    BPoint const leftTop = CalcPointLeftTop(frame);
+    BPoint const rightTop = CalcPointRightTop(frame);
+
     owner->SetPenSize(1.5f);
-
-    BPoint leftTop = CalcPointLeftTop(frame);
-    BPoint rightTop = CalcPointRightTop(frame);
-
     owner->StrokeLine(leftTop, rightTop);
+
+    float const currentPenSize = owner->PenSize();
     owner->SetPenSize(currentPenSize);
 }
 
@@ -173,7 +175,7 @@ FoundShareListItem::CalcPointLeftTop(const BRect &frame) const {
 
 void
 FoundShareListItem::MakeLineColor(BView *owner) const {
-    rgb_color line_color = tint_color(ui_color(B_LIST_SELECTED_BACKGROUND_COLOR), 1.2f);
+    rgb_color const line_color = tint_color(ui_color(B_LIST_SELECTED_BACKGROUND_COLOR), 1.2f);
     owner->SetHighColor(line_color);
 }
 
@@ -204,7 +206,7 @@ FoundShareListItem::DrawTopContent(const BRect &frame) {
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_SYMBOL_NAME);
     CalcAndStoreCellHeight(&font, B_ALIGN_LEFT);
-    DrawItemSettings settings = {frame, &font, nullptr, B_ALIGN_LEFT, B_ALIGN_TOP, nullptr};
+    DrawItemSettings const settings = {frame, &font, nullptr, B_ALIGN_LEFT, B_ALIGN_TOP, nullptr};
 
     BString *lineText = CreateTopRowString();
 
@@ -228,7 +230,7 @@ FoundShareListItem::DrawCompanyName(const BRect &frame, alignment horizontal_ali
     font.SetSize(FONT_SIZE_COMPANY_NAME);
     // Color: lightGray
     CalcAndStoreCellHeight(&font, horizontal_alignment);
-    DrawItemSettings settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment, nullptr};
+    DrawItemSettings const settings = {frame, &font, nullptr, horizontal_alignment, vertical_alignment, nullptr};
     fListItemDrawer->DrawString(fQuote->companyName->String(), settings);
 }
 
@@ -236,7 +238,7 @@ void
 FoundShareListItem::CalcAndStoreCellHeight(const BFont *font, alignment alignment) {
     font_height fh{};
     font->GetHeight(&fh);
-    float cellHeight = fh.ascent + fh.descent + fh.leading;
+    float const cellHeight = fh.ascent + fh.descent + fh.leading;
     int rowNumber;
     switch (alignment) {
         case B_ALIGN_LEFT: {

@@ -14,15 +14,16 @@
 #include <ScrollView.h>
 #include <ListView.h>
 #include <private/netservices2/NetServicesDefs.h>
+#include <iostream>
 
 using BPrivate::Network::UrlEvent::RequestCompleted;
 
 StocksPanelView::StocksPanelView()
         : BView(BRect(), "stocksView", B_FOLLOW_ALL, B_WILL_DRAW),
+          fSearchFieldControl(new SearchFieldControl()),
           searchResultList(new SearchResultList()),
+          fSelectionOfSymbols(new SelectionOfSymbols()),
           fCurrentViewState(statePortfolioList) {
-
-    fSearchFieldControl = new SearchFieldControl();
 
     listView = new BListView(BRect(), "stocksList",
                              B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);
@@ -42,6 +43,7 @@ StocksPanelView::StocksPanelView()
 StocksPanelView::~StocksPanelView() {
     delete searchResultList;
     delete stockConnector;
+    delete fSelectionOfSymbols;
 }
 
 void StocksPanelView::CreateApiConnection() {
@@ -74,9 +76,16 @@ void StocksPanelView::ListSearchResultsInListView() {
     for (auto &foundShare: *itemsList) {
         foundSharesList->AddItem(BuildFoundShareItem(*foundShare));
     }
-    fCurrentViewState = stateSearchResultsList;
-    ClearList();
+    ClearUsersSelectionsWhenSearchStarts();
+    ClearListView();
     listView->AddList(foundSharesList);
+}
+
+void StocksPanelView::ClearUsersSelectionsWhenSearchStarts() {
+    if (fCurrentViewState != stateSearchResultsList) {
+        fCurrentViewState = stateSearchResultsList;
+        fSelectionOfSymbols->Clear();
+    }
 }
 
 FoundShareListItem *StocksPanelView::BuildFoundShareItem(const SearchResultItem &searchResultItem) {
@@ -105,13 +114,13 @@ StocksPanelView::ShowPortfolio() {
 }
 
 void StocksPanelView::LoadDemoStocks() {
-    ClearList();
+    ClearListView();
     listView->AddItem(buildItem1());
     listView->AddItem(buildItem2());
     listView->AddItem(buildItem3());
 }
 
-void StocksPanelView::ClearList() {
+void StocksPanelView::ClearListView() {
     listView->DoForEach([](BListItem *item) {
         if (auto foundShareListItem = dynamic_cast<ShareListItem *>(item)) {
             foundShareListItem->DetachFromParent();
@@ -151,3 +160,19 @@ QuoteListItem *StocksPanelView::buildItem3() {
     stockListBuilder->SetStockExchangeName("NYSE");
     return stockListBuilder->Build();
 }
+
+void StocksPanelView::MessageReceived(BMessage *message) {
+    switch (message->what) {
+        case FoundShareListItemEnum::CHECKBOX_CLICKED: {
+            const char *symbol = message->GetString(FoundShareListItem::SYMBOL_NAME);
+            std::cout << "Symbol toggled: " << symbol << std::endl;
+            fSelectionOfSymbols->ToggleUserSelection(*symbol);
+            break;
+        }
+        default: {
+            BView::MessageReceived(message);
+            break;
+        }
+    }
+}
+

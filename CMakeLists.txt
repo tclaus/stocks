@@ -102,6 +102,8 @@ haiku_add_executable(${PROJECT_NAME}
         source/model/SearchResultItem.cpp
         source/model/SearchResultList.h
         source/model/SearchResultList.cpp
+        source/model/SelectionOfSymbols.h
+        source/model/SelectionOfSymbols.cpp
         )
 
 target_link_directories(${PROJECT_NAME} PRIVATE /boot/system/develop/lib)

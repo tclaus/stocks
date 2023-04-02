@@ -7,8 +7,9 @@
 
 #include "listView/QuoteListItem.h"
 #include "listView/FoundShareListItem.h"
-#include "../../api/StockConnector.h"
-#include "../../model/SearchResultList.h"
+#include "StockConnector.h"
+#include "SearchResultList.h"
+#include "SelectionOfSymbols.h"
 #include "SearchFieldControl.h"
 #include <SupportDefs.h>
 #include <ListView.h>
@@ -40,6 +41,8 @@ public:
      */
     void ShowPortfolio();
 
+    void MessageReceived(BMessage *message) override;
+
 private:
 
     void CreateApiConnection();
@@ -53,7 +56,7 @@ private:
     /**
      * Clears the listview.
      */
-    void ClearList();
+    void ClearListView();
 
     void LoadDemoStocks();
 
@@ -69,7 +72,7 @@ private:
     int searchRequestId;
     SearchFieldControl *fSearchFieldControl;
     SearchResultList *searchResultList;
-
+    SelectionOfSymbols *fSelectionOfSymbols;
     enum ViewState {
         stateSearchResultsList,
         statePortfolioList
@@ -80,6 +83,7 @@ private:
  */
     ViewState fCurrentViewState;
 
+    void ClearUsersSelectionsWhenSearchStarts();
 };
 
 #endif // StocksPanelView_H
