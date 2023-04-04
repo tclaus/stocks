@@ -34,11 +34,11 @@ Portfolio::RemoveSymbol(std::string &symbol) {
     fQuotesMap->erase(symbol);
 }
 
-BList *
+std::list<Quote *> *
 Portfolio::List() {
-    auto *listOfQuotes = new BList();
+    auto *listOfQuotes = new std::list<Quote *>();
     for (auto const &pair: *fQuotesMap) {
-        listOfQuotes->AddItem(pair.second);
+        listOfQuotes->push_back(pair.second);
     }
     return listOfQuotes;
 }

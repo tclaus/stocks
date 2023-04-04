@@ -100,9 +100,21 @@ StocksPanelView::ListSearchResultsInListView() {
 void
 StocksPanelView::ClearUsersSelectionsWhenSearchStarts() {
     if (fCurrentViewState != stateSearchResultsList) {
-        fCurrentViewState = stateSearchResultsList;
-        fSearchReadyButton->Show();
-        fSelectionOfSymbols->Clear();
+        ActivateSearchView();
+        InitializeCurrentSelection();
+    }
+}
+
+void StocksPanelView::ActivateSearchView() {
+    fCurrentViewState = stateSearchResultsList;
+    fSearchReadyButton->Show();
+    fSelectionOfSymbols->Clear();
+}
+
+void StocksPanelView::InitializeCurrentSelection() {
+    Portfolio &portfolio = Portfolio::Instance();
+    for (auto const &quote: *portfolio.List()) {
+        fSelectionOfSymbols->ToggleUserSelection(quote->symbol->String());
     }
 }
 
@@ -120,31 +132,43 @@ FoundShareListItem
 
 void
 StocksPanelView::DismissSearch() {
-    if (fCurrentViewState == stateSearchResultsList) {
-        fCurrentViewState = statePortfolioList;
-        fSearchReadyButton->Hide();
-        fSearchFieldControl->ResetField();
-        ShowPortfolio();
+    if (fCurrentViewState != stateSearchResultsList) {
+        return;
     }
+    ActivatePortfolioList();
+    ShowPortfolio();
 }
 
 void
 StocksPanelView::AcceptSearch() {
+    if (fCurrentViewState != stateSearchResultsList) {
+        return;
+    }
+
+    ActivatePortfolioList();
 
     Portfolio &portfolio = Portfolio::Instance();
 
     // Remove deselectd symbols
     for (auto &symbol: *fSelectionOfSymbols->ListToBeRemoved()) {
+        printf("Deselected:  %s \n", symbol.c_str());
         portfolio.RemoveSymbol(symbol);
     }
 
-    // Add new Symbols as empty quotes
-    // TODO: A quote should also carry a timestamp of last fetch (never/ null or timestamp)
-    // TODO: Check this function
+    // Add new symbols as empty quotes
     for (auto &symbol: *fSelectionOfSymbols->ListToBeAdded()) {
+        printf("New:  %s \n", symbol.c_str());
         Quote *newQuote = new Quote(&symbol);
         portfolio.AddQuote(newQuote);
     }
+
+    ShowPortfolio();
+}
+
+void StocksPanelView::ActivatePortfolioList() {
+    fCurrentViewState = statePortfolioList;
+    fSearchReadyButton->Hide();
+    fSearchFieldControl->ResetField();
 }
 
 void

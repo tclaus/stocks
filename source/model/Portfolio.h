@@ -10,6 +10,7 @@
 #include <map>
 #include <clocale>
 #include <string>
+#include <list>
 
 class Portfolio {
 public:
@@ -27,7 +28,7 @@ public:
      * Returns a copy of the list
      * @return
      */
-    BList *List();
+    std::list<Quote *> *List();
 
     // Save to disk
     // Load from disk

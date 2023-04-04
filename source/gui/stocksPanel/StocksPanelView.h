@@ -93,6 +93,15 @@ private:
     void ClearUsersSelectionsWhenSearchStarts();
 
     void InitSearchReadyButton();
+
+    void ActivatePortfolioList();
+
+    void ActivateSearchView();
+
+    /**
+     * set up the search selection with symbols already in the portfolio.
+     */
+    void InitializeCurrentSelection();
 };
 
 #endif // StocksPanelView_H

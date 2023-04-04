@@ -51,5 +51,4 @@ private:
     std::map<std::string, bool> *fUsersSelectionOfSymbols;
 };
 
-
 #endif //STOCKS_SELECTIONOFSYMBOLS_H
