@@ -46,7 +46,6 @@ void MainWindow::Show() {
 }
 
 void MainWindow::MessageReceived(BMessage *message) {
-    std::cout << "Window:  Message: " << message->what << std::endl;
     switch (message->what) {
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
             ResultHandler(message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));

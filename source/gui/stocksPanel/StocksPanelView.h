@@ -7,6 +7,7 @@
 
 #include "listView/QuoteListItem.h"
 #include "listView/FoundShareListItem.h"
+#include "Quote.h"
 #include "StockConnector.h"
 #include "SearchResultList.h"
 #include "SelectionOfSymbols.h"
@@ -64,13 +65,9 @@ private:
      */
     void ClearListView();
 
-    void LoadDemoStocks();
+    void LoadPortfolioList();
 
-    QuoteListItem *buildItem1();
-
-    QuoteListItem *buildItem2();
-
-    QuoteListItem *buildItem3();
+    QuoteListItem *BuildPortfolioListItem(Quote &quote);
 
 private:
     BListView *listView;

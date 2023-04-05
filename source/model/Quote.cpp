@@ -15,12 +15,15 @@ Quote::Quote() :
         high(0.0),
         low(0.0) {}
 
-Quote::Quote(BString &symbolName) :
+Quote::Quote(BString &symbolName)
+        :
         Quote() {
     this->symbol = new BString(symbolName);
 }
 
-Quote::Quote(std::string *symbolName) {
+Quote::Quote(std::string *symbolName)
+        :
+        Quote() {
     this->symbol = new BString(symbolName->c_str());
 }
 

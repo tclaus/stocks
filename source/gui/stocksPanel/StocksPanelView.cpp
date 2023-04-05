@@ -173,15 +173,8 @@ void StocksPanelView::ActivatePortfolioList() {
 
 void
 StocksPanelView::ShowPortfolio() {
-    LoadDemoStocks(); //TODO:  Here to load stored portfolio
-}
-
-void
-StocksPanelView::LoadDemoStocks() {
     ClearListView();
-    listView->AddItem(buildItem1());
-    listView->AddItem(buildItem2());
-    listView->AddItem(buildItem3());
+    LoadPortfolioList();
 }
 
 void
@@ -196,46 +189,30 @@ StocksPanelView::ClearListView() {
     listView->MakeEmpty();
 }
 
-QuoteListItem
-*StocksPanelView::buildItem1() {
-    auto stockListBuilder = new StockListItemBuilder();
-    stockListBuilder->SetCompanyName("Linde PLC");
-    stockListBuilder->SetStockTickerName("LIN.DE");
-    stockListBuilder->SetProfitLoss(1.8f); // Absolut oder Prozent?
-    stockListBuilder->SetClosingPrice(338.10f);
-    stockListBuilder->SetStockExchangeName("New York Stock Exchange");
-    return stockListBuilder->Build();
+void
+StocksPanelView::LoadPortfolioList() {
+    Portfolio &portfolio = Portfolio::Instance();
+    for (auto const &quote: *portfolio.List()) {
+        listView->AddItem(BuildPortfolioListItem(*quote));
+    }
 }
 
 QuoteListItem
-*StocksPanelView::buildItem2() {
+*StocksPanelView::BuildPortfolioListItem(Quote &quote) {
     auto stockListBuilder = new StockListItemBuilder();
-    stockListBuilder->SetCompanyName("2G Energy AG");
-    stockListBuilder->SetStockTickerName("2GB.DE");
-    stockListBuilder->SetProfitLoss(-2.01f); //Prozent?
-    stockListBuilder->SetClosingPrice(22.80f);
-    stockListBuilder->SetStockExchangeName("XETRA");
-    return stockListBuilder->Build();
-}
-
-QuoteListItem
-*StocksPanelView::buildItem3() {
-    auto stockListBuilder = new StockListItemBuilder();
-    stockListBuilder->SetCompanyName("Vimeo, Inc");
-    stockListBuilder->SetStockTickerName("VMEO");
-    stockListBuilder->SetProfitLoss(6.81f); //Prozent?
-    stockListBuilder->SetClosingPrice(3.920f); // bei kleinen zahlen drei nachkommas?
-    stockListBuilder->SetStockExchangeName("NYSE");
+    stockListBuilder->SetCompanyName(quote.companyName->String());
+    stockListBuilder->SetStockTickerName(quote.symbol->String());
+    stockListBuilder->SetProfitLoss(quote.change);
+    stockListBuilder->SetClosingPrice(quote.latestPrice);
+    stockListBuilder->SetStockExchangeName(quote.market->String());
     return stockListBuilder->Build();
 }
 
 void
 StocksPanelView::MessageReceived(BMessage *message) {
-    std::cout << "Panel:  Message: " << message->what << std::endl;
     switch (message->what) {
         case FoundShareListItemEnum::CHECKBOX_CLICKED: {
             const char *symbol = message->GetString(FoundShareListItem::SYMBOL_NAME);
-            std::cout << "Symbol toggled: " << symbol << std::endl;
             fSelectionOfSymbols->ToggleUserSelection(std::string(symbol));
             break;
         }
