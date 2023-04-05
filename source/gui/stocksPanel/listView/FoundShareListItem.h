@@ -32,6 +32,8 @@ public:
 
     void Update(BView *owner, const BFont *font) override;
 
+    void Select();
+
     inline static const char *SYMBOL_NAME = "Symbol name";
 
 protected:

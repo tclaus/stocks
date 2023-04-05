@@ -201,6 +201,11 @@ FoundShareListItem::Update(BView *owner, const BFont *font) {
 }
 
 void
+FoundShareListItem::Select() {
+    fCheckbox->SetValue(B_CONTROL_ON);
+}
+
+void
 FoundShareListItem::DrawTopContent(const BRect &frame) {
     BFont font(be_plain_font);
     font.SetFace(B_REGULAR_FACE);

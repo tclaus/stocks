@@ -16,7 +16,7 @@
 #include <ListView.h>
 #include <Button.h>
 #include <private/netservices2/NetServicesDefs.h>
-#include <iostream>
+#include <unordered_set>
 
 using BPrivate::Network::UrlEvent::RequestCompleted;
 
@@ -25,6 +25,7 @@ StocksPanelView::StocksPanelView()
           fSearchFieldControl(new SearchFieldControl()),
           searchResultList(new SearchResultList()),
           fSelectionOfSymbols(new SelectionOfSymbols()),
+          fSearchRequestId(0),
           fCurrentViewState(statePortfolioList) {
 
     listView = new BListView(BRect(), "stocksList",
@@ -67,12 +68,12 @@ StocksPanelView::CreateApiConnection() {
 
 void
 StocksPanelView::SearchForSymbol(const char *searchSymbol) {
-    searchRequestId = stockConnector->Search(searchSymbol);
+    fSearchRequestId = stockConnector->Search(searchSymbol);
 }
 
 void
 StocksPanelView::HandleResult(int requestId) {
-    if (requestId == searchRequestId) {
+    if (requestId == fSearchRequestId) {
         HandleSearchResult(requestId);
     }
 }
@@ -82,19 +83,41 @@ StocksPanelView::HandleSearchResult(int searchResultId) {
     BString *searchResult = NetRequester::Instance().Result(searchResultId);
     searchResultList->ListFromJson(searchResult);
     ListSearchResultsInListView();
-    searchRequestId = 0;
+    fSearchRequestId = 0;
 }
 
 void
 StocksPanelView::ListSearchResultsInListView() {
     auto itemsList = searchResultList->List();
     auto *foundSharesList = new BList();
+    StringSet *alreadySelectedSymbol = CreateSetOfSymbolsInPortfolio();
     for (auto &foundShare: *itemsList) {
-        foundSharesList->AddItem(BuildFoundShareItem(*foundShare));
+        FoundShareListItem *foundShareListItem = BuildFoundShareItem(*foundShare);
+
+        if (alreadySelectedSymbol->find(std::string(foundShare->symbol->String())) !=
+            alreadySelectedSymbol->end()) {
+
+            foundShareListItem->Select();
+        }
+
+        foundSharesList->AddItem(foundShareListItem);
     }
+    delete alreadySelectedSymbol;
+
     ClearUsersSelectionsWhenSearchStarts();
     ClearListView();
     listView->AddList(foundSharesList);
+}
+
+StringSet *
+StocksPanelView::CreateSetOfSymbolsInPortfolio() {
+    Portfolio &portfolio = Portfolio::Instance();
+    StringSet *alreadySelectedSymbol = new StringSet;
+    // Fill a set from List
+    for (auto const &quote: *portfolio.List()) {
+        alreadySelectedSymbol->insert(std::string(quote->symbol->String()));
+    }
+    return alreadySelectedSymbol;
 }
 
 void
@@ -111,6 +134,10 @@ void StocksPanelView::ActivateSearchView() {
     fSelectionOfSymbols->Clear();
 }
 
+/**
+ * Already selected symbols are remembered during the search. The current symbols are copied to the search results list
+ * so that a deselection can remove an existing symbol and new ones can be added to the portfolio.
+ */
 void StocksPanelView::InitializeCurrentSelection() {
     Portfolio &portfolio = Portfolio::Instance();
     for (auto const &quote: *portfolio.List()) {

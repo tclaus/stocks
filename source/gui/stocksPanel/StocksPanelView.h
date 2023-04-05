@@ -17,6 +17,9 @@
 #include <View.h>
 #include <list>
 #include <Button.h>
+#include <unordered_set>
+
+typedef std::unordered_set<std::string> StringSet;
 
 class StocksPanelView : public BView {
 
@@ -76,7 +79,7 @@ private:
     BButton *fSearchReadyButton;
     SearchResultList *searchResultList;
     SelectionOfSymbols *fSelectionOfSymbols;
-    int searchRequestId;
+    int fSearchRequestId;
     enum ViewState {
         stateSearchResultsList,
         statePortfolioList
@@ -86,6 +89,8 @@ private:
  * no new reload of the fList should be done.
  */
     ViewState fCurrentViewState;
+
+    StringSet *CreateSetOfSymbolsInPortfolio();
 
     void ClearUsersSelectionsWhenSearchStarts();
 
@@ -99,6 +104,7 @@ private:
      * set up the search selection with symbols already in the portfolio.
      */
     void InitializeCurrentSelection();
+
 };
 
 #endif // StocksPanelView_H
