@@ -12,7 +12,7 @@ class ShareListItem : public BListItem {
 
 public:
 
-    ShareListItem(Quote *quote);
+    explicit ShareListItem(Quote *quote);
 
     /**
      * Detaches any views from parent if needed

@@ -7,13 +7,19 @@
 
 #include "listView/QuoteListItem.h"
 #include "listView/FoundShareListItem.h"
-#include "../../api/StockConnector.h"
-#include "../../model/SearchResultList.h"
+#include "Quote.h"
+#include "StockConnector.h"
+#include "SearchResultList.h"
+#include "SelectionOfSymbols.h"
 #include "SearchFieldControl.h"
 #include <SupportDefs.h>
 #include <ListView.h>
 #include <View.h>
 #include <list>
+#include <Button.h>
+#include <unordered_set>
+
+typedef std::unordered_set<std::string> StringSet;
 
 class StocksPanelView : public BView {
 
@@ -31,14 +37,21 @@ public:
     void SearchForSymbol(const char *searchSymbol);
 
     /**
-     * Cancels a running search and shows the portfolio list.
+     * Cancels a running search and shows the portfolio fList.
      */
     void DismissSearch();
 
     /**
-     * Clears the current list and shows all share items of the portfolio.
+     * Accepts the search selection
+     */
+    void AcceptSearch();
+
+    /**
+     * Clears the current fList and shows all share items of the portfolio.
      */
     void ShowPortfolio();
+
+    void MessageReceived(BMessage *message) override;
 
 private:
 
@@ -53,32 +66,44 @@ private:
     /**
      * Clears the listview.
      */
-    void ClearList();
+    void ClearListView();
 
-    void LoadDemoStocks();
+    void LoadPortfolioList();
 
-    QuoteListItem *buildItem1();
-
-    QuoteListItem *buildItem2();
-
-    QuoteListItem *buildItem3();
+    QuoteListItem *BuildPortfolioListItem(Quote &quote);
 
 private:
     BListView *listView;
     StockConnector *stockConnector;
-    int searchRequestId;
     SearchFieldControl *fSearchFieldControl;
+    BButton *fSearchReadyButton;
     SearchResultList *searchResultList;
-
+    SelectionOfSymbols *fSelectionOfSymbols;
+    int fSearchRequestId;
     enum ViewState {
         stateSearchResultsList,
         statePortfolioList
     };
 /**
- * Provides the current state what the list shows. If a search result is currently showing and a esc key is pressed by the user,
- * no new reload of the list should be done.
+ * Provides the current state what the fList shows. If a search result is currently showing and a esc key is pressed by the user,
+ * no new reload of the fList should be done.
  */
     ViewState fCurrentViewState;
+
+    StringSet *CreateSetOfSymbolsInPortfolio();
+
+    void ClearUsersSelectionsWhenSearchStarts();
+
+    void InitSearchReadyButton();
+
+    void ActivatePortfolioList();
+
+    void ActivateSearchView();
+
+    /**
+     * set up the search selection with symbols already in the portfolio.
+     */
+    void InitializeCurrentSelection();
 
 };
 

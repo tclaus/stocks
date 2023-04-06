@@ -32,11 +32,9 @@ public:
      * @param handler
      * @return
      */
-    int
-    AddRequest(BHttpRequest *request, BHandler *handler);
+    int AddRequest(BHttpRequest *request, BHandler *handler);
 
-    BString *
-    Result(int resultId);
+    BString *Result(int resultId);
 
 protected:
 

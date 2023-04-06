@@ -19,7 +19,6 @@ SearchResultList::SearchResultList()
 
 void SearchResultList::ListFromJson(BString *jsonString) {
     json parsedJson = json::parse(jsonString->String());
-    // std::cout << "Show complete search results:  " << jsonString->String() << std::endl;
     fSearchResultList->clear();
 
     for (auto &item: parsedJson.items()) {

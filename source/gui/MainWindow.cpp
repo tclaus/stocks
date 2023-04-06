@@ -8,6 +8,7 @@
 #include "utils/EscapeCancelFilter.h"
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
+#include <iostream>
 
 MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
@@ -44,15 +45,15 @@ void MainWindow::Show() {
     BWindow::Show();
 }
 
-void MainWindow::MessageReceived(BMessage *msg) {
-    switch (msg->what) {
+void MainWindow::MessageReceived(BMessage *message) {
+    switch (message->what) {
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
-            ResultHandler(msg->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
+            ResultHandler(message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             break;
         }
         case (SearchFieldMessages::M_START_SHARES_SEARCH) : {
             BString searchTerm;
-            if (msg->FindString(SEARCH_TERM, &searchTerm) != B_OK) {
+            if (message->FindString(SEARCH_TERM, &searchTerm) != B_OK) {
                 searchTerm = "";
             }
             RequestForSearch(searchTerm);
@@ -62,13 +63,18 @@ void MainWindow::MessageReceived(BMessage *msg) {
             stocksPanelView->DismissSearch();
             break;
         }
+        case (SearchFieldMessages::M_ACCEPT_SELECTION) : {
+            stocksPanelView->AcceptSearch();
+            break;
+        }
+
         case (DelayedQueryTimerMessages::CHARACTER_DELAY_EXPIRED) : {
-            const char *searchQuery = msg->FindString(SEARCH_FOR_TEXT);
+            const char *searchQuery = message->FindString(SEARCH_FOR_TEXT);
             stocksPanelView->SearchForSymbol(searchQuery);
             break;
         }
         default: {
-            BWindow::MessageReceived(msg);
+            BWindow::MessageReceived(message);
             break;
         }
     }

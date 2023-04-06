@@ -10,7 +10,7 @@ ChartView::ChartView()
     this->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
     BStringView *placeholderText =
-            new BStringView("placeholderLabel", "Choose a share from the shares list");
+            new BStringView("placeholderLabel", "Choose a share from the shares fList");
 
     BLayoutBuilder::Group<>(this, B_VERTICAL)
             .AddGrid()

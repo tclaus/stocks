@@ -19,7 +19,7 @@ public:
     SearchResultList();
 
     /**
-     * Creates a list of items from a json string. The json was created by the search endpoint of an API.
+     * Creates a fList of items from a json string. The json was created by the search endpoint of an API.
      * @param json
      */
     void
@@ -32,7 +32,7 @@ public:
     Clear();
 
     /**
-     * Returns the list of items.
+     * Returns the fList of items.
      * @return
      */
     std::list<SearchResultItem *> *List();
