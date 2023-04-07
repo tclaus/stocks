@@ -21,7 +21,10 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Get Haiku
-      run:  git clone --depth 1 git@github.com:haiku/haiku.git
+      run:  git clone --depth 1 git@github.com:tclaus/Haiku-libs.git lib
+
+    - name: Change lib path in cmake file
+      run: sed -i 's|/boot/system/develop/lib|lib|g' CMakeLists.txt
 
 #TODO: get the needed Libs from another repo
 
