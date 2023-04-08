@@ -26,7 +26,7 @@ jobs:
     - name: Change lib path in cmake file
       run: |
           sed -i 's|/boot/system/develop/lib|build-dependencies|g' CMakeLists.txt
-          export CPLUS_INCLUDE_PATH= build-dependencies/headers/os
+          sed '20 a set(CMAKE_INCLUDE_PATH /usr/local/include)' CMakeLists.txt
     
 
 #TODO: get the needed Libs from another repo
