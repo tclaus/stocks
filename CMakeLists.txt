@@ -37,6 +37,7 @@ endif ()
 
 include_directories(AFTER
         /boot/system/develop/headers/private/netservices2
+        /boot/system/develop/headers/os
         source/model
         source/gui/stocksPanel
         source/gui/stocksPanel/listView
@@ -55,7 +56,7 @@ FetchContent_MakeAvailable(json)
 
 find_library(network NAMES network PATHS /boot/system/develop/lib/ REQUIRED)
 find_library(bnetapi NAMES bnetapi PATHS /boot/system/develop/lib/ REQUIRED)
-find_library(netservices2 NAMES netservices2 PATHS /boot/system/develop/lib REQUIRED)
+find_library(netservices2 NAMES netservices2 PATHS /boot/system/develop/lib/ REQUIRED)
 
 link_directories(/boot/system/develop/lib/)
 

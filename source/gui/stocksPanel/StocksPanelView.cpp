@@ -72,6 +72,24 @@ StocksPanelView::SearchForSymbol(const char *searchSymbol) {
 }
 
 void
+StocksPanelView::RequestQuoteDetailsForSymbol(const char *symbol) {
+    int quoteRequestId = stockConnector->Quote(symbol);
+    printf("Quote RequestId: %d. \n", quoteRequestId);
+
+    //TODO: Hier müsste nun die Request-ID mit einem Quote zusammengeführt werden
+    // diese Request-ID gehört mit diesem Quote zusammen
+    // Zusammen muss man nun das Listview aktualisieren
+    // Obesrver.AddListener(Quote, requestId),
+    // Dann kann bei einem eingehenden request das zusammengebracht werden
+    // TODO: Singelton: RequestId - Quote, aber auch dann gibt es  noch die Historical Charts
+    //
+    // QuoteRequestStore (Request-Id, Quote), HistoricalPriceRequestStore(id, quote)
+    // jeder ist ein Observable, sendet bei "notify" den geänderten Quote
+    // notify(Quote &interest)
+    //
+}
+
+void
 StocksPanelView::HandleResult(int requestId) {
     if (requestId == fSearchRequestId) {
         HandleSearchResult(requestId);
@@ -176,7 +194,7 @@ StocksPanelView::AcceptSearch() {
 
     Portfolio &portfolio = Portfolio::Instance();
 
-    // Remove deselectd symbols
+    // Remove deselected symbols
     for (auto &symbol: *fSelectionOfSymbols->ListToBeRemoved()) {
         printf("Deselected:  %s \n", symbol.c_str());
         portfolio.RemoveSymbol(symbol);
@@ -187,6 +205,7 @@ StocksPanelView::AcceptSearch() {
         printf("New:  %s \n", symbol.c_str());
         Quote *newQuote = new Quote(&symbol);
         portfolio.AddQuote(newQuote);
+        RequestQuoteDetailsForSymbol(newQuote->symbol->String());
     }
 
     ShowPortfolio();

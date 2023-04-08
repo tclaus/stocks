@@ -36,6 +36,8 @@ public:
 
     void SearchForSymbol(const char *searchSymbol);
 
+    void RequestQuoteDetailsForSymbol(const char *symbol);
+
     /**
      * Cancels a running search and shows the portfolio fList.
      */

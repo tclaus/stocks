@@ -20,8 +20,21 @@ class Financialmodelingprep : public StockConnector {
 public:
     explicit Financialmodelingprep(BHandler *receivingHandler);
 
+    /**
+     * Searches a symbol and finds basic data such as company name, market, currency.
+     * For a more detailed overview call the profile endpoint.
+     * @param searchQuery
+     * @return The request id
+     */
     int
     Search(const char *searchQuery) override;
+
+    /**
+     * Requests details for a given symbol. Result is a array.
+     * See https://site.financialmodelingprep.com/developer/docs/stock-api/ for details.
+     */
+    int
+    Quote(const char *symbol) override;
 
 private:
     void AddApiKey(BString &request);
@@ -32,6 +45,8 @@ private:
     static const char *baseUrl;
     static const char *apiKey;
     BHandler *fHandler;
+
+    int SendRequest(const BUrl *url) const;
 };
 
 

@@ -3,7 +3,7 @@
 //
 
 #include "NetRequester.h"
-#include <iostream>
+#include <algorithm>
 
 NetRequester
         NetRequester::instance = NetRequester();
@@ -20,20 +20,22 @@ NetRequester::Instance() {
 int
 NetRequester::AddRequest(BHttpRequest *request, BHandler *handler) {
     BHttpResult expectingResult = fHttpSession->Execute(std::move(*request), nullptr, BMessenger(handler));
-    int id = expectingResult.Identity();
-    fHttpResultContainer.push_back(
-            std::move(expectingResult)
-    );
+    int32 id = expectingResult.Identity();
+    fHttpResultContainer.emplace(id, std::move(expectingResult));
     return id;
 }
 
 BString *
 NetRequester::Result(int resultId) {
-    (void) resultId;
-    // TODO: Returns a request by its Id, not just the latest!
-    auto &httpResult = fHttpResultContainer.back();
-    auto resultBody = new BString(httpResult.Body().text.value());
-    fHttpResultContainer.pop_back();
 
-    return resultBody;
+    auto const httpResultIterator = fHttpResultContainer.find(resultId);
+    if (httpResultIterator != fHttpResultContainer.end()) {
+        printf("Requesting result of %d. Found it and returning it! \n", resultId);
+        auto resultBody = new BString(httpResultIterator->second.Body().text.value());
+        // Remove the hit
+        //std::remove(fHttpResultContainer.begin(), fHttpResultContainer.end(), resultId);
+        return resultBody;
+    }
+
+    return new BString("{}");
 }

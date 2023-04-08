@@ -5,8 +5,7 @@
 #ifndef STOCKS_NETREQUESTER_H
 #define STOCKS_NETREQUESTER_H
 
-#include <vector>
-#include <list>
+#include <map>
 
 #include <String.h>
 #include <HttpSession.h>
@@ -28,9 +27,9 @@ public:
 
     /**
      * Adds a request to the pipeline and returns the request id.
-     * @param request
-     * @param handler
-     * @return
+     * @param request The prepared request to send
+     * @param handler The handler to send status messages
+     * @return The request Id
      */
     int AddRequest(BHttpRequest *request, BHandler *handler);
 
@@ -44,7 +43,7 @@ private:
 private :
     static NetRequester instance;
     BHttpSession *fHttpSession;
-    std::list<BHttpResult> fHttpResultContainer;
+    std::map<int32, BHttpResult> fHttpResultContainer;
 };
 
 

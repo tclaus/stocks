@@ -47,16 +47,17 @@ void MainWindow::Show() {
 
 void MainWindow::MessageReceived(BMessage *message) {
     switch (message->what) {
-        case (BPrivate::Network::UrlEvent::RequestCompleted): {
-            ResultHandler(message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
-            break;
-        }
         case (SearchFieldMessages::M_START_SHARES_SEARCH) : {
             BString searchTerm;
             if (message->FindString(SEARCH_TERM, &searchTerm) != B_OK) {
                 searchTerm = "";
             }
             RequestForSearch(searchTerm);
+            break;
+        }
+        case (BPrivate::Network::UrlEvent::RequestCompleted): {
+            printf("Request with Id %d completed.\n", message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
+            ResultHandler(message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             break;
         }
         case (SearchFieldMessages::M_DISMISS_SEARCH) : {

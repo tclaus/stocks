@@ -14,8 +14,9 @@ public:
     BString *currency;
     BString *stockExchange;
 
+    [[maybe_unused]]
     BString *
-    DisplayText();
+    DisplayText() const;
 };
 
 
