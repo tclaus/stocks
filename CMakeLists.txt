@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.23)
 project(
         Stocks
         VERSION 0.1
-        DESCRIPTION "A stocks application to set up a portfolio and see updated data"
+        DESCRIPTION "A stocks application to set\ up a portfolio and see updated data"
 )
 
 set(CMAKE_MODULE_PATH "${Stocks_SOURCE_DIR}/CMakeModules")
@@ -39,6 +39,7 @@ include_directories(AFTER
         /boot/system/develop/headers/private/netservices2
         /boot/system/develop/headers/os
         source/model
+        source/model/linkedRequestQuoteStore
         source/gui/stocksPanel
         source/gui/stocksPanel/listView
         source/gui/chartView
@@ -105,6 +106,10 @@ haiku_add_executable(${PROJECT_NAME}
         source/model/SearchResultList.cpp
         source/model/SelectionOfSymbols.h
         source/model/SelectionOfSymbols.cpp
+        source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.h
+        source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.cpp
+        source/model/linkedRequestQuoteStore/QuoteRequestStore.h
+        source/model/linkedRequestQuoteStore/QuoteRequestStore.cpp
         )
 
 target_link_directories(${PROJECT_NAME} PRIVATE /boot/system/develop/lib)

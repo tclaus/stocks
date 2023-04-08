@@ -29,10 +29,10 @@ public:
     BString *companyName;
     BString *currency;
     timePoint lastUpdated;
-    double change;
-    double latestPrice;
-    double high;
-    double low;
+    float change;
+    float latestPrice;
+    float high;
+    float low;
 
     // Timestamp / Chrono / long (milliseconds?)
 };

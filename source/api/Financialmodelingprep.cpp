@@ -2,7 +2,7 @@
 // Created by Thorsten Claus on 09.03.23.
 //
 
-#include <cstdio>
+
 
 #include "Financialmodelingprep.h"
 #include "private/netservices2/HttpRequest.h"
@@ -59,7 +59,7 @@ Financialmodelingprep::Search(const char *searchQuery) {
 }
 
 int
-Financialmodelingprep::Quote(const char *symbol) {
+Financialmodelingprep::RetrieveQuote(const char *symbol) {
     // See https://site.financialmodelingprep.com/developer/docs/stock-api/ for details
 
     BString requestString = BString();
@@ -70,7 +70,7 @@ Financialmodelingprep::Quote(const char *symbol) {
 
     auto url = new BUrl(baseUrl);
     url->SetPath(requestString);
-    printf("Quote Request: %s \n", url->UrlString().String());
+    printf("RetrieveQuote Request: %s \n", url->UrlString().String());
     return SendRequest(url);
 }
 

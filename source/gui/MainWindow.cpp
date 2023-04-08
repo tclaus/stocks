@@ -6,6 +6,7 @@
 #include <InterfaceKit.h>
 #include <LayoutBuilder.h>
 #include "utils/EscapeCancelFilter.h"
+#include "QuoteRequestStore.h"
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
 #include <iostream>
@@ -56,8 +57,8 @@ void MainWindow::MessageReceived(BMessage *message) {
             break;
         }
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
-            printf("Request with Id %d completed.\n", message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             ResultHandler(message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
+            printf("Request processing with Id %d completed.\n", message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             break;
         }
         case (SearchFieldMessages::M_DISMISS_SEARCH) : {
@@ -84,6 +85,8 @@ void MainWindow::MessageReceived(BMessage *message) {
 void
 MainWindow::ResultHandler(int requestId) {
     stocksPanelView->HandleResult(requestId);
+    QuoteRequestStore &quoteRequestStore = QuoteRequestStore::Instance();
+    printf("Has RetrieveQuote for request with Id: %d : %s \n", requestId, quoteRequestStore.HasQuoteForRequestId(requestId)? "true": "false");
 }
 
 void

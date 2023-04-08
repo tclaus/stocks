@@ -11,6 +11,8 @@
 #include "StockListItemBuilder.h"
 #include "../../api/ApiBuilder.h"
 #include "../../api/NetRequester.h"
+#include "QuoteRequestStore.h"
+
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
 #include <ListView.h>
@@ -73,20 +75,15 @@ StocksPanelView::SearchForSymbol(const char *searchSymbol) {
 
 void
 StocksPanelView::RequestQuoteDetailsForSymbol(const char *symbol) {
-    int quoteRequestId = stockConnector->Quote(symbol);
-    printf("Quote RequestId: %d. \n", quoteRequestId);
+    int quoteRequestId = stockConnector->RetrieveQuote(symbol);
+    printf("New RetrieveQuote RequestId: %d. \n", quoteRequestId);
 
-    //TODO: Hier müsste nun die Request-ID mit einem Quote zusammengeführt werden
-    // diese Request-ID gehört mit diesem Quote zusammen
-    // Zusammen muss man nun das Listview aktualisieren
-    // Obesrver.AddListener(Quote, requestId),
-    // Dann kann bei einem eingehenden request das zusammengebracht werden
-    // TODO: Singelton: RequestId - Quote, aber auch dann gibt es  noch die Historical Charts
-    //
-    // QuoteRequestStore (Request-Id, Quote), HistoricalPriceRequestStore(id, quote)
-    // jeder ist ein Observable, sendet bei "notify" den geänderten Quote
-    // notify(Quote &interest)
-    //
+    Portfolio &portfolio = Portfolio::Instance();
+    Quote *requestingQuote = portfolio.RetrieveQuoteBySymbol(symbol);
+    if (requestingQuote) {
+        QuoteRequestStore &quoteRequestStore = QuoteRequestStore::Instance();
+        quoteRequestStore.AddQuoteRequestId(quoteRequestId, *requestingQuote);
+    }
 }
 
 void
@@ -197,7 +194,7 @@ StocksPanelView::AcceptSearch() {
     // Remove deselected symbols
     for (auto &symbol: *fSelectionOfSymbols->ListToBeRemoved()) {
         printf("Deselected:  %s \n", symbol.c_str());
-        portfolio.RemoveSymbol(symbol);
+        portfolio.RemoveQuoteBySymbol(symbol);
     }
 
     // Add new symbols as empty quotes

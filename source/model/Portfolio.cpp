@@ -30,7 +30,7 @@ Portfolio::RemoveQuote(Quote &quote) {
 }
 
 void
-Portfolio::RemoveSymbol(std::string &symbol) {
+Portfolio::RemoveQuoteBySymbol(std::string &symbol) {
     fQuotesMap->erase(symbol);
 }
 
@@ -41,4 +41,19 @@ Portfolio::List() {
         listOfQuotes->push_back(pair.second);
     }
     return listOfQuotes;
+}
+
+/**
+ * Find the RetrieveQuote identified by its symbol name.
+ * @param symbol
+ * @return The quote found in the portfolio, a nullptr if not found.
+ */
+Quote *Portfolio::RetrieveQuoteBySymbol(const char *symbol) {
+    std::string symbolAsString = symbol;
+
+    auto const &iterator = fQuotesMap->find(symbolAsString);
+    if (iterator != fQuotesMap->end()) {
+        return iterator->second;
+    }
+    return nullptr;
 }

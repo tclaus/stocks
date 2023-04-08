@@ -46,10 +46,10 @@ SelectionOfSymbols::ListToBeRemoved() {
 
 void
 SelectionOfSymbols::ToggleUserSelection(const std::string &symbol) {
-    auto value = fUsersSelectionOfSymbols->find(symbol);
-    if (value == fUsersSelectionOfSymbols->end()) {
+    auto iterator = fUsersSelectionOfSymbols->find(symbol);
+    if (iterator == fUsersSelectionOfSymbols->end()) {
         fUsersSelectionOfSymbols->insert_or_assign(symbol, true);
         return;
     }
-    fUsersSelectionOfSymbols->insert_or_assign(symbol, !value->second);
+    fUsersSelectionOfSymbols->insert_or_assign(symbol, !iterator->second);
 }

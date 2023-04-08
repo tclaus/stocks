@@ -25,7 +25,10 @@ public:
      * @param symbol A known symbol
      * @return The new request Id
      */
-    virtual int Quote(const char *symbol) = 0;
+    virtual int RetrieveQuote(const char *symbol) = 0;
+
+    // https://site.financialmodelingprep.com/developer/docs/#Stock-Historical-Price
+    // virtual int RequestHistoricalPrice(const char* symbol);
 
     virtual ~StockConnector() = default;
 

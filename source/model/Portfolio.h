@@ -8,6 +8,7 @@
 
 #include "Quote.h"
 #include <map>
+
 #include <clocale>
 #include <string>
 #include <list>
@@ -22,7 +23,9 @@ public:
 
     void RemoveQuote(Quote &quote);
 
-    void RemoveSymbol(std::string &symbol);
+    void RemoveQuoteBySymbol(std::string &symbol);
+
+    Quote *RetrieveQuoteBySymbol(const char *symbol);
 
     /**
      * Returns a copy of the list
@@ -38,6 +41,7 @@ private:
 
 private:
     static Portfolio instance;
+    /// Quotes by its symbol
     std::map<std::string, Quote *> *fQuotesMap;
 };
 

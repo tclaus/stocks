@@ -15,8 +15,7 @@ public:
     BString *stockExchange;
 
     [[maybe_unused]]
-    BString *
-    DisplayText() const;
+    BString *DisplayText() const;
 };
 
 

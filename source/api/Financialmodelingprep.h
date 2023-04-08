@@ -34,7 +34,7 @@ public:
      * See https://site.financialmodelingprep.com/developer/docs/stock-api/ for details.
      */
     int
-    Quote(const char *symbol) override;
+    RetrieveQuote(const char *symbol) override;
 
 private:
     void AddApiKey(BString &request);
