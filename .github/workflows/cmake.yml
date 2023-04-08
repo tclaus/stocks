@@ -20,11 +20,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Get Haiku
-      run:  git clone --depth 1 https://github.com/tclaus/Haiku-libs.git lib
+    - name: Get Haiku build dependencies
+      run:  git clone --depth 1 https://github.com/tclaus/Haiku-libs.git build-dependencies
 
     - name: Change lib path in cmake file
-      run: sed -i 's|/boot/system/develop/lib|lib|g' CMakeLists.txt
+      run: |
+          sed -i 's|/boot/system/develop/lib|build-dependencies|g' CMakeLists.txt
+          export CPLUS_INCLUDE_PATH= build-dependencies/headers/os
+    
 
 #TODO: get the needed Libs from another repo
 
