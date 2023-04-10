@@ -72,8 +72,6 @@ private:
 
     void LoadPortfolioList();
 
-    QuoteListItem *BuildPortfolioListItem(Quote &quote);
-
 private:
     BListView *listView;
     StockConnector *stockConnector;

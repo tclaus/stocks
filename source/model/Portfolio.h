@@ -19,12 +19,15 @@ public:
 
     static Portfolio &Instance();
 
-    void AddQuote(Quote *quote);
-
     void RemoveQuote(Quote &quote);
 
     void RemoveQuoteBySymbol(std::string &symbol);
 
+    /**
+     * Retrieves or creates a quote by this symbol
+     * @param symbol A quote symbol
+     * @return An existing quote or a new one.
+     */
     Quote *RetrieveQuoteBySymbol(const char *symbol);
 
     /**
@@ -38,6 +41,8 @@ public:
 
 private:
     Portfolio();
+
+    void AddQuote(Quote *quote);
 
 private:
     static Portfolio instance;

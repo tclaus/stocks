@@ -8,9 +8,8 @@
 #include "StocksPanelView.h"
 #include "Portfolio.h"
 #include "SearchFieldControl.h"
-#include "StockListItemBuilder.h"
-#include "../../api/ApiBuilder.h"
-#include "../../api/NetRequester.h"
+#include "ApiBuilder.h"
+#include "NetRequester.h"
 #include "QuoteRequestStore.h"
 
 #include <LayoutBuilder.h>
@@ -143,7 +142,8 @@ StocksPanelView::ClearUsersSelectionsWhenSearchStarts() {
     }
 }
 
-void StocksPanelView::ActivateSearchView() {
+void
+StocksPanelView::ActivateSearchView() {
     fCurrentViewState = stateSearchResultsList;
     fSearchReadyButton->Show();
     fSelectionOfSymbols->Clear();
@@ -153,7 +153,8 @@ void StocksPanelView::ActivateSearchView() {
  * Already selected symbols are remembered during the search. The current symbols are copied to the search results list
  * so that a deselection can remove an existing symbol and new ones can be added to the portfolio.
  */
-void StocksPanelView::InitializeCurrentSelection() {
+void
+StocksPanelView::InitializeCurrentSelection() {
     Portfolio &portfolio = Portfolio::Instance();
     for (auto const &quote: *portfolio.List()) {
         fSelectionOfSymbols->ToggleUserSelection(quote->symbol->String());
@@ -193,16 +194,16 @@ StocksPanelView::AcceptSearch() {
 
     // Remove deselected symbols
     for (auto &symbol: *fSelectionOfSymbols->ListToBeRemoved()) {
-        printf("Deselected:  %s \n", symbol.c_str());
+        printf("Deselected symbol:  %s \n", symbol.c_str());
         portfolio.RemoveQuoteBySymbol(symbol);
     }
 
     // Add new symbols as empty quotes
     for (auto &symbol: *fSelectionOfSymbols->ListToBeAdded()) {
-        printf("New:  %s \n", symbol.c_str());
-        Quote *newQuote = new Quote(&symbol);
-        portfolio.AddQuote(newQuote);
-        RequestQuoteDetailsForSymbol(newQuote->symbol->String());
+        printf("New symbol:  %s \n", symbol.c_str());
+
+        Quote *newOrCreatedQuote = portfolio.RetrieveQuoteBySymbol(symbol.c_str());
+        RequestQuoteDetailsForSymbol(newOrCreatedQuote->symbol->String());
     }
 
     ShowPortfolio();
@@ -236,19 +237,8 @@ void
 StocksPanelView::LoadPortfolioList() {
     Portfolio &portfolio = Portfolio::Instance();
     for (auto const &quote: *portfolio.List()) {
-        listView->AddItem(BuildPortfolioListItem(*quote));
+        listView->AddItem(new QuoteListItem(quote));
     }
-}
-
-QuoteListItem
-*StocksPanelView::BuildPortfolioListItem(Quote &quote) {
-    auto stockListBuilder = new StockListItemBuilder();
-    stockListBuilder->SetCompanyName(quote.companyName->String());
-    stockListBuilder->SetStockTickerName(quote.symbol->String());
-    stockListBuilder->SetProfitLoss(quote.change);
-    stockListBuilder->SetClosingPrice(quote.latestPrice);
-    stockListBuilder->SetStockExchangeName(quote.market->String());
-    return stockListBuilder->Build();
 }
 
 void

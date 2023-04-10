@@ -23,6 +23,8 @@ public:
 
     explicit Quote(std::string *symbol);
 
+    Quote(const Quote &) = delete;
+
     void SetLastUpdatedTimePoint();
 
     BString *symbol;
@@ -40,6 +42,7 @@ public:
     float volume;
 
     // Timestamp / Chrono / long (milliseconds?)
+
 };
 
 

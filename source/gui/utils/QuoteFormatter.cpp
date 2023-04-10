@@ -10,9 +10,9 @@ QuoteFormatter::QuoteFormatter(Quote *quote)
 }
 
 const char *
-QuoteFormatter::ChangeToString() const {
+QuoteFormatter::ChangePercentageToString() const {
     char *changeString = new char[12];
-    std::sprintf(changeString, "%+.2f%%", fQuote->change);
+    std::sprintf(changeString, "%+.2f%%", fQuote->changesPercentage);
     return changeString;
 }
 
@@ -21,7 +21,7 @@ QuoteFormatter::ChangeBackground() const {
     rgb_color *rectColor = new rgb_color();
 
     if (fQuote->change >= 0.0f) {
-        rectColor->set_to(101, 196, 102); // A green tone TODO: Konstante
+        rectColor->set_to(101, 196, 102); // A green tone TODO: make a constant
     } else {
         rectColor->set_to(235, 78, 61); // A red tone
     }

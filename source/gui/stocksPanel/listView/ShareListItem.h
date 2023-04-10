@@ -22,8 +22,6 @@ public:
     void DrawItem(BView *owner, BRect frame,
                   bool complete) override = 0;
 
-    Quote *GetQuote();
-
 protected:
     Quote *fQuote;
 };

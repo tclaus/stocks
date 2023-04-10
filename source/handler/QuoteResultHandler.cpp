@@ -48,10 +48,10 @@ QuoteResultHandler::UpdateQuoteWithResponseData(Quote *quote, BString *jsonStrin
         quote->changesPercentage = innerJsonElement["changesPercentage"].get<float>();
         quote->change = innerJsonElement["change"].get<float>();
         quote->dayLow = innerJsonElement["dayLow"].get<float>();
-        quote->dayHigh = innerJsonElement["dayHigh"].get<float>();
-        quote->open = innerJsonElement["open"].get<float>();
-        quote->previousClose = innerJsonElement["previousClose"].get<float>();
-        quote->volume = innerJsonElement["volume"].get<float>();
+        quote->dayHigh = float(innerJsonElement.value("dayHigh", 0.0));
+        quote->open = float(innerJsonElement.value("open", 0.0));
+        quote->previousClose = float(innerJsonElement.value("previousClose", 0.0));
+        quote->volume = float(innerJsonElement.value("volume", 0.0));
         quote->Notify();
     }
 }

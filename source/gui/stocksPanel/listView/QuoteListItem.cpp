@@ -13,7 +13,6 @@ QuoteListItem::QuoteListItem(Quote *quote)
           listItemDrawer(nullptr),
           lastWidth(0.0) {
 
-    fQuote = quote;
     fQuoteFormatter = new QuoteFormatter(quote);
     quote->Attach(this);
 }
@@ -26,10 +25,14 @@ QuoteListItem::~QuoteListItem() {
 
 void
 QuoteListItem::UpdateStatus() {
-    printf("Listitem update requested");
+    printf("Listitem update requested \n");
     auto _shared_pointer = fWeakOwner.lock();
-    DrawItem(*_shared_pointer, BRect(), true);
-
+    if (_shared_pointer) {
+        printf("Sent invalidate info to parent");
+        auto *parentView = dynamic_cast<BListView *>(*_shared_pointer);
+        const int32 index = parentView->IndexOf(this);
+        parentView->InvalidateItem(index);
+    }
 }
 
 void
@@ -119,6 +122,8 @@ void QuoteListItem::MakeLineColor(BView *owner) const {
 
 void
 QuoteListItem::Update(BView *owner, const BFont *font) {
+    fWeakOwner = std::make_shared<BView *>(owner);
+
     font_height fh{};
     font->GetHeight(&fh);
     float cellHeight = fh.ascent + fh.descent + fh.leading;
@@ -173,7 +178,7 @@ QuoteListItem::DrawChange(const BRect &frame, alignment horizontal_alignment, ve
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_PRICE - 2); // A bit smaller than price
 
-    const char *changeString = fQuoteFormatter->ChangeToString();
+    const char *changeString = fQuoteFormatter->ChangePercentageToString();
 
     CalcAndStoreCellHeight(&font, horizontal_alignment);
     const rgb_color *whiteTextColor = new rgb_color{255, 255, 255, 255};

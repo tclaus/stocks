@@ -12,7 +12,7 @@ class QuoteFormatter {
 public:
     explicit QuoteFormatter(Quote *quote);
 
-    const char *ChangeToString() const;
+    const char *ChangePercentageToString() const;
 
     const rgb_color *ChangeBackground() const;
 
