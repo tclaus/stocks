@@ -38,6 +38,7 @@ endif ()
 include_directories(AFTER
         /boot/system/develop/headers/private/netservices2
         /boot/system/develop/headers/os
+        source/utils
         source/model
         source/model/linkedRequestQuoteStore
         source/gui/stocksPanel
@@ -110,6 +111,12 @@ haiku_add_executable(${PROJECT_NAME}
         source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.cpp
         source/model/linkedRequestQuoteStore/QuoteRequestStore.h
         source/model/linkedRequestQuoteStore/QuoteRequestStore.cpp
+        source/handler/QuoteResultHandler.h
+        source/handler/QuoteResultHandler.cpp
+        source/utils/ObservableSubject.h
+        source/utils/ObservableSubject.cpp
+        source/utils/Observer.h
+        source/utils/Observer.cpp
         )
 
 target_link_directories(${PROJECT_NAME} PRIVATE /boot/system/develop/lib)

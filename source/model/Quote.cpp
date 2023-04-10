@@ -11,9 +11,8 @@ Quote::Quote() :
         currency(new BString()),
         lastUpdated(0s),
         change(0.0),
-        latestPrice(0.0),
-        high(0.0),
-        low(0.0) {}
+        changesPercentage(0.0),
+        latestPrice(0.0) {}
 
 Quote::Quote(BString &symbolName)
         :

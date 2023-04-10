@@ -33,7 +33,13 @@ public:
      */
     int AddRequest(BHttpRequest *request, BHandler *handler);
 
-    BString *Result(int resultId);
+    /**
+     * Returns the body from the request with the Id requestId if statuscode is 200 OK.
+     * Returns an empty Json if not found or status code is not 200 Ok.
+     * @param requestId The completed request with this Id.
+     * @return The body or an empty json {}.
+     */
+    BString *Result(int requestId);
 
 protected:
 

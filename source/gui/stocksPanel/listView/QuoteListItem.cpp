@@ -6,7 +6,6 @@
 #include "QuoteFormatter.h"
 #include <View.h>
 #include <algorithm>
-#include <iostream>
 #include "ListView.h"
 
 QuoteListItem::QuoteListItem(Quote *quote)
@@ -16,18 +15,29 @@ QuoteListItem::QuoteListItem(Quote *quote)
 
     fQuote = quote;
     fQuoteFormatter = new QuoteFormatter(quote);
+    quote->Attach(this);
 }
 
 QuoteListItem::~QuoteListItem() {
-    delete fQuote;
+    fQuote->Detach(this);
     delete listItemDrawer;
     delete fQuoteFormatter;
+}
+
+void
+QuoteListItem::UpdateStatus() {
+    printf("Listitem update requested");
+    auto _shared_pointer = fWeakOwner.lock();
+    DrawItem(*_shared_pointer, BRect(), true);
+
 }
 
 void
 QuoteListItem::DrawItem(BView *owner, BRect rect, bool complete) {
     (void) complete;
     (void) rect;
+
+    fWeakOwner = std::make_shared<BView *>(owner);
 
     auto *parent = dynamic_cast<BListView *>(owner);
     const int32 index = parent->IndexOf(this);

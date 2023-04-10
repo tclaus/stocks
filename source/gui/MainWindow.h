@@ -4,6 +4,7 @@
 #include <Window.h>
 #include "stocksPanel/StocksPanelView.h"
 #include "utils/DelayedQueryTimer.h"
+#include "../handler/QuoteResultHandler.h"
 
 class MainWindow : public BWindow {
 public:
@@ -20,7 +21,7 @@ public:
     void MessageReceived(BMessage *message) override;
 
     /**
-     * Handles the completed api request
+     * Handles the completed API request
      * @param requestId
      */
     void ResultHandler(int requestId);
@@ -34,9 +35,10 @@ public:
     bool QuitRequested() override;
 
 private:
-    StocksPanelView *stocksPanelView;
+    StocksPanelView *fStocksPanelView;
     BView *chartView;
     DelayedQueryTimer *delayedQueryTimer;
+    QuoteResultHandler *fQuoteResultHandler;
 };
 
 #endif

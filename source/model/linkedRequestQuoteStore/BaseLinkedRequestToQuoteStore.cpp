@@ -35,7 +35,7 @@ BaseLinkedRequestToQuoteStore::HasQuoteForRequestId(int requestId) {
 Quote *
 BaseLinkedRequestToQuoteStore::RetrieveQuoteById(int requestId) {
     auto const &iterator = fRequestIdToQuoteMap->find(requestId);
-    if (iterator != fRequestIdToQuoteMap->end()) {
+    if (iterator == fRequestIdToQuoteMap->end()) {
         return nullptr;
     }
     return iterator->second;

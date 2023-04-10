@@ -9,7 +9,7 @@ QuoteRequestStore QuoteRequestStore::fInstance = QuoteRequestStore();
 
 QuoteRequestStore::QuoteRequestStore()
         :
-        BaseLinkedRequestToQuoteStore() {};
+        BaseLinkedRequestToQuoteStore() {}
 
 QuoteRequestStore &
 QuoteRequestStore::Instance() {

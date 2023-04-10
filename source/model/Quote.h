@@ -5,6 +5,7 @@
 #ifndef STOCKS_QUOTE_H
 #define STOCKS_QUOTE_H
 
+#include "ObservableSubject.h"
 #include <String.h>
 #include <string>
 #include <chrono>
@@ -13,7 +14,7 @@ using namespace std::chrono_literals;
 typedef std::chrono::time_point<std::chrono::high_resolution_clock> timePoint;
 typedef std::chrono::duration<double, std::milli> timeDiffMs;
 
-class Quote {
+class Quote : public ObservableSubject {
 
 public:
     Quote();
@@ -30,9 +31,13 @@ public:
     BString *currency;
     timePoint lastUpdated;
     float change;
+    float changesPercentage;
     float latestPrice;
-    float high;
-    float low;
+    float dayLow;
+    float dayHigh;
+    float open;
+    float previousClose;
+    float volume;
 
     // Timestamp / Chrono / long (milliseconds?)
 };

@@ -5,6 +5,8 @@
 #include "NetRequester.h"
 #include <algorithm>
 
+using BPrivate::Network::BHttpStatusCode;
+
 NetRequester
         NetRequester::instance = NetRequester();
 
@@ -26,15 +28,19 @@ NetRequester::AddRequest(BHttpRequest *request, BHandler *handler) {
 }
 
 BString *
-NetRequester::Result(int resultId) {
+NetRequester::Result(int requestId) {
 
-    auto const httpResultIterator = fHttpResultContainer.find(resultId);
+    auto const httpResultIterator = fHttpResultContainer.find(requestId);
     if (httpResultIterator != fHttpResultContainer.end()) {
-        printf("Requesting result of %d. Found it and returning it! \n", resultId);
-        auto resultBody = new BString(httpResultIterator->second.Body().text.value());
-        // Remove the hit
-        //std::remove(fHttpResultContainer.begin(), fHttpResultContainer.end(), resultId);
-        return resultBody;
+        printf("Requesting result of %d. Found it and returning it! \n", requestId);
+        BHttpResult &result = httpResultIterator->second;
+        printf("Result status code is: %hd \n", int(result.Status().StatusCode()));
+
+        if (result.Status().StatusCode() == BHttpStatusCode::Ok) {
+            auto resultBody = new BString(httpResultIterator->second.Body().text.value());
+            fHttpResultContainer.erase(requestId);
+            return resultBody;
+        }
     }
 
     return new BString("{}");

@@ -7,31 +7,35 @@
 #include <LayoutBuilder.h>
 #include "utils/EscapeCancelFilter.h"
 #include "QuoteRequestStore.h"
+#include "../handler/QuoteResultHandler.h"
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
 #include <iostream>
 
 MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
-                  B_ASYNCHRONOUS_CONTROLS) {
+                  B_ASYNCHRONOUS_CONTROLS),
+          fQuoteResultHandler( new QuoteResultHandler()){
 
     SetWindowSizes();
-    stocksPanelView = new StocksPanelView();
+    fStocksPanelView = new StocksPanelView();
     chartView = new ChartView();
     delayedQueryTimer = new DelayedQueryTimer(this);
 
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
-            .Add(stocksPanelView, 1)
+            .Add(fStocksPanelView, 1)
             .Add(chartView, 3);
     Init();
 }
 
 MainWindow::~MainWindow() {
     delayedQueryTimer->StopThread();
+    delete fQuoteResultHandler;
 }
 
-void MainWindow::Init() {
+void
+MainWindow::Init() {
     delayedQueryTimer->StartThread();
     AddCommonFilter(new EscapeCancelFilter());
 }
@@ -42,11 +46,13 @@ MainWindow::SetWindowSizes() {
     SetSizeLimits(700.0, screenFrame.Width(), 500.0, screenFrame.Height());
 }
 
-void MainWindow::Show() {
+void
+MainWindow::Show() {
     BWindow::Show();
 }
 
-void MainWindow::MessageReceived(BMessage *message) {
+void
+MainWindow::MessageReceived(BMessage *message) {
     switch (message->what) {
         case (SearchFieldMessages::M_START_SHARES_SEARCH) : {
             BString searchTerm;
@@ -62,17 +68,17 @@ void MainWindow::MessageReceived(BMessage *message) {
             break;
         }
         case (SearchFieldMessages::M_DISMISS_SEARCH) : {
-            stocksPanelView->DismissSearch();
+            fStocksPanelView->DismissSearch();
             break;
         }
         case (SearchFieldMessages::M_ACCEPT_SELECTION) : {
-            stocksPanelView->AcceptSearch();
+            fStocksPanelView->AcceptSearch();
             break;
         }
 
         case (DelayedQueryTimerMessages::CHARACTER_DELAY_EXPIRED) : {
             const char *searchQuery = message->FindString(SEARCH_FOR_TEXT);
-            stocksPanelView->SearchForSymbol(searchQuery);
+            fStocksPanelView->SearchForSymbol(searchQuery);
             break;
         }
         default: {
@@ -84,17 +90,16 @@ void MainWindow::MessageReceived(BMessage *message) {
 
 void
 MainWindow::ResultHandler(int requestId) {
-    stocksPanelView->HandleResult(requestId);
-    QuoteRequestStore &quoteRequestStore = QuoteRequestStore::Instance();
-    printf("Has RetrieveQuote for request with Id: %d : %s \n", requestId, quoteRequestStore.HasQuoteForRequestId(requestId)? "true": "false");
+    fStocksPanelView->HandleResult(requestId);
+    fQuoteResultHandler->HandleQuoteResults(requestId);
 }
-
 void
 MainWindow::RequestForSearch(BString &searchTerm) {
     delayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
 }
 
-bool MainWindow::QuitRequested() {
+bool
+MainWindow::QuitRequested() {
     be_app->PostMessage(B_QUIT_REQUESTED);
     return true;
 }
