@@ -57,7 +57,7 @@ private:
     float rowSizes[2];
     float lastWidth;
 
-    std::weak_ptr<BView *> fWeakOwner;
+    BListView *fWeakOwner;
 
     void MakeLineColor(BView *owner) const;
 

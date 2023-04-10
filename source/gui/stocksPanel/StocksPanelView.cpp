@@ -75,7 +75,6 @@ StocksPanelView::SearchForSymbol(const char *searchSymbol) {
 void
 StocksPanelView::RequestQuoteDetailsForSymbol(const char *symbol) {
     int quoteRequestId = stockConnector->RetrieveQuote(symbol);
-    printf("New RetrieveQuote RequestId: %d. \n", quoteRequestId);
 
     Portfolio &portfolio = Portfolio::Instance();
     Quote *requestingQuote = portfolio.RetrieveQuoteBySymbol(symbol);
@@ -194,13 +193,11 @@ StocksPanelView::AcceptSearch() {
 
     // Remove deselected symbols
     for (auto &symbol: *fSelectionOfSymbols->ListToBeRemoved()) {
-        printf("Deselected symbol:  %s \n", symbol.c_str());
         portfolio.RemoveQuoteBySymbol(symbol);
     }
 
     // Add new symbols as empty quotes
     for (auto &symbol: *fSelectionOfSymbols->ListToBeAdded()) {
-        printf("New symbol:  %s \n", symbol.c_str());
 
         Quote *newOrCreatedQuote = portfolio.RetrieveQuoteBySymbol(symbol.c_str());
         RequestQuoteDetailsForSymbol(newOrCreatedQuote->symbol->String());

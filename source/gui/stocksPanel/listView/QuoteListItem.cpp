@@ -19,19 +19,19 @@ QuoteListItem::QuoteListItem(Quote *quote)
 
 QuoteListItem::~QuoteListItem() {
     fQuote->Detach(this);
+    fWeakOwner = nullptr;
     delete listItemDrawer;
     delete fQuoteFormatter;
 }
 
 void
 QuoteListItem::UpdateStatus() {
-    printf("Listitem update requested \n");
-    auto _shared_pointer = fWeakOwner.lock();
-    if (_shared_pointer) {
-        printf("Sent invalidate info to parent");
-        auto *parentView = dynamic_cast<BListView *>(*_shared_pointer);
-        const int32 index = parentView->IndexOf(this);
-        parentView->InvalidateItem(index);
+    printf("List item update requested \n");
+
+    if (fWeakOwner) {
+        printf("Sent invalidate info to parent \n");
+        const int32 index = fWeakOwner->IndexOf(this);
+        fWeakOwner->InvalidateItem(index);
     }
 }
 
@@ -40,9 +40,9 @@ QuoteListItem::DrawItem(BView *owner, BRect rect, bool complete) {
     (void) complete;
     (void) rect;
 
-    fWeakOwner = std::make_shared<BView *>(owner);
-
     auto *parent = dynamic_cast<BListView *>(owner);
+    fWeakOwner = parent;
+
     const int32 index = parent->IndexOf(this);
     BRect frame = parent->ItemFrame(index);
 
@@ -122,7 +122,8 @@ void QuoteListItem::MakeLineColor(BView *owner) const {
 
 void
 QuoteListItem::Update(BView *owner, const BFont *font) {
-    fWeakOwner = std::make_shared<BView *>(owner);
+    auto *parent = dynamic_cast<BListView *>(owner);
+    fWeakOwner = parent;
 
     font_height fh{};
     font->GetHeight(&fh);

@@ -32,9 +32,7 @@ NetRequester::Result(int requestId) {
 
     auto const httpResultIterator = fHttpResultContainer.find(requestId);
     if (httpResultIterator != fHttpResultContainer.end()) {
-        printf("Requesting result of %d. Found it and returning it! \n", requestId);
         BHttpResult &result = httpResultIterator->second;
-        printf("Result status code is: %hd \n", int(result.Status().StatusCode()));
 
         if (result.Status().StatusCode() == BHttpStatusCode::Ok) {
             auto resultBody = new BString(httpResultIterator->second.Body().text.value());

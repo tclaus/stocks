@@ -64,7 +64,6 @@ MainWindow::MessageReceived(BMessage *message) {
         }
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
             ResultHandler(message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
-            printf("Request processing with Id %d completed.\n", message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             break;
         }
         case (SearchFieldMessages::M_DISMISS_SEARCH) : {

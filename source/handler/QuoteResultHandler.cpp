@@ -17,9 +17,7 @@ void QuoteResultHandler::HandleQuoteResults(int requestId) {
 
     QuoteRequestStore &quoteRequestStore = QuoteRequestStore::Instance();
     if (quoteRequestStore.HasQuoteForRequestId(requestId)) {
-        printf("Handle Quote Result with Id %d \n", requestId);
         BString *resultJson = NetRequester::Instance().Result(requestId);
-        printf("Data from Request: %s\n", resultJson->String());
         Quote *quote = quoteRequestStore.RetrieveQuoteById(requestId);
         UpdateQuoteWithResponseData(quote, resultJson);
     }
@@ -36,7 +34,6 @@ QuoteResultHandler::UpdateQuoteWithResponseData(Quote *quote, BString *jsonStrin
     json parsedJson = json::parse(jsonString->String());
 
     for (auto &item: parsedJson.items()) {
-        printf("Updating existing quote with symbol %s.\n", quote->symbol->String());
         auto innerJsonElement = item.value();
         if (!JsonElementMatchesQuote(innerJsonElement, quote)) {
             continue;
