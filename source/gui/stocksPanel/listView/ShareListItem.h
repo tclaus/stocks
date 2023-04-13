@@ -5,8 +5,8 @@
 #ifndef STOCKS_SHARELISTITEM_H
 #define STOCKS_SHARELISTITEM_H
 
-#include "ListItem.h"
 #include "Quote.h"
+#include "ListItem.h"
 
 class ShareListItem : public BListItem {
 
@@ -21,8 +21,6 @@ public:
 
     void DrawItem(BView *owner, BRect frame,
                   bool complete) override = 0;
-
-    Quote *GetQuote();
 
 protected:
     Quote *fQuote;

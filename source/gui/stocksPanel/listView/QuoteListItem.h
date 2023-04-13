@@ -6,15 +6,17 @@
 #define STOCKS_QUOTELISTITEM_H
 
 #include "ShareListItem.h"
+#include "Quote.h"
+#include "Observer.h"
 #include "ListItemDrawer.h"
 #include "QuoteFormatter.h"
-#include "ListItemConstants.h"
 
+#include "ListItemConstants.h"
 #include <View.h>
 #include <ListView.h>
-#include "Quote.h"
+#include <memory>
 
-class QuoteListItem : public ShareListItem {
+class QuoteListItem : public ShareListItem, public Observer {
 
 public:
     explicit QuoteListItem(Quote *quote);
@@ -36,6 +38,8 @@ public:
 
     void Update(BView *owner, const BFont *font) override;
 
+    void UpdateStatus() override;
+
 protected:
 
 private:
@@ -52,6 +56,8 @@ private:
     ListItemDrawer *listItemDrawer;
     float rowSizes[2];
     float lastWidth;
+
+    BListView *fWeakOwner;
 
     void MakeLineColor(BView *owner) const;
 

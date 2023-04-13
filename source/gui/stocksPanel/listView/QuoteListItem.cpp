@@ -6,7 +6,6 @@
 #include "QuoteFormatter.h"
 #include <View.h>
 #include <algorithm>
-#include <iostream>
 #include "ListView.h"
 
 QuoteListItem::QuoteListItem(Quote *quote)
@@ -14,14 +13,23 @@ QuoteListItem::QuoteListItem(Quote *quote)
           listItemDrawer(nullptr),
           lastWidth(0.0) {
 
-    fQuote = quote;
     fQuoteFormatter = new QuoteFormatter(quote);
+    quote->Attach(this);
 }
 
 QuoteListItem::~QuoteListItem() {
-    delete fQuote;
+    fQuote->Detach(this);
+    fWeakOwner = nullptr;
     delete listItemDrawer;
     delete fQuoteFormatter;
+}
+
+void
+QuoteListItem::UpdateStatus() {
+    if (fWeakOwner) {
+        const int32 index = fWeakOwner->IndexOf(this);
+        fWeakOwner->InvalidateItem(index);
+    }
 }
 
 void
@@ -30,6 +38,8 @@ QuoteListItem::DrawItem(BView *owner, BRect rect, bool complete) {
     (void) rect;
 
     auto *parent = dynamic_cast<BListView *>(owner);
+    fWeakOwner = parent;
+
     const int32 index = parent->IndexOf(this);
     BRect frame = parent->ItemFrame(index);
 
@@ -109,6 +119,9 @@ void QuoteListItem::MakeLineColor(BView *owner) const {
 
 void
 QuoteListItem::Update(BView *owner, const BFont *font) {
+    auto *parent = dynamic_cast<BListView *>(owner);
+    fWeakOwner = parent;
+
     font_height fh{};
     font->GetHeight(&fh);
     float cellHeight = fh.ascent + fh.descent + fh.leading;
@@ -163,7 +176,7 @@ QuoteListItem::DrawChange(const BRect &frame, alignment horizontal_alignment, ve
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_PRICE - 2); // A bit smaller than price
 
-    const char *changeString = fQuoteFormatter->ChangeToString();
+    const char *changeString = fQuoteFormatter->ChangePercentageToString();
 
     CalcAndStoreCellHeight(&font, horizontal_alignment);
     const rgb_color *whiteTextColor = new rgb_color{255, 255, 255, 255};

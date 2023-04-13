@@ -8,6 +8,7 @@
 
 #include "Quote.h"
 #include <map>
+
 #include <clocale>
 #include <string>
 #include <list>
@@ -18,11 +19,18 @@ public:
 
     static Portfolio &Instance();
 
-    void AddQuote(Quote *quote);
+    bool QuoteExists(const char *symbol);
 
     void RemoveQuote(Quote &quote);
 
-    void RemoveSymbol(std::string &symbol);
+    void RemoveQuoteBySymbol(std::string &symbol);
+
+    /**
+     * Retrieves or creates a quote by this symbol.
+     * @param symbol A quote symbol
+     * @return An existing quote or a new one.
+     */
+    Quote *RetrieveOrCreateQuoteBySymbol(const char *symbol);
 
     /**
      * Returns a copy of the list
@@ -36,8 +44,11 @@ public:
 private:
     Portfolio();
 
+    void AddQuote(Quote *quote);
+
 private:
     static Portfolio instance;
+    /// Quotes by its symbol
     std::map<std::string, Quote *> *fQuotesMap;
 };
 

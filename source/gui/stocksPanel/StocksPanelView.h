@@ -18,6 +18,7 @@
 #include <list>
 #include <Button.h>
 #include <unordered_set>
+#include <map>
 
 typedef std::unordered_set<std::string> StringSet;
 
@@ -35,6 +36,8 @@ public:
     void HandleResult(int requestId);
 
     void SearchForSymbol(const char *searchSymbol);
+
+    void RequestQuoteDetailsForSymbol(const char *symbol);
 
     /**
      * Cancels a running search and shows the portfolio fList.
@@ -70,10 +73,11 @@ private:
 
     void LoadPortfolioList();
 
-    QuoteListItem *BuildPortfolioListItem(Quote &quote);
-
 private:
     BListView *listView;
+
+    std::map<BString, QuoteListItem *> *fQuoteListItems;
+
     StockConnector *stockConnector;
     SearchFieldControl *fSearchFieldControl;
     BButton *fSearchReadyButton;
@@ -81,14 +85,14 @@ private:
     SelectionOfSymbols *fSelectionOfSymbols;
     int fSearchRequestId;
     enum ViewState {
-        stateSearchResultsList,
-        statePortfolioList
+        modeSearchResultsList,
+        modePortfolioList
     };
 /**
  * Provides the current state what the fList shows. If a search result is currently showing and a esc key is pressed by the user,
  * no new reload of the fList should be done.
  */
-    ViewState fCurrentViewState;
+    ViewState fCurrentViewMode;
 
     StringSet *CreateSetOfSymbolsInPortfolio();
 
@@ -96,15 +100,18 @@ private:
 
     void InitSearchReadyButton();
 
-    void ActivatePortfolioList();
+    void ActivatePortfolioMode();
 
-    void ActivateSearchView();
+    void ActivateSearchMode();
 
     /**
      * set up the search selection with symbols already in the portfolio.
      */
     void InitializeCurrentSelection();
 
+    void RemoveCachedQuoteListItem(const std::string &symbol);
+
+    QuoteListItem *AddOrCreateCachedQuoteListItem(Quote *const &quote);
 };
 
 #endif // StocksPanelView_H

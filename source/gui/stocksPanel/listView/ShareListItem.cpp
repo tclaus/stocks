@@ -7,7 +7,3 @@
 ShareListItem::ShareListItem(Quote *quote)
         : BListItem(),
           fQuote(quote) {}
-
-Quote *ShareListItem::GetQuote() {
-    return fQuote;
-}

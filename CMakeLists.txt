@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.23)
 project(
         Stocks
         VERSION 0.1
-        DESCRIPTION "A stocks application to set up a portfolio and see updated data"
+        DESCRIPTION "A stocks application to set\ up a portfolio and see updated data"
 )
 
 set(CMAKE_MODULE_PATH "${Stocks_SOURCE_DIR}/CMakeModules")
@@ -37,7 +37,10 @@ endif ()
 
 include_directories(AFTER
         /boot/system/develop/headers/private/netservices2
+        /boot/system/develop/headers/os
+        source/utils
         source/model
+        source/model/linkedRequestQuoteStore
         source/gui/stocksPanel
         source/gui/stocksPanel/listView
         source/gui/chartView
@@ -55,7 +58,7 @@ FetchContent_MakeAvailable(json)
 
 find_library(network NAMES network PATHS /boot/system/develop/lib/ REQUIRED)
 find_library(bnetapi NAMES bnetapi PATHS /boot/system/develop/lib/ REQUIRED)
-find_library(netservices2 NAMES netservices2 PATHS /boot/system/develop/lib REQUIRED)
+find_library(netservices2 NAMES netservices2 PATHS /boot/system/develop/lib/ REQUIRED)
 
 link_directories(/boot/system/develop/lib/)
 
@@ -70,8 +73,6 @@ haiku_add_executable(${PROJECT_NAME}
         source/gui/stocksPanel/StocksPanelView.cpp
         source/gui/stocksPanel/SearchFieldControl.h
         source/gui/stocksPanel/SearchFieldControl.cpp
-        source/gui/stocksPanel/StockListItemBuilder.h
-        source/gui/stocksPanel/StockListItemBuilder.cpp
         source/gui/stocksPanel/ListItemConstants.h
         source/gui/stocksPanel/listView/QuoteListItem.h
         source/gui/stocksPanel/listView/QuoteListItem.cpp
@@ -104,6 +105,16 @@ haiku_add_executable(${PROJECT_NAME}
         source/model/SearchResultList.cpp
         source/model/SelectionOfSymbols.h
         source/model/SelectionOfSymbols.cpp
+        source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.h
+        source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.cpp
+        source/model/linkedRequestQuoteStore/QuoteRequestStore.h
+        source/model/linkedRequestQuoteStore/QuoteRequestStore.cpp
+        source/handler/QuoteResultHandler.h
+        source/handler/QuoteResultHandler.cpp
+        source/utils/ObservableSubject.h
+        source/utils/ObservableSubject.cpp
+        source/utils/Observer.h
+        source/utils/Observer.cpp
         )
 
 target_link_directories(${PROJECT_NAME} PRIVATE /boot/system/develop/lib)

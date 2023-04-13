@@ -3,7 +3,9 @@
 //
 
 #include "NetRequester.h"
-#include <iostream>
+#include <algorithm>
+
+using BPrivate::Network::BHttpStatusCode;
 
 NetRequester
         NetRequester::instance = NetRequester();
@@ -20,20 +22,24 @@ NetRequester::Instance() {
 int
 NetRequester::AddRequest(BHttpRequest *request, BHandler *handler) {
     BHttpResult expectingResult = fHttpSession->Execute(std::move(*request), nullptr, BMessenger(handler));
-    int id = expectingResult.Identity();
-    fHttpResultContainer.push_back(
-            std::move(expectingResult)
-    );
+    int32 id = expectingResult.Identity();
+    fHttpResultContainer.emplace(id, std::move(expectingResult));
     return id;
 }
 
 BString *
-NetRequester::Result(int resultId) {
-    (void) resultId;
-    // TODO: Returns a request by its Id, not just the latest!
-    auto &httpResult = fHttpResultContainer.back();
-    auto resultBody = new BString(httpResult.Body().text.value());
-    fHttpResultContainer.pop_back();
+NetRequester::Result(int requestId) {
 
-    return resultBody;
+    auto const httpResultIterator = fHttpResultContainer.find(requestId);
+    if (httpResultIterator != fHttpResultContainer.end()) {
+        BHttpResult &result = httpResultIterator->second;
+
+        if (result.Status().StatusCode() == BHttpStatusCode::Ok) {
+            auto resultBody = new BString(httpResultIterator->second.Body().text.value());
+            fHttpResultContainer.erase(requestId);
+            return resultBody;
+        }
+    }
+
+    return new BString("{}");
 }

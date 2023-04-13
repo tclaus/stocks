@@ -4,8 +4,8 @@
 
 #include "SearchResultItem.h"
 
-BString *
-SearchResultItem::DisplayText() {
+[[maybe_unused]] BString *
+SearchResultItem::DisplayText() const {
     auto *displayText = new BString();
     displayText->Append(*name);
     displayText->Append(", ");

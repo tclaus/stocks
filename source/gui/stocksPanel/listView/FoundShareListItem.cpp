@@ -42,7 +42,7 @@ std::string FoundShareListItem::GenerateCheckBoxName(const Quote &quote) const {
 }
 
 FoundShareListItem::~FoundShareListItem() {
-    delete fQuote;
+    // delete fQuote;
     delete fListItemDrawer;
     delete fQuoteFormatter;
     delete fCheckbox;

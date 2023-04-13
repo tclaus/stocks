@@ -13,8 +13,22 @@ class StockConnector {
 
 public:
 
-    virtual int
-    Search(const char *searchQuery) = 0;
+    /**
+     * Searches for a symbol or company name
+     * @param searchQuery A symbol or part of a symbol.
+     * @return The new request Id
+     */
+    virtual int Search(const char *searchQuery) = 0;
+
+    /**
+     * Requests the quote for a given symbol.
+     * @param symbol A known symbol
+     * @return The new request Id
+     */
+    virtual int RetrieveQuote(const char *symbol) = 0;
+
+    // https://site.financialmodelingprep.com/developer/docs/#Stock-Historical-Price
+    // virtual int RequestHistoricalPrice(const char* symbol);
 
     virtual ~StockConnector() = default;
 
