@@ -24,7 +24,7 @@ ObservableSubject::Detach(Observer *observer) {
 
 void
 ObservableSubject::Notify() {
-    printf("Notify for change in quote!\n");
+    printf("Notify observers!\n");
     for (auto const &iterator: fObservers) {
         iterator->UpdateStatus();
     }

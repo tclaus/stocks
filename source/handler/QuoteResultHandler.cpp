@@ -41,10 +41,10 @@ QuoteResultHandler::UpdateQuoteWithResponseData(Quote *quote, BString *jsonStrin
 
         // symbol not needed to transfer
         quote->companyName = new BString(innerJsonElement["name"].get<std::string>().c_str());
-        quote->latestPrice = innerJsonElement["price"].get<float>();
-        quote->changesPercentage = innerJsonElement["changesPercentage"].get<float>();
-        quote->change = innerJsonElement["change"].get<float>();
-        quote->dayLow = innerJsonElement["dayLow"].get<float>();
+        quote->latestPrice = float(innerJsonElement.value("price", 0.0));
+        quote->changesPercentage = float(innerJsonElement.value("changesPercentage", 0.0));
+        quote->change = float(innerJsonElement.value("change", 0.0));
+        quote->dayLow = float(innerJsonElement.value("dayLow", 0.0));
         quote->dayHigh = float(innerJsonElement.value("dayHigh", 0.0));
         quote->open = float(innerJsonElement.value("open", 0.0));
         quote->previousClose = float(innerJsonElement.value("previousClose", 0.0));

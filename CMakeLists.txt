@@ -73,8 +73,6 @@ haiku_add_executable(${PROJECT_NAME}
         source/gui/stocksPanel/StocksPanelView.cpp
         source/gui/stocksPanel/SearchFieldControl.h
         source/gui/stocksPanel/SearchFieldControl.cpp
-        source/gui/stocksPanel/StockListItemBuilder.h
-        source/gui/stocksPanel/StockListItemBuilder.cpp
         source/gui/stocksPanel/ListItemConstants.h
         source/gui/stocksPanel/listView/QuoteListItem.h
         source/gui/stocksPanel/listView/QuoteListItem.cpp

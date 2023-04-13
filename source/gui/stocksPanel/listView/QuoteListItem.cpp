@@ -26,10 +26,7 @@ QuoteListItem::~QuoteListItem() {
 
 void
 QuoteListItem::UpdateStatus() {
-    printf("List item update requested \n");
-
     if (fWeakOwner) {
-        printf("Sent invalidate info to parent \n");
         const int32 index = fWeakOwner->IndexOf(this);
         fWeakOwner->InvalidateItem(index);
     }

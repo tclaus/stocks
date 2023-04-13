@@ -23,11 +23,12 @@ using BPrivate::Network::UrlEvent::RequestCompleted;
 
 StocksPanelView::StocksPanelView()
         : BView(BRect(), "stocksView", B_FOLLOW_ALL, B_WILL_DRAW),
+          fQuoteListItems(new std::map<BString, QuoteListItem *>()),
           fSearchFieldControl(new SearchFieldControl()),
           searchResultList(new SearchResultList()),
           fSelectionOfSymbols(new SelectionOfSymbols()),
           fSearchRequestId(0),
-          fCurrentViewState(statePortfolioList) {
+          fCurrentViewMode(modePortfolioList) {
 
     listView = new BListView(BRect(), "stocksList",
                              B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);
@@ -54,6 +55,7 @@ StocksPanelView::~StocksPanelView() {
     delete searchResultList;
     delete stockConnector;
     delete fSelectionOfSymbols;
+    delete fQuoteListItems;
 }
 
 void
@@ -77,7 +79,7 @@ StocksPanelView::RequestQuoteDetailsForSymbol(const char *symbol) {
     int quoteRequestId = stockConnector->RetrieveQuote(symbol);
 
     Portfolio &portfolio = Portfolio::Instance();
-    Quote *requestingQuote = portfolio.RetrieveQuoteBySymbol(symbol);
+    Quote *requestingQuote = portfolio.RetrieveOrCreateQuoteBySymbol(symbol);
     if (requestingQuote) {
         QuoteRequestStore &quoteRequestStore = QuoteRequestStore::Instance();
         quoteRequestStore.AddQuoteRequestId(quoteRequestId, *requestingQuote);
@@ -135,15 +137,15 @@ StocksPanelView::CreateSetOfSymbolsInPortfolio() {
 
 void
 StocksPanelView::ClearUsersSelectionsWhenSearchStarts() {
-    if (fCurrentViewState != stateSearchResultsList) {
-        ActivateSearchView();
+    if (fCurrentViewMode != modeSearchResultsList) {
+        ActivateSearchMode();
         InitializeCurrentSelection();
     }
 }
 
 void
-StocksPanelView::ActivateSearchView() {
-    fCurrentViewState = stateSearchResultsList;
+StocksPanelView::ActivateSearchMode() {
+    fCurrentViewMode = modeSearchResultsList;
     fSearchReadyButton->Show();
     fSelectionOfSymbols->Clear();
 }
@@ -174,40 +176,48 @@ FoundShareListItem
 
 void
 StocksPanelView::DismissSearch() {
-    if (fCurrentViewState != stateSearchResultsList) {
+    if (fCurrentViewMode != modeSearchResultsList) {
         return;
     }
-    ActivatePortfolioList();
+    ActivatePortfolioMode();
     ShowPortfolio();
 }
 
 void
 StocksPanelView::AcceptSearch() {
-    if (fCurrentViewState != stateSearchResultsList) {
+    if (fCurrentViewMode != modeSearchResultsList) {
         return;
     }
 
-    ActivatePortfolioList();
+    ActivatePortfolioMode();
 
     Portfolio &portfolio = Portfolio::Instance();
 
     // Remove deselected symbols
     for (auto &symbol: *fSelectionOfSymbols->ListToBeRemoved()) {
         portfolio.RemoveQuoteBySymbol(symbol);
+        RemoveCachedQuoteListItem(symbol);
     }
 
     // Add new symbols as empty quotes
     for (auto &symbol: *fSelectionOfSymbols->ListToBeAdded()) {
-
-        Quote *newOrCreatedQuote = portfolio.RetrieveQuoteBySymbol(symbol.c_str());
-        RequestQuoteDetailsForSymbol(newOrCreatedQuote->symbol->String());
+        if (!portfolio.QuoteExists(symbol.c_str())) {
+            Quote *newOrCreatedQuote = portfolio.RetrieveOrCreateQuoteBySymbol(symbol.c_str());
+            RequestQuoteDetailsForSymbol(newOrCreatedQuote->symbol->String());
+        }
     }
 
     ShowPortfolio();
 }
 
-void StocksPanelView::ActivatePortfolioList() {
-    fCurrentViewState = statePortfolioList;
+void
+StocksPanelView::RemoveCachedQuoteListItem(
+        const std::string &symbol) {
+    fQuoteListItems->erase(BString(symbol.c_str()));
+}
+
+void StocksPanelView::ActivatePortfolioMode() {
+    fCurrentViewMode = modePortfolioList;
     fSearchReadyButton->Hide();
     fSearchFieldControl->ResetField();
 }
@@ -234,8 +244,20 @@ void
 StocksPanelView::LoadPortfolioList() {
     Portfolio &portfolio = Portfolio::Instance();
     for (auto const &quote: *portfolio.List()) {
-        listView->AddItem(new QuoteListItem(quote));
+        QuoteListItem *quoteListItem = AddOrCreateCachedQuoteListItem(quote);
+        listView->AddItem(quoteListItem);
     }
+}
+
+QuoteListItem *
+StocksPanelView::AddOrCreateCachedQuoteListItem(Quote *const &quote) {
+    auto const &foundListItemIterator = fQuoteListItems->find(BString(quote->symbol->String()));
+    if (foundListItemIterator == fQuoteListItems->end()) {
+        auto *quoteListItem = new QuoteListItem(quote);
+        fQuoteListItems->insert_or_assign(BString(quote->symbol->String()), quoteListItem);
+        return quoteListItem;
+    }
+    return foundListItemIterator->second;
 }
 
 void

@@ -17,19 +17,14 @@ Portfolio::Instance() {
     return instance;
 }
 
-/**
- * Find the RetrieveQuote identified by its symbol name.
- * @param symbol
- * @return The quote found in the portfolio, a nullptr if not found.
- */
-Quote *Portfolio::RetrieveQuoteBySymbol(const char *symbol) {
+Quote *Portfolio::RetrieveOrCreateQuoteBySymbol(const char *symbol) {
     std::string symbolAsString = symbol;
 
     auto const &iterator = fQuotesMap->find(symbolAsString);
     if (iterator != fQuotesMap->end()) {
         return iterator->second;
     }
-    
+
     auto *newQuote = new Quote(new std::string(symbol));
     AddQuote(newQuote);
     return newQuote;
@@ -59,4 +54,10 @@ Portfolio::List() {
         listOfQuotes->push_back(pair.second);
     }
     return listOfQuotes;
+}
+
+bool
+Portfolio::QuoteExists(const char *symbol) {
+    auto const &iterator = fQuotesMap->find(symbol);
+    return (iterator != fQuotesMap->end());
 }

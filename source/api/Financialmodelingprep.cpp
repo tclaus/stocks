@@ -85,7 +85,6 @@ Financialmodelingprep::AddLimit(BString &request) {
     request.Append("limit=50");
 }
 
-// Ctest oder GTest?
 int Financialmodelingprep::SendRequest(const BUrl *url) const {
     auto request = BHttpRequest(*url);
     auto &requester = NetRequester::Instance();

@@ -19,16 +19,18 @@ public:
 
     static Portfolio &Instance();
 
+    bool QuoteExists(const char *symbol);
+
     void RemoveQuote(Quote &quote);
 
     void RemoveQuoteBySymbol(std::string &symbol);
 
     /**
-     * Retrieves or creates a quote by this symbol
+     * Retrieves or creates a quote by this symbol.
      * @param symbol A quote symbol
      * @return An existing quote or a new one.
      */
-    Quote *RetrieveQuoteBySymbol(const char *symbol);
+    Quote *RetrieveOrCreateQuoteBySymbol(const char *symbol);
 
     /**
      * Returns a copy of the list
