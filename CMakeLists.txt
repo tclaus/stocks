@@ -56,6 +56,24 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(json)
 
+# If Test..
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
+    Include(FetchContent)
+
+    FetchContent_Declare(
+            Catch2
+            GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+            GIT_TAG v3.0.1 # or a later release
+    )
+
+    FetchContent_MakeAvailable(Catch2)
+
+    add_executable(tests test.cpp)
+    target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+
+endif ()
+
+
 find_library(network NAMES network PATHS /boot/system/develop/lib/ REQUIRED)
 find_library(bnetapi NAMES bnetapi PATHS /boot/system/develop/lib/ REQUIRED)
 find_library(netservices2 NAMES netservices2 PATHS /boot/system/develop/lib/ REQUIRED)
