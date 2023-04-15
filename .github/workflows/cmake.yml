@@ -23,10 +23,10 @@ jobs:
     - name: Get Haiku build dependencies
       run:  git clone --depth 1 https://github.com/tclaus/Haiku-libs.git build-dependencies
 
-    - name: Change lib path in cmake file
+    - name: Change lib path and injecting includes paths in cmake file
       run: |
           sed -i 's|/boot/system/develop/lib|build-dependencies/lib|g' CMakeLists.txt
-          sed -i '20i target_include_directories(${PROJECT_NAME} private \
+          sed -i '142i target_include_directories(${PROJECT_NAME} private \
                 build-dependencies/headers \
                 build-dependencies/headers/os/app \
                 build-dependencies/headers/interface)' \
