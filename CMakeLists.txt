@@ -123,6 +123,8 @@ haiku_add_executable(${PROJECT_NAME}
         source/model/SearchResultList.cpp
         source/model/SelectionOfSymbols.h
         source/model/SelectionOfSymbols.cpp
+        source/model/QuotesRepository.h
+        source/model/QuotesRepository.cpp
         source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.h
         source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.cpp
         source/model/linkedRequestQuoteStore/QuoteRequestStore.h
@@ -137,4 +139,3 @@ haiku_add_executable(${PROJECT_NAME}
 
 target_link_directories(${PROJECT_NAME} PRIVATE /boot/system/develop/lib)
 target_link_libraries(${PROJECT_NAME} be ${STDCPPLIBS} network netservices2 bnetapi nlohmann_json::nlohmann_json)
-
