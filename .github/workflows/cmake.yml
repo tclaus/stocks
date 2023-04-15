@@ -26,10 +26,10 @@ jobs:
     - name: Change lib path in cmake file
       run: |
           sed -i 's|/boot/system/develop/lib|build-dependencies/lib|g' CMakeLists.txt
-          sed '20 a|target_include_directories(stocks private 
+          sed -i '20i target_include_directories(stocks private 
                 build-dependencies/headers
                 build-dependencies/headers/os/app
-                build-dependencies/headers/interface)|'
+                build-dependencies/headers/interface)'
                 CMakeLists.txt
     
 
