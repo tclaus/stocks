@@ -11,6 +11,7 @@
 #include "ApiBuilder.h"
 #include "NetRequester.h"
 #include "QuoteRequestStore.h"
+#include "QuotesRepository.h"
 
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
@@ -206,6 +207,9 @@ StocksPanelView::AcceptSearch() {
             RequestQuoteDetailsForSymbol(newOrCreatedQuote->symbol->String());
         }
     }
+
+    QuotesRepository qr;
+    qr.StoreQuotes(*portfolio.List());
 
     ShowPortfolio();
 }
