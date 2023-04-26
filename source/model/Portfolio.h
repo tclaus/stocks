@@ -38,9 +38,6 @@ public:
      */
     std::list<Quote *> *List();
 
-    // Save to disk
-    // Load from disk
-
 private:
     Portfolio();
 

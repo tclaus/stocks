@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.23)
 project(
         Stocks
         VERSION 0.1
-        DESCRIPTION "A stocks application to set\ up a portfolio and see updated data"
+        DESCRIPTION "A stocks application to set up a portfolio and see updated data"
 )
 
 set(CMAKE_MODULE_PATH "${Stocks_SOURCE_DIR}/CMakeModules")
@@ -45,7 +45,13 @@ include_directories(AFTER
         source/gui/stocksPanel/listView
         source/gui/chartView
         source/gui/utils
+        source/repository
         source/api)
+
+configure_file(
+        "source/repository/RepositoryConfig.cpp.in"
+        "source/repository/RepositoryConfig.cpp"
+)
 
 # JSON Parser
 include(FetchContent)
@@ -55,6 +61,27 @@ FetchContent_Declare(
         DOWNLOAD_EXTRACT_TIMESTAMP true)
 
 FetchContent_MakeAvailable(json)
+
+# testing with Catch/2
+FetchContent_Declare(
+        Catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG v3.0.1 # or a later release
+)
+
+FetchContent_MakeAvailable(Catch2)
+
+add_executable(tests
+        tests/test.cpp
+        tests/repository/TestRepositoryConfig.cpp
+        source/repository/RepositoryConfig.cpp
+        tests/repository/TestRepository.cpp
+        tests/repository/TestRepository.cpp)
+
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+include(Catch)
+catch_discover_tests(tests)
+
 
 find_library(network NAMES network PATHS /boot/system/develop/lib/ REQUIRED)
 find_library(bnetapi NAMES bnetapi PATHS /boot/system/develop/lib/ REQUIRED)
@@ -105,6 +132,12 @@ haiku_add_executable(${PROJECT_NAME}
         source/model/SearchResultList.cpp
         source/model/SelectionOfSymbols.h
         source/model/SelectionOfSymbols.cpp
+        source/repository/QuotesRepository.h
+        source/repository/QuotesRepository.cpp
+        source/repository/RepositoryConfig.h
+        source/repository/RepositoryConfig.cpp
+        source/repository/Repository.h
+        source/repository/Repository.cpp
         source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.h
         source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.cpp
         source/model/linkedRequestQuoteStore/QuoteRequestStore.h
@@ -117,6 +150,5 @@ haiku_add_executable(${PROJECT_NAME}
         source/utils/Observer.cpp
         )
 
-target_link_directories(${PROJECT_NAME} PRIVATE /boot/system/develop/lib)
+target_link_directories(${PROJECT_NAME} PUBLIC /boot/system/develop/lib)
 target_link_libraries(${PROJECT_NAME} be ${STDCPPLIBS} network netservices2 bnetapi nlohmann_json::nlohmann_json)
-

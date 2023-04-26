@@ -11,6 +11,7 @@
 #include "ApiBuilder.h"
 #include "NetRequester.h"
 #include "QuoteRequestStore.h"
+#include "QuotesRepository.h"
 
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
@@ -47,6 +48,7 @@ StocksPanelView::StocksPanelView()
             .End()
             .Add(scrollView);
 
+    InitStoredSymbols();
     ShowPortfolio();
     CreateApiConnection();
 }
@@ -61,6 +63,19 @@ StocksPanelView::~StocksPanelView() {
 void
 StocksPanelView::InitSearchReadyButton() {
     fSearchReadyButton->Hide();
+}
+
+void StocksPanelView::InitStoredSymbols() {
+
+    Portfolio &portfolio = Portfolio::Instance();
+    std::list<Quote *> quotes;
+
+    QuotesRepository qr;
+    qr.RestoreQuotes(quotes);
+
+    for (auto const &quote: quotes) {
+        portfolio.RetrieveOrCreateQuoteBySymbol(quote->symbol->String());
+    }
 }
 
 void
@@ -206,6 +221,9 @@ StocksPanelView::AcceptSearch() {
             RequestQuoteDetailsForSymbol(newOrCreatedQuote->symbol->String());
         }
     }
+
+    QuotesRepository qr;
+    qr.StoreQuotes(*portfolio.List());
 
     ShowPortfolio();
 }
