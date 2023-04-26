@@ -8,8 +8,10 @@
 #include "Quote.h"
 #include "RepositoryConfig.h"
 #include "Repository.h"
-#include "nlohmann/json.hpp"
 #include <list>
+#include <Path.h>
+
+#include "nlohmann/json.hpp"
 
 class QuotesRepository {
 
@@ -18,15 +20,17 @@ public:
 
     void StoreQuotes(const std::list<Quote *> &quotes);
 
-    void RestoreQuotes(const std::list<Quote *> &quotes);
+    void RestoreQuotes(std::list<Quote *> &quotes);
 
 private:
-
-    char GetConfigFilePath() const;
 
     void InitProjectFolder();
 
     nlohmann::json_abi_v3_11_2::basic_json<> buildJsonArrayOfSymbols(const std::list<Quote *> &quotes) const;
+
+    BPath createConfigFilePath() const;
+
+    void checkFileContents(const BString *fileContentString) const;
 };
 
 

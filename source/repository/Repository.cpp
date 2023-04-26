@@ -3,7 +3,7 @@
 //
 
 #include <File.h>
-#include <cstring>
+#include <string>
 #include "Repository.h"
 
 status_t Repository::ReadFile(const char &path, BString &content) {
@@ -19,15 +19,13 @@ status_t Repository::ReadFile(const char &path, BString &content) {
     off_t fileSize = 0;
     file.GetSize(&fileSize);
     if (fileSize < 1) {
-        // empty
         return B_OK;
     }
 
-    char *buffer = content.LockBuffer((int) fileSize + 10);
+    char *buffer = content.LockBuffer((int) fileSize);
     file.Read(buffer, fileSize);
     content.UnlockBuffer();
     return B_OK;
-
 }
 
 status_t Repository::WriteFile(const char &path, const BString &content) {
@@ -41,9 +39,10 @@ status_t Repository::WriteFile(const char &path, const BString &content) {
     }
     const char *contentBuffer = content.String();
 
-    size_t contentSize = strlen(contentBuffer);
+    size_t contentSize = std::char_traits<char>::length(contentBuffer);
 
     file.Write(contentBuffer, contentSize);
+    file.SetSize(contentSize);
     // File close is implicit handled by BFile
     return B_OK;
 }

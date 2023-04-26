@@ -21,13 +21,12 @@ void QuotesRepository::StoreQuotes(const std::list<Quote *> &quotes) {
     json jsonOfSymbols = buildJsonArrayOfSymbols(quotes);
 
     // Get sone kind of "In template: no matching constructor for initialization of 'nlohmann::basic_json<>::serializer'" error
-    const auto jsonString = jsonOfSymbols.dump();
+    std::string jsonString = "{ \"symbols\": " + jsonOfSymbols.dump() + "}";
+
     printf("Json as string: %s \n", jsonString.c_str());
 
+    BPath configFilePath = createConfigFilePath();
     BString arrayOfSymbols = BString(jsonString.c_str());
-
-    BPath configFilePath = BPath(RepositoryConfig::GetConfigFilePath().c_str());
-    configFilePath.Append(RepositoryConfig::GetConfigfileFielName().c_str());
 
     status_t status = Repository::WriteFile(*configFilePath.Path(), arrayOfSymbols);
     if (status != B_OK) {
@@ -46,18 +45,44 @@ json QuotesRepository::buildJsonArrayOfSymbols(const std::list<Quote *> &quotes)
     return jsonOfSymbols;
 }
 
-void QuotesRepository::RestoreQuotes(const std::list<Quote *> &quotes) {
-    char *content;
-    (void) content;
-    (void) quotes;
+void QuotesRepository::RestoreQuotes(std::list<Quote *> &quotes) {
 
-    BString *fileContent = new BString();
+    BString *fileContentString = new BString();
+    BPath configFilePath = createConfigFilePath();
 
+    status_t readStatus = Repository::ReadFile(*configFilePath.Path(), *fileContentString);
+    if (readStatus != B_OK) {
+        std::cerr << "Could not read symbols file." << std::endl;
+        return;
+    }
+    checkFileContents(fileContentString);
 
-    Repository::ReadFile(GetConfigFilePath(), *fileContent);
+    if (fileContentString->Length() > 1) {
+        json readJsonString = json::parse(fileContentString->String());
+        json symbols = readJsonString["symbols"];
+        printf("Json symbols: %s", symbols.dump().c_str());
+        if (symbols.is_array()) {
+            quotes.clear();
+            for (auto &element: symbols) {
+                printf("Adding symbol %s", element.dump().c_str());
+                quotes.emplace_back(new Quote(new std::string(element.dump())));
+            }
+            printf("Now we have %zu quotes", quotes.size());
+        }
+    }
+}
 
-    // convert content to quotes
+void QuotesRepository::checkFileContents(const BString *fileContentString) const {
+    printf("Read from file: %s \n", fileContentString->String());
+    if (fileContentString->Length() == 0) {
+        printf(" File is empty.");
+    }
+}
 
+BPath QuotesRepository::createConfigFilePath() const {
+    BPath configFilePath = BPath(RepositoryConfig::GetConfigFilePath().c_str());
+    configFilePath.Append(RepositoryConfig::GetConfigfileFielName().c_str());
+    return configFilePath;
 }
 
 void QuotesRepository::InitProjectFolder() {
@@ -73,7 +98,3 @@ void QuotesRepository::InitProjectFolder() {
         }
     }
 }
-
-
-char QuotesRepository::GetConfigFilePath() const { return *RepositoryConfig::GetConfigFilePath().c_str(); }
-

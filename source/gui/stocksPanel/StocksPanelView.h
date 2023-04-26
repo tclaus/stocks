@@ -112,6 +112,8 @@ private:
     void RemoveCachedQuoteListItem(const std::string &symbol);
 
     QuoteListItem *AddOrCreateCachedQuoteListItem(Quote *const &quote);
+
+    void InitStoredSymbols();
 };
 
 #endif // StocksPanelView_H
