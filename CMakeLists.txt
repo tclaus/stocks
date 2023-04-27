@@ -53,6 +53,13 @@ configure_file(
         "source/repository/RepositoryConfig.cpp"
 )
 
+# Set the api key from a environment variable
+set(FINANCIAL_API_KEY $ENV{STOCKS_APP_API_KEY})
+configure_file(
+        "source/api/FinancialmodelingApiKey.cpp.in"
+        "source/api/FinancialmodelingApiKey.cpp"
+)
+
 # JSON Parser
 include(FetchContent)
 FetchContent_Declare(
@@ -118,6 +125,8 @@ haiku_add_executable(${PROJECT_NAME}
         source/api/StockConnector.h
         source/api/Financialmodelingprep.h
         source/api/Financialmodelingprep.cpp
+        source/api/FinancialmodelingApiKey.cpp
+        source/api/FinancialmodelingApiKey.h
         source/api/NetRequester.h
         source/api/NetRequester.cpp
         source/api/ApiBuilder.h

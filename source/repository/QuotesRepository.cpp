@@ -57,17 +57,23 @@ void QuotesRepository::RestoreQuotes(std::list<Quote *> &quotes) {
     }
     checkFileContents(fileContentString);
 
+    ReadOutFileContent(quotes, fileContentString);
+}
+
+void QuotesRepository::ReadOutFileContent(std::list<Quote *> &quotes, BString *fileContentString) const {
     if (fileContentString->Length() > 1) {
         json readJsonString = json::parse(fileContentString->String());
         json symbols = readJsonString["symbols"];
-        printf("Json symbols: %s", symbols.dump().c_str());
+        printf("Json symbols: %s\n", symbols.dump().c_str());
         if (symbols.is_array()) {
             quotes.clear();
             for (auto &element: symbols) {
-                printf("Adding symbol %s", element.dump().c_str());
-                quotes.emplace_back(new Quote(new std::string(element.dump())));
+                printf("Adding symbol %s \n", element.dump().c_str());
+                BString symbol = element.dump().c_str();
+                symbol.RemoveAll("\"");
+                quotes.emplace_back(new Quote(new std::string(symbol)));
             }
-            printf("Now we have %zu quotes", quotes.size());
+            printf("Now we have %zu quotes. \n", quotes.size());
         }
     }
 }

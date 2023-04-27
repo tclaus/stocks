@@ -31,6 +31,8 @@ private:
     BPath createConfigFilePath() const;
 
     void checkFileContents(const BString *fileContentString) const;
+
+    void ReadOutFileContent(std::list<Quote *> &quotes, BString *fileContentString) const;
 };
 
 
