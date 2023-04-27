@@ -21,7 +21,7 @@ public:
     virtual int Search(const char *searchQuery) = 0;
 
     /**
-     * Requests the quote for a given symbol.
+     * Requests the quote details from API for a given symbol.
      * @param symbol A known symbol
      * @return The new request Id
      */

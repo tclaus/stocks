@@ -5,6 +5,8 @@
 
 
 #include "Financialmodelingprep.h"
+#include "FinancialmodelingApiKey.h"
+
 #include "private/netservices2/HttpRequest.h"
 #include "private/netservices2/HttpSession.h"
 #include "private/netservices2/HttpResult.h"
@@ -13,7 +15,6 @@
 #include "Url.h"
 #include "NetRequester.h"
 
-const char *Financialmodelingprep::apiKey = "0e82c6b63df6e216f628f5c68a5e09a2";
 const char *Financialmodelingprep::baseUrl = "https://financialmodelingprep.com/api/v3";
 
 using BPrivate::Network::BHttpRequest;
@@ -77,7 +78,10 @@ Financialmodelingprep::RetrieveQuote(const char *symbol) {
 void
 Financialmodelingprep::AddApiKey(BString &request) {
     request.Append("apikey=");
-    request.Append(apiKey);
+
+    request.Append(
+            FinancialmodelingApiKey::GetApiKey().c_str()
+    );
 }
 
 void

@@ -43,7 +43,6 @@ private:
 
 private:
     static const char *baseUrl;
-    static const char *apiKey;
     BHandler *fHandler;
 
     int SendRequest(const BUrl *url) const;
