@@ -9,26 +9,15 @@
 using namespace std::chrono_literals;
 
 DelayedQueryTimer::DelayedQueryTimer(const BHandler *handler)
-        : fThread(nullptr),
-          fMessenger(new BMessenger(handler)),
-          fStopThread(false),
-          fQueryString((std::string *) ""),
-          fLastSearchedQueryString((std::string *) "") {
+        :
+        fMessenger(new BMessenger(handler)),
+
+        fQueryString((std::string *) ""),
+        fLastSearchedQueryString((std::string *) "") {
 }
 
-void
-DelayedQueryTimer::StartThread() {
-    fThread = new std::thread([this]() { RunQueryAfterLastCharacterDelay(); });
-}
-
-void
-DelayedQueryTimer::StopThread() {
-    fStopThread = true;
-}
-
-DelayedQueryTimer::~DelayedQueryTimer() {
-    fStopThread = true;
-    delete fThread;
+void DelayedQueryTimer::ExecuteJob() {
+    RunQueryAfterLastCharacterDelay();
 }
 
 void
@@ -39,7 +28,7 @@ DelayedQueryTimer::RunQuery(std::string *queryString) {
 
 void
 DelayedQueryTimer::RunQueryAfterLastCharacterDelay() {
-    while (!fStopThread) {
+    while (!ShouldStopThread()) {
         WaitForChangedQueryString();
         WaitUntilCharacterDelayExpired();
         NotifyForQueryWhenElapsed();

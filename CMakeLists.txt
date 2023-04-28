@@ -153,6 +153,8 @@ haiku_add_executable(${PROJECT_NAME}
         source/model/linkedRequestQuoteStore/QuoteRequestStore.cpp
         source/handler/QuoteResultHandler.h
         source/handler/QuoteResultHandler.cpp
+        source/utils/BaseThreadedJob.h
+        source/utils/BaseThreadedJob.cpp
         source/utils/ObservableSubject.h
         source/utils/ObservableSubject.cpp
         source/utils/Observer.h
