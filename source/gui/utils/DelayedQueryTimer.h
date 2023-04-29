@@ -5,23 +5,19 @@
 #ifndef STOCKS_TIMER_H
 #define STOCKS_TIMER_H
 
+#include "BaseThreadedJob.h"
 #include <chrono>
-#include <thread>
 #include "Messenger.h"
 
 using namespace std::chrono_literals;
 typedef std::chrono::time_point<std::chrono::high_resolution_clock> timePoint;
 typedef std::chrono::duration<double, std::milli> timeDiffMs;
 
-class DelayedQueryTimer {
+class DelayedQueryTimer : public BaseThreadedJob {
 public:
     explicit DelayedQueryTimer(const BHandler *handler);
 
-    ~DelayedQueryTimer();
-
-    void StartThread();
-
-    void StopThread();
+    void ExecuteJob() override;
 
     /**
      * Starts a query after a delay with the new queryString.
@@ -39,7 +35,7 @@ private:
 
     void WaitForChangedQueryString() const;
 
-    [[nodiscard]] timeDiffMs CalculateElapsedTimeDifference() const;
+    timeDiffMs CalculateElapsedTimeDifference() const;
 
     void NotifyForQuery() const;
 
@@ -48,9 +44,9 @@ private:
     bool IsQueryValid(const std::string *query) const;
 
 private:
-    std::thread *fThread;
+
     BMessenger *fMessenger;
-    bool fStopThread;
+
     std::string *fQueryString;
     std::string *fLastSearchedQueryString;
     timePoint fLastCharacterReceived;

@@ -27,11 +27,12 @@ public:
 
     void SetLastUpdatedTimePoint();
 
+    timePoint GetLastUpdatedTimePoint();
+
     BString *symbol;
     BString *market;
     BString *companyName;
     BString *currency;
-    timePoint lastUpdated;
     float change;
     float changesPercentage;
     float latestPrice;
@@ -41,8 +42,10 @@ public:
     float previousClose;
     float volume;
 
-    // Timestamp / Chrono / long (milliseconds?)
+    bool isWaitingForRequest;
 
+private:
+    timePoint lastUpdatedAt;
 };
 
 

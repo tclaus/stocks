@@ -90,18 +90,6 @@ StocksPanelView::SearchForSymbol(const char *searchSymbol) {
 }
 
 void
-StocksPanelView::RequestQuoteDetailsForSymbol(const char *symbol) {
-    int quoteRequestId = stockConnector->RetrieveQuote(symbol);
-
-    Portfolio &portfolio = Portfolio::Instance();
-    Quote *requestingQuote = portfolio.RetrieveOrCreateQuoteBySymbol(symbol);
-    if (requestingQuote) {
-        QuoteRequestStore &quoteRequestStore = QuoteRequestStore::Instance();
-        quoteRequestStore.AddQuoteRequestId(quoteRequestId, *requestingQuote);
-    }
-}
-
-void
 StocksPanelView::HandleResult(int requestId) {
     if (requestId == fSearchRequestId) {
         HandleSearchResult(requestId);
@@ -217,8 +205,7 @@ StocksPanelView::AcceptSearch() {
     // Add new symbols as empty quotes
     for (auto &symbol: *fSelectionOfSymbols->ListToBeAdded()) {
         if (!portfolio.QuoteExists(symbol.c_str())) {
-            Quote *newOrCreatedQuote = portfolio.RetrieveOrCreateQuoteBySymbol(symbol.c_str());
-            RequestQuoteDetailsForSymbol(newOrCreatedQuote->symbol->String());
+            portfolio.RetrieveOrCreateQuoteBySymbol(symbol.c_str());
         }
     }
 

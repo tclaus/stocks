@@ -16,25 +16,35 @@ MainWindow::MainWindow()
           fQuoteResultHandler( new QuoteResultHandler()){
 
     SetWindowSizes();
-    fStocksPanelView = new StocksPanelView();
-    chartView = new ChartView();
-    delayedQueryTimer = new DelayedQueryTimer(this);
+    InitViews();
 
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
             .Add(fStocksPanelView, 1)
             .Add(chartView, 3);
-    Init();
+    InitWorker();
+}
+
+void MainWindow::InitViews() {
+    fStocksPanelView = new StocksPanelView();
+    chartView = new ChartView();
 }
 
 MainWindow::~MainWindow() {
-    delayedQueryTimer->StopThread();
+    fDdelayedQueryTimer->StopThread();
     delete fQuoteResultHandler;
+
+    fQuoteUpdateJob->StopThread();
 }
 
 void
-MainWindow::Init() {
-    delayedQueryTimer->StartThread();
+MainWindow::InitWorker() {
+    fDdelayedQueryTimer = new DelayedQueryTimer(this);
+    fDdelayedQueryTimer->StartThread();
+
+    fQuoteUpdateJob = new QuoteUpdateJob(this);
+    fQuoteUpdateJob->StartThread();
+
     AddCommonFilter(new EscapeCancelFilter());
 }
 
@@ -92,7 +102,7 @@ MainWindow::ResultHandler(int requestId) {
 }
 void
 MainWindow::RequestForSearch(BString &searchTerm) {
-    delayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
+    fDdelayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
 }
 
 bool

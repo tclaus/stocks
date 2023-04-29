@@ -5,6 +5,7 @@
 #include "stocksPanel/StocksPanelView.h"
 #include "utils/DelayedQueryTimer.h"
 #include "../handler/QuoteResultHandler.h"
+#include "../quoteUpdateJob/QuoteUpdateJob.h"
 
 class MainWindow : public BWindow {
 public:
@@ -14,7 +15,7 @@ public:
 
     void SetWindowSizes();
 
-    void Init();
+    void InitWorker();
 
     void Show() override;
 
@@ -37,8 +38,11 @@ public:
 private:
     StocksPanelView *fStocksPanelView;
     BView *chartView;
-    DelayedQueryTimer *delayedQueryTimer;
+    DelayedQueryTimer *fDdelayedQueryTimer;
+    QuoteUpdateJob *fQuoteUpdateJob;
     QuoteResultHandler *fQuoteResultHandler;
+
+    void InitViews();
 };
 
 #endif
