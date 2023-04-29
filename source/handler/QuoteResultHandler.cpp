@@ -49,7 +49,8 @@ QuoteResultHandler::UpdateQuoteWithResponseData(Quote *quote, BString *jsonStrin
         quote->open = float(innerJsonElement.value("open", 0.0));
         quote->previousClose = float(innerJsonElement.value("previousClose", 0.0));
         quote->volume = float(innerJsonElement.value("volume", 0.0));
-        quote->lastUpdated = std::chrono::high_resolution_clock::now();
+        quote->SetLastUpdatedTimePoint();
+        quote->isWaitingForRequest = false;
 
         quote->Notify();
     }

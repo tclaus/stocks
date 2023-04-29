@@ -38,7 +38,7 @@ private:
     // Am Wochenende kann das Update-Interval länger sein
     std::chrono::duration<double, std::milli> fUpdateCycleTime = 1s * 60 * 5;
 
-    void UpdateQuoteDetails(Quote *const &quote);
+    void RequestUpdateQuoteDetails(Quote *const &quote);
 
     bool IsQuoteUpdateInProgress(Quote &quote);
 };

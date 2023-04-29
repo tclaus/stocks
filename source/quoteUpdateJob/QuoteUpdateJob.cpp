@@ -33,12 +33,12 @@ QuoteUpdateJob::CheckQuotesToUpdate() {
     for (auto const &quote: *portfolio.List()) {
         if (IsQuoteUpdateExpired(*quote) && !IsQuoteUpdateInProgress(*quote)) {
             printf("Requesting update for quote: %s.\n", quote->symbol->String());
-            UpdateQuoteDetails(quote);
+            RequestUpdateQuoteDetails(quote);
         }
     }
 }
 
-void QuoteUpdateJob::UpdateQuoteDetails(Quote *const &quote) {
+void QuoteUpdateJob::RequestUpdateQuoteDetails(Quote *const &quote) {
     quote->isWaitingForRequest = true;
     int quoteRequestId = fStockConnector->RetrieveQuote(quote->symbol->String());
     QuoteRequestStore &quoteRequestStore = QuoteRequestStore::Instance();
@@ -48,7 +48,7 @@ void QuoteUpdateJob::UpdateQuoteDetails(Quote *const &quote) {
 bool
 QuoteUpdateJob::IsQuoteUpdateExpired(Quote &quote) {
     timePoint now = std::chrono::high_resolution_clock::now();
-    return ((quote.lastUpdated + fUpdateCycleTime) < now);
+    return ((quote.GetLastUpdatedTimePoint() + fUpdateCycleTime) < now);
 }
 
 bool
