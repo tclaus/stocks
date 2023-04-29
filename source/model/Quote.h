@@ -41,8 +41,7 @@ public:
     float previousClose;
     float volume;
 
-    // Timestamp / Chrono / long (milliseconds?)
-
+    bool isWaitingForRequest;
 };
 
 

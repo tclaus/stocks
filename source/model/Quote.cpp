@@ -12,7 +12,13 @@ Quote::Quote() :
         lastUpdated(0s),
         change(0.0),
         changesPercentage(0.0),
-        latestPrice(0.0) {}
+        latestPrice(0.0),
+        dayLow(0.0),
+        dayHigh(0.0),
+        open(0.0),
+        previousClose(0.0),
+        volume(0),
+        isWaitingForRequest(false) {}
 
 Quote::Quote(BString &symbolName)
         :

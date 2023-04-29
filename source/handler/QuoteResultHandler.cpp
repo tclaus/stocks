@@ -39,7 +39,7 @@ QuoteResultHandler::UpdateQuoteWithResponseData(Quote *quote, BString *jsonStrin
             continue;
         }
 
-        // symbol not needed to transfer
+        // Symbol not needed to transfer
         quote->companyName = new BString(innerJsonElement["name"].get<std::string>().c_str());
         quote->latestPrice = float(innerJsonElement.value("price", 0.0));
         quote->changesPercentage = float(innerJsonElement.value("changesPercentage", 0.0));
@@ -49,6 +49,8 @@ QuoteResultHandler::UpdateQuoteWithResponseData(Quote *quote, BString *jsonStrin
         quote->open = float(innerJsonElement.value("open", 0.0));
         quote->previousClose = float(innerJsonElement.value("previousClose", 0.0));
         quote->volume = float(innerJsonElement.value("volume", 0.0));
+        quote->lastUpdated = std::chrono::high_resolution_clock::now();
+
         quote->Notify();
     }
 }

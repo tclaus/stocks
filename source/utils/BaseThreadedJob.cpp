@@ -13,12 +13,14 @@ BaseThreadedJob::~BaseThreadedJob() {
     delete fThread;
 }
 
-bool BaseThreadedJob::ShouldStopThread() const {
+bool
+BaseThreadedJob::ShouldStopThread() const {
     return fStopThread;
 }
 
 void
 BaseThreadedJob::StartThread() {
+    printf("Starte thread.");
     fThread = new std::thread([this]() { ExecuteJob(); });
 }
 
