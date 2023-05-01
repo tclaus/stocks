@@ -10,7 +10,6 @@
 #include "SearchFieldControl.h"
 #include "ApiBuilder.h"
 #include "NetRequester.h"
-#include "QuoteRequestStore.h"
 #include "QuotesRepository.h"
 
 #include <LayoutBuilder.h>
@@ -30,6 +29,9 @@ StocksPanelView::StocksPanelView()
           fSelectionOfSymbols(new SelectionOfSymbols()),
           fSearchRequestId(0),
           fCurrentViewMode(modePortfolioList) {
+
+    this->SetExplicitSize(BSize(250, 0));
+
 
     listView = new BListView(BRect(), "stocksList",
                              B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);

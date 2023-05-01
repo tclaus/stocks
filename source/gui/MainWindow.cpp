@@ -6,7 +6,6 @@
 #include <InterfaceKit.h>
 #include <LayoutBuilder.h>
 #include "utils/EscapeCancelFilter.h"
-#include "QuoteRequestStore.h"
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
 
@@ -15,13 +14,13 @@ MainWindow::MainWindow()
                   B_ASYNCHRONOUS_CONTROLS),
           fQuoteResultHandler( new QuoteResultHandler()){
 
-    SetWindowSizes();
+    SetWindowSizeLimits();
     InitViews();
 
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
-            .Add(fStocksPanelView, 1)
-            .Add(chartView, 3);
+            .Add(fStocksPanelView, 100)
+            .Add(chartView, 1);
     InitWorker();
 }
 
@@ -31,7 +30,7 @@ void MainWindow::InitViews() {
 }
 
 MainWindow::~MainWindow() {
-    fDdelayedQueryTimer->StopThread();
+    fDelayedQueryTimer->StopThread();
     delete fQuoteResultHandler;
 
     fQuoteUpdateJob->StopThread();
@@ -39,8 +38,8 @@ MainWindow::~MainWindow() {
 
 void
 MainWindow::InitWorker() {
-    fDdelayedQueryTimer = new DelayedQueryTimer(this);
-    fDdelayedQueryTimer->StartThread();
+    fDelayedQueryTimer = new DelayedQueryTimer(this);
+    fDelayedQueryTimer->StartThread();
 
     fQuoteUpdateJob = new QuoteUpdateJob(this);
     fQuoteUpdateJob->StartThread();
@@ -49,7 +48,7 @@ MainWindow::InitWorker() {
 }
 
 void
-MainWindow::SetWindowSizes() {
+MainWindow::SetWindowSizeLimits() {
     BRect screenFrame = (BScreen(this)).Frame();
     SetSizeLimits(700.0, screenFrame.Width(), 500.0, screenFrame.Height());
 }
@@ -102,7 +101,7 @@ MainWindow::ResultHandler(int requestId) {
 }
 void
 MainWindow::RequestForSearch(BString &searchTerm) {
-    fDdelayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
+    fDelayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
 }
 
 bool
