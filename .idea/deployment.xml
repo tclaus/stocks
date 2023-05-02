@@ -10,6 +10,7 @@
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-remote" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-remote-event-trace" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-build-remote-release" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
           </excludedPaths>
         </serverdata>
