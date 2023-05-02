@@ -243,7 +243,8 @@ StocksPanelView::StockSelected() {
         auto *selectedQuoteListItem = dynamic_cast<QuoteListItem *>(listView->ItemAt(listViewSelection));
         portfolio.SetCurrentQuote(selectedQuoteListItem->GetQuote());
     } else {
-        //TODO: Was ist im Suchmodus?
+        //TODO: Überlegung soll im suchmodus auch das Detail geladen werden?
+        // Das ginge wahrscheinlich sogar
         portfolio.ClearCurrentSelection();
     }
 }

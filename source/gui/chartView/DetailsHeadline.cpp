@@ -39,6 +39,7 @@ void
 DetailsHeadline::UpdateStatus() {
     SetActiveQuote(Portfolio::Instance().GetCurrentQuote());
     if (fCurrentQuote != nullptr) {
+        //TODO: Clear, if no quote is selected
         UpdateLabels();
     }
 }
