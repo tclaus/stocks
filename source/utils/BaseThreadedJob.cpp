@@ -20,7 +20,7 @@ BaseThreadedJob::ShouldStopThread() const {
 
 void
 BaseThreadedJob::StartThread() {
-    printf("Starte thread.");
+    printf("Starte thread.\n");
     fThread = new std::thread([this]() { ExecuteJob(); });
 }
 

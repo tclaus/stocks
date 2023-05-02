@@ -40,6 +40,8 @@ public:
 
     void UpdateStatus() override;
 
+    Quote *GetQuote();
+
 protected:
 
 private:

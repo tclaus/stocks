@@ -81,7 +81,10 @@ MainWindow::MessageReceived(BMessage *message) {
             fStocksPanelView->AcceptSearch();
             break;
         }
-
+        case SearchFieldMessages::M_SET_STOCK: {
+            fStocksPanelView->StockSelected();
+            break;
+        }
         case (DelayedQueryTimerMessages::CHARACTER_DELAY_EXPIRED) : {
             const char *searchQuery = message->FindString(SEARCH_FOR_TEXT);
             fStocksPanelView->SearchForSymbol(searchQuery);

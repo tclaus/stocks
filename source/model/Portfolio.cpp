@@ -9,7 +9,8 @@ Portfolio Portfolio::instance = Portfolio();
 
 Portfolio::Portfolio()
         :
-        fQuotesMap(new std::map<std::string, Quote *>) {
+        fQuotesMap(new std::map<std::string, Quote *>),
+        fCurrentQuote(nullptr) {
 }
 
 Portfolio &
@@ -61,3 +62,24 @@ Portfolio::QuoteExists(const char *symbol) {
     auto const &iterator = fQuotesMap->find(symbol);
     return (iterator != fQuotesMap->end());
 }
+
+void
+Portfolio::SetCurrentQuote(Quote *quote) {
+    if (fCurrentQuote != quote) {
+        fCurrentQuote = quote;
+        Notify();
+    }
+}
+
+Quote *
+Portfolio::GetCurrentQuote() {
+    return fCurrentQuote;
+}
+
+void Portfolio::ClearCurrentSelection() {
+    if (fCurrentQuote != nullptr) {
+        fCurrentQuote = nullptr;
+        Notify();
+    }
+}
+

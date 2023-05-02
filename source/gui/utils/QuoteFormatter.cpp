@@ -3,7 +3,6 @@
 //
 
 #include "QuoteFormatter.h"
-#include <iostream>
 
 QuoteFormatter::QuoteFormatter(Quote *quote)
         : fQuote(quote) {

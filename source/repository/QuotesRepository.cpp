@@ -23,8 +23,6 @@ void QuotesRepository::StoreQuotes(const std::list<Quote *> &quotes) {
     // Get sone kind of "In template: no matching constructor for initialization of 'nlohmann::basic_json<>::serializer'" error
     std::string jsonString = "{ \"symbols\": " + jsonOfSymbols.dump() + "}";
 
-    printf("Json as string: %s \n", jsonString.c_str());
-
     BPath configFilePath = createConfigFilePath();
     BString arrayOfSymbols = BString(jsonString.c_str());
 
@@ -64,7 +62,6 @@ void QuotesRepository::ReadOutFileContent(std::list<Quote *> &quotes, BString *f
     if (fileContentString->Length() > 1) {
         json readJsonString = json::parse(fileContentString->String());
         json symbols = readJsonString["symbols"];
-        printf("Json symbols: %s\n", symbols.dump().c_str());
         if (symbols.is_array()) {
             quotes.clear();
             for (auto &element: symbols) {

@@ -32,7 +32,7 @@ ChartView::ChartView()
     DetailsDataList *detailsDataList = new DetailsDataList();
 
     BLayoutBuilder::Group<>(this, B_VERTICAL)
-            .SetInsets(10, 10, 10, 10)
+            .SetInsets(25, 25, 25, 25)
             .Add(detailsHeadline)
             .Add(detailsChart)
             .Add(detailsDataList)

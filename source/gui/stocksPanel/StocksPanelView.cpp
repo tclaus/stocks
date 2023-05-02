@@ -229,7 +229,27 @@ StocksPanelView::RemoveCachedQuoteListItem(const std::string &symbol) {
     }
 }
 
-void StocksPanelView::ActivatePortfolioMode() {
+void
+StocksPanelView::StockSelected() {
+
+    Portfolio &portfolio = Portfolio::Instance();
+
+    int listViewSelection = listView->CurrentSelection();
+    if (listViewSelection < 0) {
+        portfolio.ClearCurrentSelection();
+        return;
+    }
+    if (fCurrentViewMode == ViewState::modePortfolioList) {
+        auto *selectedQuoteListItem = dynamic_cast<QuoteListItem *>(listView->ItemAt(listViewSelection));
+        portfolio.SetCurrentQuote(selectedQuoteListItem->GetQuote());
+    } else {
+        //TODO: Was ist im Suchmodus?
+        portfolio.ClearCurrentSelection();
+    }
+}
+
+void
+StocksPanelView::ActivatePortfolioMode() {
     fCurrentViewMode = modePortfolioList;
     fSearchReadyButton->Hide();
     fSearchFieldControl->ResetField();

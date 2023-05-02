@@ -13,7 +13,7 @@
 #include <string>
 #include <list>
 
-class Portfolio {
+class Portfolio : public ObservableSubject {
 public:
     Portfolio(const Portfolio &) = delete;
 
@@ -24,6 +24,12 @@ public:
     void RemoveQuote(Quote &quote);
 
     void RemoveQuoteBySymbol(std::string &symbol);
+
+    void SetCurrentQuote(Quote *quote);
+
+    void ClearCurrentSelection();
+
+    Quote *GetCurrentQuote();
 
     /**
      * Retrieves or creates a quote by this symbol.
@@ -39,6 +45,7 @@ public:
     std::list<Quote *> *List();
 
 private:
+
     Portfolio();
 
     void AddQuote(Quote *quote);
@@ -47,6 +54,7 @@ private:
     static Portfolio instance;
     /// Quotes by its symbol
     std::map<std::string, Quote *> *fQuotesMap;
+    Quote *fCurrentQuote;
 };
 
 

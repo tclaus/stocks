@@ -225,3 +225,7 @@ QuoteListItem::CalcTotalRowHeight() {
     totalHeight += rowSizes[1];
     return totalHeight;
 }
+
+Quote *QuoteListItem::GetQuote() {
+    return fQuote;
+}
