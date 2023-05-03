@@ -4,22 +4,22 @@
 
 #include "QuoteFormatter.h"
 
-QuoteFormatter::QuoteFormatter(Quote *quote)
-        : fQuote(quote) {
-}
-
-const char *
-QuoteFormatter::ChangePercentageToString() const {
+char *QuoteFormatter::PercentageToString(float percentValue) {
     char *changeString = new char[12];
-    std::sprintf(changeString, "%+.2f%%", fQuote->changesPercentage);
+    std::sprintf(changeString, "%+.2f%%", percentValue);
     return changeString;
 }
 
-const rgb_color *
-QuoteFormatter::ChangeBackground() const {
-    rgb_color *rectColor = new rgb_color();
+char *QuoteFormatter::CurrencyToString(float currencyValue) {
+    char *currencyString = new char[12];
+    std::sprintf(currencyString, "%.2f", currencyValue);
+    return currencyString;
+}
 
-    if (fQuote->change >= 0.0f) {
+rgb_color *
+QuoteFormatter::ColorByValue(float value) {
+    auto *rectColor = new rgb_color();
+    if (value >= 0.0f) {
         rectColor->set_to(101, 196, 102); // A green tone TODO: make a constant
     } else {
         rectColor->set_to(235, 78, 61); // A red tone

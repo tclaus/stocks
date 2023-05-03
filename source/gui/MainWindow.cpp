@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 
-#include "chartView/ChartView.h"
+#include "DetailsView.h"
 #include "stocksPanel/SearchFieldControl.h"
 #include <Application.h>
 #include <InterfaceKit.h>
@@ -26,7 +26,7 @@ MainWindow::MainWindow()
 
 void MainWindow::InitViews() {
     fStocksPanelView = new StocksPanelView();
-    chartView = new ChartView();
+    chartView = new DetailsView();
 }
 
 MainWindow::~MainWindow() {

@@ -51,7 +51,6 @@ private:
 
 private:
 
-    QuoteFormatter *fQuoteFormatter;
     ListItemDrawer *fListItemDrawer;
     float fRowSizes[2]{};
     float fLastWidth;

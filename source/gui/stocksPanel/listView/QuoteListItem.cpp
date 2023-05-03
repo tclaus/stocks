@@ -13,7 +13,6 @@ QuoteListItem::QuoteListItem(Quote *quote)
           listItemDrawer(nullptr),
           lastWidth(0.0) {
 
-    fQuoteFormatter = new QuoteFormatter(quote);
     quote->Attach(this);
 }
 
@@ -21,7 +20,6 @@ QuoteListItem::~QuoteListItem() {
     fQuote->Detach(this);
     fWeakOwner = nullptr;
     delete listItemDrawer;
-    delete fQuoteFormatter;
 }
 
 void
@@ -176,11 +174,11 @@ QuoteListItem::DrawChange(const BRect &frame, alignment horizontal_alignment, ve
     font.SetFace(B_REGULAR_FACE);
     font.SetSize(FONT_SIZE_PRICE - 2); // A bit smaller than price
 
-    const char *changeString = fQuoteFormatter->ChangePercentageToString();
+    const char *changeString = QuoteFormatter::PercentageToString(fQuote->changesPercentage);
 
     CalcAndStoreCellHeight(&font, horizontal_alignment);
     const rgb_color *whiteTextColor = new rgb_color{255, 255, 255, 255};
-    const rgb_color *rectColor = fQuoteFormatter->ChangeBackground();
+    const rgb_color *rectColor = QuoteFormatter::ColorByValue(fQuote->changesPercentage);
 
     DrawItemSettings settings = {frame, &font, const_cast<rgb_color *>(whiteTextColor), horizontal_alignment,
                                  vertical_alignment,

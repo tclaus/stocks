@@ -25,12 +25,15 @@ private:
     BStringView *fSymbolShortNameLabel;
     BStringView *fSymbolFullNameLabel;
     BStringView *fSymbolPriceLabel;
+    BStringView *fSymbolChangeLabel;
 
     void CreateSymbolShortNameLabel();
 
     void CreateSymbolFullNameLabel();
 
     void CreateSymbolPriceLabel();
+
+    void CreateSymbolChangeLabel();
 
     void InitStringViews();
 

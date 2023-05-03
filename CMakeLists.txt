@@ -101,8 +101,8 @@ haiku_add_executable(${PROJECT_NAME}
         source/App.h
         source/gui/MainWindow.h
         source/gui/MainWindow.cpp
-        source/gui/chartView/ChartView.h
-        source/gui/chartView/ChartView.cpp
+        source/gui/chartView/DetailsView.h
+        source/gui/chartView/DetailsView.cpp
         source/gui/chartView/DetailsChart.h
         source/gui/chartView/DetailsChart.cpp
         source/gui/chartView/DetailsDataList.h
