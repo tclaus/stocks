@@ -9,7 +9,7 @@
 DetailsView::DetailsView()
         : BView(BRect(), "chartView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
-    this->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+    this->SetLowColor(255, 255, 255);
 
     this->SetExplicitMinSize(BSize(200, 500));
 

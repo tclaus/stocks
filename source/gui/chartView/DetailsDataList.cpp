@@ -6,6 +6,7 @@
 
 DetailsDataList::DetailsDataList() :
         BView(BRect(), "detailsDataList", B_FOLLOW_ALL, B_WILL_DRAW) {
+
     this->SetViewColor(50, 240, 0);
 
 };

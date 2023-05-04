@@ -2,7 +2,17 @@
 // Created by Thorsten Claus on 06.03.23.
 //
 
+#include <sstream>
 #include "QuoteFormatter.h"
+#include <locale>
+
+struct dottedNumber : std::numpunct<char> {
+    char do_thousands_sep() const override { return '.'; } // Separate by dots
+    std::string do_grouping() const override { return "\3"; } // Three numbers together
+    static void imbue(std::ostream &os) {
+        os.imbue(std::locale(os.getloc(), new dottedNumber));
+    }
+};
 
 char *QuoteFormatter::PercentageToString(float percentValue) {
     char *changeString = new char[12];
@@ -11,9 +21,15 @@ char *QuoteFormatter::PercentageToString(float percentValue) {
 }
 
 char *QuoteFormatter::CurrencyToString(float currencyValue) {
+    std::stringstream stringStream;
+    dottedNumber::imbue(stringStream);
+    stringStream << currencyValue;
+    return stringStream.str().data();
+/**
     char *currencyString = new char[12];
     std::sprintf(currencyString, "%.2f", currencyValue);
     return currencyString;
+ **/
 }
 
 rgb_color *

@@ -11,14 +11,16 @@
 DetailsHeadline::DetailsHeadline() :
         BView(BRect(), "detailsHeadView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
+    SetViewColor(255, 255, 255);
+
     InitStringViews();
 
-    BLayoutBuilder::Grid<>(this, B_HORIZONTAL)
+    BLayoutBuilder::Grid<>(this, B_USE_BIG_SPACING)
             .Add(fSymbolShortNameLabel, 0, 0)
             .Add(fSymbolFullNameLabel, 1, 0)
             .AddGlue(2, 0)
             .Add(fSymbolPriceLabel, 3, 0)
-            .Add(fSymbolChangeLabel, 3, 0);
+            .Add(fSymbolChangeLabel, 4, 0);
 
     Portfolio::Instance().Attach(this);
 
@@ -55,17 +57,45 @@ DetailsHeadline::InitStringViews() {
 
 void
 DetailsHeadline::UpdateLabels() {
-    fSymbolShortNameLabel->SetText(fCurrentQuote->symbol->String());
-    fSymbolFullNameLabel->SetText(fCurrentQuote->companyName->String());
+    UpdateShortSymbolName();
+    UpdateFullSymbolName();
+    UpdatePriceLabel();
+    UpdateChangeInPercentLabel();
+}
 
-    char *priceString = QuoteFormatter::CurrencyToString(fCurrentQuote->latestPrice);
-    fSymbolPriceLabel->SetText(priceString);
-
+void DetailsHeadline::UpdateChangeInPercentLabel() {
     char *percentString = QuoteFormatter::PercentageToString(fCurrentQuote->changesPercentage);
     fSymbolChangeLabel->SetText(percentString);
 
     rgb_color *changeColor = QuoteFormatter::ColorByValue(fCurrentQuote->changesPercentage);
     fSymbolChangeLabel->SetHighColor(*changeColor);
+}
+
+void DetailsHeadline::UpdatePriceLabel() {
+    char *priceString = QuoteFormatter::CurrencyToString(fCurrentQuote->latestPrice);
+    fSymbolPriceLabel->SetText(priceString);
+}
+
+void DetailsHeadline::UpdateFullSymbolName() { fSymbolFullNameLabel->SetText(fCurrentQuote->companyName->String()); }
+
+void DetailsHeadline::UpdateShortSymbolName() { fSymbolShortNameLabel->SetText(fCurrentQuote->symbol->String()); }
+
+void
+DetailsHeadline::CreateSymbolFullNameLabel() {
+    fSymbolFullNameLabel = new BStringView("symbolFullNameLabel", "Symbol");
+    fSymbolFullNameLabel->ResizeBy(0, 50);
+}
+
+void
+DetailsHeadline::CreateSymbolPriceLabel() {
+    fSymbolPriceLabel = new BStringView("symbolPriceLabel", "0,00€");
+    BFont font(be_bold_font);
+    font.SetFace(B_BOLD_FACE);
+    fSymbolPriceLabel->SetFont(&font);
+}
+
+void DetailsHeadline::CreateSymbolChangeLabel() {
+    fSymbolChangeLabel = new BStringView("symbolChangeLabel", "0%");
 }
 
 void
@@ -76,18 +106,4 @@ DetailsHeadline::CreateSymbolShortNameLabel() {
     font.SetSize(25);
     fSymbolShortNameLabel->SetFont(&font);
     // align to bottom?
-}
-
-void
-DetailsHeadline::CreateSymbolFullNameLabel() {
-    fSymbolFullNameLabel = new BStringView("symbolFullNameLabel", "Symbol");
-}
-
-void
-DetailsHeadline::CreateSymbolPriceLabel() {
-    fSymbolPriceLabel = new BStringView("symbolPriceLabel", "0,00€");
-}
-
-void DetailsHeadline::CreateSymbolChangeLabel() {
-    fSymbolChangeLabel = new BStringView("symbolChangeLabel", "0%");
 }

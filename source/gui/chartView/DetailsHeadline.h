@@ -40,6 +40,14 @@ private:
     void UpdateStatus();
 
     void UpdateLabels();
+
+    void UpdateShortSymbolName();
+
+    void UpdateFullSymbolName();
+
+    void UpdatePriceLabel();
+
+    void UpdateChangeInPercentLabel();
 };
 
 

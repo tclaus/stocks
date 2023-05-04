@@ -31,9 +31,9 @@ void MainWindow::InitViews() {
 
 MainWindow::~MainWindow() {
     fDelayedQueryTimer->StopThread();
-    delete fQuoteResultHandler;
-
     fQuoteUpdateJob->StopThread();
+
+    delete fQuoteResultHandler;
 }
 
 void
