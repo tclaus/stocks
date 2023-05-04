@@ -10,15 +10,25 @@
 
 class QuoteFormatter {
 public:
-    explicit QuoteFormatter(Quote *quote);
+    QuoteFormatter() = delete;
 
-    const char *ChangePercentageToString() const;
+    /**
+     * Formats a float to a percentage string. Float: 2.25 => "2.25 %"
+     * @param value a float representing a percent
+     * @return a formatted string with percent sign after a space
+     */
+    static char *PercentageToString(float value);
 
-    const rgb_color *ChangeBackground() const;
+    static char *CurrencyToString(float currencyValue);
 
-private:
-    Quote *fQuote;
+    /**
+     * Generates a greenish color for values lesser than zero, and a black (default) color for values higher or exact
+     * zero
+     * @param value a float value from a negative to any positive value
+     * @return a color to print out string labels
+     */
+    static rgb_color *ColorByValue(float value);
+
 };
-
 
 #endif //STOCKS_QUOTEFORMATTER_H

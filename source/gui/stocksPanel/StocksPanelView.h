@@ -54,6 +54,8 @@ public:
 
     void MessageReceived(BMessage *message) override;
 
+    void StockSelected();
+
 private:
 
     void CreateApiConnection();
@@ -72,10 +74,10 @@ private:
     void LoadPortfolioList();
 
 private:
+
     BListView *listView;
 
     std::map<BString, QuoteListItem *> *fQuoteListItems;
-
     StockConnector *stockConnector;
     SearchFieldControl *fSearchFieldControl;
     BButton *fSearchReadyButton;
@@ -86,6 +88,7 @@ private:
         modeSearchResultsList,
         modePortfolioList
     };
+
 /**
  * Provides the current state what the fList shows. If a search result is currently showing and a esc key is pressed by the user,
  * no new reload of the fList should be done.

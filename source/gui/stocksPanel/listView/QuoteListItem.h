@@ -40,6 +40,8 @@ public:
 
     void UpdateStatus() override;
 
+    Quote *GetQuote();
+
 protected:
 
 private:
@@ -51,20 +53,17 @@ private:
 
     float CalcTotalRowHeight();
 
-private:
-    QuoteFormatter *fQuoteFormatter;
-    ListItemDrawer *listItemDrawer;
-    float rowSizes[2];
-    float lastWidth;
-
-    BListView *fWeakOwner;
-
     void MakeLineColor(BView *owner) const;
 
     BPoint CalcLineLeftTop(const BRect &frame) const;
 
     BPoint CalcLineRightTop(const BRect &frame) const;
 
+private:
+    ListItemDrawer *listItemDrawer;
+    float rowSizes[2];
+    float lastWidth;
+    BListView *fWeakOwner;
 };
 
 #endif //STOCKS_QUOTELISTITEM_H

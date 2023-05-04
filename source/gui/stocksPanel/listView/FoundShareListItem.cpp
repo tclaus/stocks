@@ -17,8 +17,6 @@ FoundShareListItem::FoundShareListItem(Quote *quote)
           fCheckBoxAdded(false),
           fCheckbox(nullptr) {
 
-    fQuoteFormatter = new QuoteFormatter(quote);
-
     InitCheckbox(*quote);
 }
 
@@ -29,7 +27,6 @@ void FoundShareListItem::InitCheckbox(const Quote &quote) {
     std::string const checkBoxName = GenerateCheckBoxName(quote);
 
     fCheckbox = new BCheckBox(BRect(), checkBoxName.c_str(), "", checkBoxMessage);
-
     fCheckbox->ResizeToPreferred();
     fCheckbox->SetValue(B_CONTROL_OFF);
 }
@@ -44,7 +41,6 @@ std::string FoundShareListItem::GenerateCheckBoxName(const Quote &quote) const {
 FoundShareListItem::~FoundShareListItem() {
     // delete fQuote;
     delete fListItemDrawer;
-    delete fQuoteFormatter;
     delete fCheckbox;
 }
 

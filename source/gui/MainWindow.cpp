@@ -1,12 +1,11 @@
 #include "MainWindow.h"
 
-#include "chartView/ChartView.h"
+#include "DetailsView.h"
 #include "stocksPanel/SearchFieldControl.h"
 #include <Application.h>
 #include <InterfaceKit.h>
 #include <LayoutBuilder.h>
 #include "utils/EscapeCancelFilter.h"
-#include "QuoteRequestStore.h"
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
 
@@ -15,32 +14,32 @@ MainWindow::MainWindow()
                   B_ASYNCHRONOUS_CONTROLS),
           fQuoteResultHandler( new QuoteResultHandler()){
 
-    SetWindowSizes();
+    SetWindowSizeLimits();
     InitViews();
 
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
-            .Add(fStocksPanelView, 1)
-            .Add(chartView, 3);
+            .Add(fStocksPanelView, 100)
+            .Add(chartView, 1);
     InitWorker();
 }
 
 void MainWindow::InitViews() {
     fStocksPanelView = new StocksPanelView();
-    chartView = new ChartView();
+    chartView = new DetailsView();
 }
 
 MainWindow::~MainWindow() {
-    fDdelayedQueryTimer->StopThread();
-    delete fQuoteResultHandler;
-
+    fDelayedQueryTimer->StopThread();
     fQuoteUpdateJob->StopThread();
+
+    delete fQuoteResultHandler;
 }
 
 void
 MainWindow::InitWorker() {
-    fDdelayedQueryTimer = new DelayedQueryTimer(this);
-    fDdelayedQueryTimer->StartThread();
+    fDelayedQueryTimer = new DelayedQueryTimer(this);
+    fDelayedQueryTimer->StartThread();
 
     fQuoteUpdateJob = new QuoteUpdateJob(this);
     fQuoteUpdateJob->StartThread();
@@ -49,7 +48,7 @@ MainWindow::InitWorker() {
 }
 
 void
-MainWindow::SetWindowSizes() {
+MainWindow::SetWindowSizeLimits() {
     BRect screenFrame = (BScreen(this)).Frame();
     SetSizeLimits(700.0, screenFrame.Width(), 500.0, screenFrame.Height());
 }
@@ -82,7 +81,10 @@ MainWindow::MessageReceived(BMessage *message) {
             fStocksPanelView->AcceptSearch();
             break;
         }
-
+        case SearchFieldMessages::M_SET_STOCK: {
+            fStocksPanelView->StockSelected();
+            break;
+        }
         case (DelayedQueryTimerMessages::CHARACTER_DELAY_EXPIRED) : {
             const char *searchQuery = message->FindString(SEARCH_FOR_TEXT);
             fStocksPanelView->SearchForSymbol(searchQuery);
@@ -102,7 +104,7 @@ MainWindow::ResultHandler(int requestId) {
 }
 void
 MainWindow::RequestForSearch(BString &searchTerm) {
-    fDdelayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
+    fDelayedQueryTimer->RunQuery(new std::string(searchTerm.String()));
 }
 
 bool

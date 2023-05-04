@@ -13,7 +13,7 @@ public:
 
     ~MainWindow() override;
 
-    void SetWindowSizes();
+    void SetWindowSizeLimits();
 
     void InitWorker();
 
@@ -38,7 +38,7 @@ public:
 private:
     StocksPanelView *fStocksPanelView;
     BView *chartView;
-    DelayedQueryTimer *fDdelayedQueryTimer;
+    DelayedQueryTimer *fDelayedQueryTimer;
     QuoteUpdateJob *fQuoteUpdateJob;
     QuoteResultHandler *fQuoteResultHandler;
 
