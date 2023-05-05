@@ -47,3 +47,4 @@ compile_commands.json
 /cmake-build-build-remote-release/
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/remote-targets.xml
+/.idea/other.xml
