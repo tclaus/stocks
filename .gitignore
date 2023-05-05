@@ -44,3 +44,7 @@ compile_commands.json
 /cmake-build-debug/
 /cmake-build-debug-remote/
 /cmake-build-debug-remote-event-trace/
+/cmake-build-build-remote-release/
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/remote-targets.xml
+/.idea/other.xml

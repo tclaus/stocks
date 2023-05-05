@@ -9,9 +9,8 @@
 DetailsView::DetailsView()
         : BView(BRect(), "chartView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
-    this->SetLowColor(255, 255, 255);
 
-    this->SetExplicitMinSize(BSize(200, 500));
+    SetExplicitMinSize(BSize(200, 500));
 
 // a) placeholder text, until a symbol is selected    BLayoutBuilder::Group<>(this, B_VERTICAL)
 // BStringView *placeholderText =
@@ -36,6 +35,8 @@ DetailsView::DetailsView()
             .Add(detailsChart)
             .Add(detailsDataList)
             .AddGlue();
+    
+    SetViewColor(255, 255, 255);
 }
 
 

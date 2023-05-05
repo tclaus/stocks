@@ -11,8 +11,6 @@
 DetailsHeadline::DetailsHeadline() :
         BView(BRect(), "detailsHeadView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
-    SetViewColor(255, 255, 255);
-
     InitStringViews();
 
     BLayoutBuilder::Grid<>(this, B_USE_BIG_SPACING)
@@ -22,8 +20,9 @@ DetailsHeadline::DetailsHeadline() :
             .Add(fSymbolPriceLabel, 3, 0)
             .Add(fSymbolChangeLabel, 4, 0);
 
-    Portfolio::Instance().Attach(this);
+    SetViewColor(255, 255, 255);
 
+    Portfolio::Instance().Attach(this);
 }
 
 void

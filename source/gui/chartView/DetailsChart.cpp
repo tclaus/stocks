@@ -6,5 +6,6 @@
 
 DetailsChart::DetailsChart() :
         BView(BRect(), "detailsChartView", B_FOLLOW_ALL, B_WILL_DRAW) {
-    this->SetViewColor(240, 0, 0);
+
+    SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 }

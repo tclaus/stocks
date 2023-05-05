@@ -3,10 +3,11 @@
 //
 
 #include "DetailsDataList.h"
+#include "GraphicsDefs.h"
 
 DetailsDataList::DetailsDataList() :
         BView(BRect(), "detailsDataList", B_FOLLOW_ALL, B_WILL_DRAW) {
 
-    this->SetViewColor(50, 240, 0);
+    SetViewColor(255, 255, 255);
 
 };
