@@ -51,9 +51,6 @@ char *QuoteFormatter::NumberToString(float number) {
     if (number == NAN) {
         return new char('-');
     }
-    if (number > 1'000'000) {
-        lib
-    }
     std::stringstream stringStream;
     dottedNumber::imbue(stringStream);
     stringStream << number;

@@ -15,7 +15,7 @@ DetailsDataList::DetailsDataList() :
     InitStringViews();
 
     BLayoutBuilder::Group<>(this, B_HORIZONTAL)
-            .AddGroup(B_VERTICAL)
+            .AddGroup(B_VERTICAL, B_USE_SMALL_SPACING)
             .AddGrid()
             .Add(fOpenStringView, 0, 0)
             .Add(fOpenValueStringView, 1, 0)
@@ -25,7 +25,7 @@ DetailsDataList::DetailsDataList() :
             .Add(fLowValueStringView, 1, 2)
             .End()
             .End()
-            .AddGroup(B_VERTICAL)
+            .AddGroup(B_VERTICAL, B_USE_SMALL_SPACING)
             .AddGrid()
             .Add(fVolumeStringView, 0, 0)
             .Add(fVolumeValueStringView, 1, 0)
@@ -35,7 +35,7 @@ DetailsDataList::DetailsDataList() :
             .Add(fMarketCapValueStringView, 1, 2)
             .End()
             .End()
-            .AddGroup(B_VERTICAL)
+            .AddGroup(B_VERTICAL, B_USE_SMALL_SPACING)
             .AddGrid()
             .Add(fYearHighStringView, 0, 0)
             .Add(fYearHighValueValueStringView, 1, 0)
