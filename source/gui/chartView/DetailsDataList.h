@@ -18,6 +18,7 @@ public:
      * @param quote The quote to show details.
      */
     void SetActiveQuote(Quote &quote);
+    
 };
 
 
