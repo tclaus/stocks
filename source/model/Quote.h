@@ -38,9 +38,15 @@ public:
     float latestPrice;
     float dayLow;
     float dayHigh;
+    float yearHigh;
+    float yearLow;
     float open;
     float previousClose;
     float volume;
+    float avgVolume;
+    float pe;
+    float eps;
+    float marketCap;
 
     bool isWaitingForRequest;
 

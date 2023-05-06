@@ -5,6 +5,7 @@
 #include <sstream>
 #include "QuoteFormatter.h"
 #include <locale>
+#include <cmath>
 
 struct dottedNumber : std::numpunct<char> {
     char do_thousands_sep() const override { return '.'; } // Separate by dots
@@ -15,21 +16,23 @@ struct dottedNumber : std::numpunct<char> {
 };
 
 char *QuoteFormatter::PercentageToString(float percentValue) {
+    if (percentValue == NAN) {
+        return new char('-');
+    }
     char *changeString = new char[12];
     std::sprintf(changeString, "%+.2f%%", percentValue);
     return changeString;
 }
 
 char *QuoteFormatter::CurrencyToString(float currencyValue) {
+    if (currencyValue == NAN) {
+        return new char('-');
+    }
+
     std::stringstream stringStream;
     dottedNumber::imbue(stringStream);
     stringStream << currencyValue;
     return stringStream.str().data();
-/**
-    char *currencyString = new char[12];
-    std::sprintf(currencyString, "%.2f", currencyValue);
-    return currencyString;
- **/
 }
 
 rgb_color *
@@ -42,4 +45,17 @@ QuoteFormatter::ColorByValue(float value) {
     }
 
     return rectColor;
+}
+
+char *QuoteFormatter::NumberToString(float number) {
+    if (number == NAN) {
+        return new char('-');
+    }
+    if (number > 1'000'000) {
+        lib
+    }
+    std::stringstream stringStream;
+    dottedNumber::imbue(stringStream);
+    stringStream << number;
+    return stringStream.str().data();
 }
