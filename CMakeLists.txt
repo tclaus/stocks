@@ -83,7 +83,7 @@ add_executable(tests
         tests/repository/TestRepositoryConfig.cpp
         source/repository/RepositoryConfig.cpp
         tests/repository/TestRepository.cpp
-        tests/repository/TestRepository.cpp)
+        tests/repository/TestRepository.cpp tests/gui/utils/TestQuoteFormatter.cpp tests/gui/utils/TestQuoteFormatter.h)
 
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 include(Catch)

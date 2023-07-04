@@ -36,6 +36,13 @@ public:
      */
     static rgb_color *ColorByValue(float value);
 
+    /**
+     *
+     * @param largeNumber
+     * @return
+     */
+    static char *HumanReadableLargeNumber(float largeNumber);
+
 };
 
 #endif //STOCKS_QUOTEFORMATTER_H

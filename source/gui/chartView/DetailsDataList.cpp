@@ -128,13 +128,13 @@ void DetailsDataList::UpdateLabels() {
     fHighValueStringView->SetText(QuoteFormatter::CurrencyToString(fCurrentQuote->dayHigh));
     fLowValueStringView->SetText(QuoteFormatter::CurrencyToString(fCurrentQuote->dayLow));
 
-    fVolumeValueStringView->SetText(QuoteFormatter::NumberToString(fCurrentQuote->volume));
+    fVolumeValueStringView->SetText(QuoteFormatter::HumanReadableLargeNumber(fCurrentQuote->volume));
     fPeValueStringView->SetText(QuoteFormatter::CurrencyToString(fCurrentQuote->pe));
-    fMarketCapValueStringView->SetText(QuoteFormatter::CurrencyToString(fCurrentQuote->marketCap));
+    fMarketCapValueStringView->SetText(QuoteFormatter::HumanReadableLargeNumber(fCurrentQuote->marketCap));
 
     fYearHighValueValueStringView->SetText(QuoteFormatter::CurrencyToString(fCurrentQuote->yearHigh));
     fYearLowValueStringView->SetText(QuoteFormatter::CurrencyToString(fCurrentQuote->yearLow));
-    fAvgVolumeValueStringView->SetText((QuoteFormatter::CurrencyToString(fCurrentQuote->avgVolume)));
+    fAvgVolumeValueStringView->SetText((QuoteFormatter::HumanReadableLargeNumber(fCurrentQuote->avgVolume)));
 }
 
 

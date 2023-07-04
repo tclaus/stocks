@@ -6,6 +6,7 @@
 #include "QuoteFormatter.h"
 #include <locale>
 #include <cmath>
+#include <vector>
 
 struct dottedNumber : std::numpunct<char> {
     char do_thousands_sep() const override { return '.'; } // Separate by dots
@@ -47,7 +48,8 @@ QuoteFormatter::ColorByValue(float value) {
     return rectColor;
 }
 
-char *QuoteFormatter::NumberToString(float number) {
+char *
+QuoteFormatter::NumberToString(float number) {
     if (number == NAN) {
         return new char('-');
     }
@@ -55,4 +57,18 @@ char *QuoteFormatter::NumberToString(float number) {
     dottedNumber::imbue(stringStream);
     stringStream << number;
     return stringStream.str().data();
+}
+
+char *
+QuoteFormatter::HumanReadableLargeNumber(float largeNumber) {
+    std::vector<std::string> names{"", "Thousand", "Million", "Billion", "Trillion"};
+    int number = (int) std::log10(largeNumber) / 3;
+// 0.. 999 => 0
+// 1000 99999 => 1
+    std::string millis = names.at(number);
+
+    float lowerNumber = largeNumber / std::pow(10L, number);
+    char *changeString = new char[15];
+    std::sprintf(changeString, "%+.2f%% %s", lowerNumber, millis.data());
+    return changeString;
 }
