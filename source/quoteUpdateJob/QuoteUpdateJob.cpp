@@ -32,7 +32,7 @@ QuoteUpdateJob::CheckQuotesToUpdate() {
     Portfolio &portfolio = Portfolio::Instance();
     for (auto const &quote: *portfolio.List()) {
         if (IsQuoteUpdateExpired(*quote) && !IsQuoteUpdateInProgress(*quote)) {
-            printf("Requesting update for quote: %s.\n", quote->symbol->String());
+            printf("Requesting update for quote: %s\n", quote->symbol->String());
             RequestUpdateQuoteDetails(quote);
         }
     }

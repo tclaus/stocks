@@ -70,7 +70,7 @@ void QuotesRepository::ReadOutFileContent(std::list<Quote *> &quotes, BString *f
                 symbol.RemoveAll("\"");
                 quotes.emplace_back(new Quote(new std::string(symbol)));
             }
-            printf("Now we have %zu quotes. \n", quotes.size());
+            printf("Now we have %zu quotes\n", quotes.size());
         }
     }
 }
