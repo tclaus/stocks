@@ -16,7 +16,8 @@ struct dottedNumber : std::numpunct<char> {
     }
 };
 
-char *QuoteFormatter::PercentageToString(float percentValue) {
+char *
+QuoteFormatter::PercentageToString(float percentValue) {
     if (percentValue == NAN) {
         return new char('-');
     }
@@ -25,7 +26,8 @@ char *QuoteFormatter::PercentageToString(float percentValue) {
     return changeString;
 }
 
-char *QuoteFormatter::CurrencyToString(float currencyValue) {
+char *
+QuoteFormatter::CurrencyToString(float currencyValue) {
     if (currencyValue == NAN) {
         return new char('-');
     }
@@ -61,14 +63,25 @@ QuoteFormatter::NumberToString(float number) {
 
 char *
 QuoteFormatter::HumanReadableLargeNumber(float largeNumber) {
-    std::vector<std::string> names{"", "Thousand", "Million", "Billion", "Trillion"};
-    int number = (int) std::log10(largeNumber) / 3;
-// 0.. 999 => 0
-// 1000 99999 => 1
-    std::string millis = names.at(number);
+    printf("Converting %f to human readable format \n", largeNumber);
+    if (std::isnan(largeNumber)) {
+        return new char(' ');
+    }
+    
+    if (largeNumber < 1.0) {
+        return new char('0');
+    }
 
-    float lowerNumber = largeNumber / std::pow(10L, number);
-    char *changeString = new char[15];
-    std::sprintf(changeString, "%+.2f%% %s", lowerNumber, millis.data());
+    std::vector<std::string> names{"", "Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion"};
+    int powerOfTens = std::floor(std::log10(largeNumber) / 3.0);
+    printf("Got the 1,000 exponent as: %d \n", powerOfTens);
+    // 0.. 999 => 0
+    // 1000 99999 => 1
+    std::string nameForNumber = names.at(powerOfTens);
+
+    auto reducedNumber = (float) (largeNumber / std::pow(1000L, powerOfTens));
+    char *changeString = new char[30];
+    std::sprintf(changeString, "%.2f %s", reducedNumber, nameForNumber.data());
+    printf("In human format: %s\n", changeString);
     return changeString;
 }
