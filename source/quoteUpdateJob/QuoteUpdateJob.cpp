@@ -19,7 +19,7 @@ QuoteUpdateJob::ExecuteJob() {
 
 void
 QuoteUpdateJob::UpdateLoop() {
-    printf("QuoteUpdateJob: Starting update loop.\n");
+    printf("QuoteUpdateJob: Starting update loop \n");
     while (!ShouldStopThread()) {
         std::this_thread::sleep_for(fDelayBeforeNextLoop);
         CheckQuotesToUpdate();
