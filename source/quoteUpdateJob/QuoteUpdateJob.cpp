@@ -19,7 +19,7 @@ QuoteUpdateJob::ExecuteJob() {
 
 void
 QuoteUpdateJob::UpdateLoop() {
-    printf("QuoteUpdateJob: Starte Update loop.\n");
+    printf("QuoteUpdateJob: Starting update loop \n");
     while (!ShouldStopThread()) {
         std::this_thread::sleep_for(fDelayBeforeNextLoop);
         CheckQuotesToUpdate();
@@ -32,7 +32,7 @@ QuoteUpdateJob::CheckQuotesToUpdate() {
     Portfolio &portfolio = Portfolio::Instance();
     for (auto const &quote: *portfolio.List()) {
         if (IsQuoteUpdateExpired(*quote) && !IsQuoteUpdateInProgress(*quote)) {
-            printf("Requesting update for quote: %s.\n", quote->symbol->String());
+            printf("Requesting update for quote: %s\n", quote->symbol->String());
             RequestUpdateQuoteDetails(quote);
         }
     }

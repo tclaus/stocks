@@ -27,6 +27,9 @@ DetailsHeadline::DetailsHeadline() :
 
 void
 DetailsHeadline::SetActiveQuote(Quote *quote) {
+    if (quote == fCurrentQuote) {
+        return;
+    }
     if (fCurrentQuote) {
         fCurrentQuote->Detach(this);
         fCurrentQuote = nullptr;

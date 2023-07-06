@@ -8,7 +8,6 @@
 #include "Portfolio.h"
 #include "QuoteRequestStore.h"
 
-
 using namespace std::string_view_literals;
 using json = nlohmann::json;
 using namespace nlohmann::literals;
@@ -41,19 +40,36 @@ QuoteResultHandler::UpdateQuoteWithResponseData(Quote *quote, BString *jsonStrin
 
         // Symbol not needed to transfer
         quote->companyName = new BString(innerJsonElement["name"].get<std::string>().c_str());
-        quote->latestPrice = float(innerJsonElement.value("price", 0.0));
-        quote->changesPercentage = float(innerJsonElement.value("changesPercentage", 0.0));
-        quote->change = float(innerJsonElement.value("change", 0.0));
-        quote->dayLow = float(innerJsonElement.value("dayLow", 0.0));
-        quote->dayHigh = float(innerJsonElement.value("dayHigh", 0.0));
-        quote->open = float(innerJsonElement.value("open", 0.0));
-        quote->previousClose = float(innerJsonElement.value("previousClose", 0.0));
-        quote->volume = float(innerJsonElement.value("volume", 0.0));
+        quote->latestPrice = ValueFromJson("price", innerJsonElement);
+        quote->changesPercentage = ValueFromJson("changesPercentage", innerJsonElement);
+        quote->change = ValueFromJson("change", innerJsonElement);
+        quote->dayLow = ValueFromJson("dayLow", innerJsonElement);
+        quote->dayHigh = ValueFromJson("dayHigh", innerJsonElement);
+
+        quote->yearHigh = ValueFromJson("yearHigh", innerJsonElement);
+        quote->yearLow = ValueFromJson("yearLow", innerJsonElement);
+
+        quote->open = ValueFromJson("open", innerJsonElement);
+        quote->previousClose = ValueFromJson("previousClose", innerJsonElement);
+        quote->volume = ValueFromJson("volume", innerJsonElement);
+        quote->avgVolume = ValueFromJson("avgVolume", innerJsonElement);
+
+        quote->pe = ValueFromJson("pe", innerJsonElement);
+        quote->eps = ValueFromJson("eps", innerJsonElement);
+        quote->marketCap = ValueFromJson("marketCap", innerJsonElement);
         quote->SetLastUpdatedTimePoint();
         quote->isWaitingForRequest = false;
 
         quote->Notify();
     }
+}
+
+float
+QuoteResultHandler::ValueFromJson(std::string key, nlohmann::basic_json<> &jsonElement) {
+    if (jsonElement.at(key) == nullptr) {
+        return NAN;
+    }
+    return float(jsonElement.value(key, 0.0));
 }
 
 bool

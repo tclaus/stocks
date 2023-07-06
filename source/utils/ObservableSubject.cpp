@@ -24,7 +24,6 @@ ObservableSubject::Detach(Observer *observer) {
 
 void
 ObservableSubject::Notify() {
-    printf("Notify observers!\n");
     for (auto const &iterator: fObservers) {
         iterator->UpdateStatus();
     }

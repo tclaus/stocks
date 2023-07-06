@@ -22,12 +22,28 @@ public:
     static char *CurrencyToString(float currencyValue);
 
     /**
+     * Formats a number to an integer string value
+     * @param number
+     * @return a formatted string with groups digits.
+     */
+    static char *NumberToString(float number);
+
+    /**
      * Generates a greenish color for values lesser than zero, and a black (default) color for values higher or exact
      * zero
      * @param value a float value from a negative to any positive value
      * @return a color to print out string labels
      */
     static rgb_color *ColorByValue(float value);
+
+    /**
+     * Converts a large number to a human readable format by using a number name instead the large number.
+     * E.g.: a number 1.234.567 will become the string 1.2 million".
+     * If the provided number seems to be zero, a zero is returned. If the number is NaN an empty character is returned
+     * @param largeNumber any number
+     * @return A string
+     */
+    static char *HumanReadableLargeNumber(float largeNumber);
 
 };
 

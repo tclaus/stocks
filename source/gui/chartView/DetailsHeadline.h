@@ -37,7 +37,7 @@ private:
 
     void InitStringViews();
 
-    void UpdateStatus();
+    void UpdateStatus() override;
 
     void UpdateLabels();
 

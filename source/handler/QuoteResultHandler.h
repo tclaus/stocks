@@ -20,6 +20,8 @@ private:
     void UpdateQuoteWithResponseData(Quote *quote, BString *jsonString);
 
     bool JsonElementMatchesQuote(nlohmann::basic_json<> &jsonElement, Quote *quote);
+
+    float ValueFromJson(std::string key, nlohmann::basic_json<> &jsonElement);
 };
 
 
