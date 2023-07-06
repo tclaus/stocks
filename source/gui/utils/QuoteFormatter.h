@@ -41,7 +41,7 @@ public:
      * E.g.: a number 1.234.567 will become the string 1.2 million".
      * If the provided number seems to be zero, a zero is returned. If the number is NaN an empty character is returned
      * @param largeNumber any number
-     * @return A string.
+     * @return A string
      */
     static char *HumanReadableLargeNumber(float largeNumber);
 
