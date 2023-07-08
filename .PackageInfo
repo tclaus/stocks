@@ -1,0 +1,23 @@
+name Stocks
+version 0.1
+architecture x86
+
+summary "A simple stocks app to show detail quotes data"
+description "Stocks mimics the stocks app from macOS. It allows to select multiple stocks for a daily view"
+packager "Thorsten Claus <thorstenclaus@web.de>"
+vendor "Thorsten Claus"
+copyrights "Copyright (C) 2023 Thorsten Claus, Dortmund, Germany"
+licenses "Apache v2"
+
+urls {
+	https://github.com/tclaus/stocks
+}
+
+source-urls {
+	https://github.com/tclaus/stocks
+}
+
+provides {
+	Stocks = 0.1.0
+	app:Stocks = 0.1
+}
