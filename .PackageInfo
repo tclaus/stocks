@@ -1,5 +1,5 @@
 name Stocks
-version 0.1-0
+version 0.1-1
 architecture x86
 
 summary "A simple stocks app to show detail quotes data"
@@ -18,6 +18,6 @@ source-urls {
 }
 
 provides {
-	Stocks = 0.1-0
+	Stocks = 0.1-1
 	app:Stocks = 0.1
 }
