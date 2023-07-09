@@ -1,5 +1,5 @@
 name Stocks
-version 0.1.0
+version 0.1-0
 architecture x86
 
 summary "A simple stocks app to show detail quotes data"
