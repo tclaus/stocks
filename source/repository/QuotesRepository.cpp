@@ -94,6 +94,7 @@ void QuotesRepository::InitProjectFolder() {
 
     BEntry fileEntry(configFilePath.Path());
     if (!fileEntry.Exists()) {
+        printf("No. Creating folder and config file.");
         BDirectory directory = BDirectory(configFilePath.Path());
         status_t status = directory.CreateDirectory(configFilePath.Path(), nullptr);
         if (status != B_OK) {
