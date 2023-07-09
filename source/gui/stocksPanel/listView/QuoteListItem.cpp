@@ -205,6 +205,7 @@ QuoteListItem::CalcAndStoreCellHeight(const BFont *font, alignment alignment) {
             break;
         }
         default: {
+            rowNumber = 0;
             break;
         }
     }

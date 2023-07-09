@@ -84,7 +84,7 @@ void QuotesRepository::checkFileContents(const BString *fileContentString) const
 
 BPath QuotesRepository::createConfigFilePath() const {
     BPath configFilePath = BPath(RepositoryConfig::GetConfigFilePath().c_str());
-    configFilePath.Append(RepositoryConfig::GetConfigfileFielName().c_str());
+    configFilePath.Append(RepositoryConfig::GetConfigfileFieleName().c_str());
     return configFilePath;
 }
 

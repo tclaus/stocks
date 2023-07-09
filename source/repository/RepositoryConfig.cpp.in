@@ -20,6 +20,6 @@ std::string RepositoryConfig::GetConfigFilePath() {
     return bPath.Path();
 }
 
-std::string RepositoryConfig::GetConfigfileFielName() {
+std::string RepositoryConfig::GetConfigfileFieleName() {
     return RepositoryConfig::configFileName;
 }

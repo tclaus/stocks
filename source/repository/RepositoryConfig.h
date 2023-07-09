@@ -11,7 +11,7 @@ class RepositoryConfig {
 public:
     static std::string GetConfigFilePath();
 
-    static std::string GetConfigfileFielName();
+    static std::string GetConfigfileFieleName();
 
 private:
     static const std::string projectDirectoryName;
