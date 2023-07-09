@@ -39,6 +39,9 @@ Stocks
 CMakeCache.txt
 CMakeFiles/
 /build*
+
+package/*.hpkg
+
 cmake_install.cmake
 compile_commands.json
 /cmake-build-debug/
