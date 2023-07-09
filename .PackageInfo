@@ -18,6 +18,6 @@ source-urls {
 }
 
 provides {
-	Stocks = 0.1.0
+	Stocks = 0.1-0
 	app:Stocks = 0.1
 }
