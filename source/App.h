@@ -5,10 +5,12 @@
 
 class App : public BApplication {
 public:
-  App();
+    App();
+
+    static void checkForApiKey();
 
 private:
-  BWindow *window{};
+    BWindow *window{};
 };
 
 #endif

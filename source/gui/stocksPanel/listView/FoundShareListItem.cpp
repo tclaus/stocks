@@ -251,6 +251,7 @@ FoundShareListItem::CalcAndStoreCellHeight(const BFont *font, alignment alignmen
             break;
         }
         default: {
+            rowNumber = 0;
             break;
         }
     }

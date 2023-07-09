@@ -84,7 +84,7 @@ void QuotesRepository::checkFileContents(const BString *fileContentString) const
 
 BPath QuotesRepository::createConfigFilePath() const {
     BPath configFilePath = BPath(RepositoryConfig::GetConfigFilePath().c_str());
-    configFilePath.Append(RepositoryConfig::GetConfigfileFielName().c_str());
+    configFilePath.Append(RepositoryConfig::GetConfigfileFieleName().c_str());
     return configFilePath;
 }
 
@@ -94,6 +94,7 @@ void QuotesRepository::InitProjectFolder() {
 
     BEntry fileEntry(configFilePath.Path());
     if (!fileEntry.Exists()) {
+        printf("No. Creating folder and config file.");
         BDirectory directory = BDirectory(configFilePath.Path());
         status_t status = directory.CreateDirectory(configFilePath.Path(), nullptr);
         if (status != B_OK) {
