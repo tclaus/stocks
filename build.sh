@@ -5,4 +5,4 @@ cmake --build ./build --target Stocks -- -j 4
 echo building package
 cd package
 cp ../build/Stocks ./
-package create -i ../.PackageInfo Stocks-x86
+package create -i ../.PackageInfo Stocks-0.1-x86.hpkg
