@@ -21,7 +21,7 @@ private:
 
     bool JsonElementMatchesQuote(nlohmann::basic_json<> &jsonElement, Quote *quote);
 
-    float ValueFromJson(std::string key, nlohmann::basic_json<> &jsonElement);
+    float ValueFromJson(std::string const &key, nlohmann::basic_json<> &jsonElement);
 };
 
 

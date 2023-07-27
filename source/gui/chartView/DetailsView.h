@@ -15,7 +15,9 @@
 class DetailsView : public BView {
 public:
     DetailsView();
-    
+
+    void SetTimeRange(TimeRange timeRange);
+
 private:
     DetailsHeadline *detailsHeadline;
     DetailsChart *detailsChart;

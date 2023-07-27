@@ -30,7 +30,7 @@ Financialmodelingprep::Financialmodelingprep(BHandler *receivingHandler)
 
 int
 Financialmodelingprep::Search(const char *searchQuery) {
-    // search?query=appl&apikey=skjxxwm// search
+    // search?query=appl&apikey=THE_KEY
 /**
  * Search fResult:
     {
@@ -73,6 +73,42 @@ Financialmodelingprep::RetrieveQuote(const char *symbol) {
     url->SetPath(requestString);
     printf("RetrieveQuote Request: %s \n", url->UrlString().String());
     return SendRequest(url);
+}
+
+int
+Financialmodelingprep::RetrieveHistoricData(const char *symbol, TimeRange timeRange) {
+    // https://site.financialmodelingprep.com/developer/docs/#Stock-Historical-Price
+
+    BString requestString = BString();
+    requestString.Append("/api/v3/");
+    requestString.Append(DeterminePathForHistoricalData(timeRange));
+    requestString.Append(symbol);
+    requestString.Append("?");
+    AddApiKey(requestString);
+
+    auto url = new BUrl(baseUrl);
+    url->SetPath(requestString);
+    printf("Retrieve historic data Request: %s \n", url->UrlString().String());
+    return SendRequest(url);
+}
+
+const char *
+Financialmodelingprep::DeterminePathForHistoricalData(TimeRange timeRange) {
+    switch (timeRange) {
+        case M_DAY:
+            return "historical-chart/1min/";
+        case M_WEEK:
+            return "historical-chart/5min/";
+        case M_MONTH:
+        case M_THREE_MONTH:
+            return "historical-chart/1hour/";
+        case M_SIX_MONTH:
+        case M_YEAR:
+        case M_TWO_YEARS:
+        case M_FIVE_YEARS:
+        default:
+            return "historical-price-full/";
+    }
 }
 
 void

@@ -12,7 +12,7 @@
 MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
                   B_ASYNCHRONOUS_CONTROLS),
-          fQuoteResultHandler( new QuoteResultHandler()){
+          fQuoteResultHandler(new QuoteResultHandler()) {
 
     SetWindowSizeLimits();
     InitViews();
@@ -20,13 +20,13 @@ MainWindow::MainWindow()
     BLayoutBuilder::Group<>((BWindow *) this, B_HORIZONTAL, 0)
             .SetInsets(0)
             .Add(fStocksPanelView, 100)
-            .Add(chartView, 1);
+            .Add(fChartView, 1);
     InitWorker();
 }
 
 void MainWindow::InitViews() {
     fStocksPanelView = new StocksPanelView();
-    chartView = new DetailsView();
+    fChartView = new DetailsView();
 }
 
 MainWindow::~MainWindow() {
@@ -61,6 +61,21 @@ MainWindow::Show() {
 void
 MainWindow::MessageReceived(BMessage *message) {
     switch (message->what) {
+        case (TimeRange::M_DAY):
+        case (TimeRange::M_WEEK):
+        case (TimeRange::M_MONTH):
+        case (TimeRange::M_SIX_MONTH):
+        case (TimeRange::M_YEAR):
+        case (TimeRange::M_TWO_YEARS):
+        case (TimeRange::M_FIVE_YEARS): {
+        // TODO:  How can a time range button directly send a message to its parent?
+        // Dont like this detour
+        TimeRange timeRange = static_cast<TimeRange>(message->what);
+
+            fChartView->SetTimeRange(timeRange);
+            break;
+        }
+
         case (SearchFieldMessages::M_START_SHARES_SEARCH) : {
             BString searchTerm;
             if (message->FindString(SEARCH_TERM, &searchTerm) != B_OK) {
@@ -102,6 +117,7 @@ MainWindow::ResultHandler(int requestId) {
     fStocksPanelView->HandleResult(requestId);
     fQuoteResultHandler->HandleQuoteResults(requestId);
 }
+
 void
 MainWindow::RequestForSearch(BString &searchTerm) {
     fDelayedQueryTimer->RunQuery(new std::string(searchTerm.String()));

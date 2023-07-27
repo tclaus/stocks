@@ -5,7 +5,6 @@
 #include <LayoutBuilder.h>
 #include <StringView.h>
 #include "DetailsDataList.h"
-#include "GraphicsDefs.h"
 #include "Portfolio.h"
 #include "QuoteFormatter.h"
 
@@ -46,10 +45,8 @@ DetailsDataList::DetailsDataList() :
             .Add(fAvgVolumeValueStringView, 1, 2)
             .End()
             .End();
-    SetViewColor(200, 200, 200);
 
     Portfolio::Instance().Attach(this);
-
 }
 
 void DetailsDataList::UpdateStatus() {

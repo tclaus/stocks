@@ -20,8 +20,6 @@ DetailsHeadline::DetailsHeadline() :
             .Add(fSymbolPriceLabel, 3, 0)
             .Add(fSymbolChangeLabel, 4, 0);
 
-    SetViewColor(255, 255, 255);
-
     Portfolio::Instance().Attach(this);
 }
 

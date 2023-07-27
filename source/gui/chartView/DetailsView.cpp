@@ -9,21 +9,7 @@
 DetailsView::DetailsView()
         : BView(BRect(), "chartView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
-
     SetExplicitMinSize(BSize(200, 500));
-
-// a) placeholder text, until a symbol is selected    BLayoutBuilder::Group<>(this, B_VERTICAL)
-// BStringView *placeholderText =
-// new BStringView("placeholderLabel", "Choose a share from the shares fList");
-//  BLayoutBuilder::Group<>(this, B_VERTICAL)
-//            .SetInsets(10, 10, 10, 10)
-//            .AddGrid()
-//            .AddGlue(0, 1)
-//            .Add(placeholderText, 1, 1)
-//            .AddGlue(2, 1);
-
-// b) Stocks details
-
 
     detailsHeadline = new DetailsHeadline();
     detailsChart = new DetailsChart();
@@ -35,8 +21,12 @@ DetailsView::DetailsView()
             .Add(detailsChart)
             .Add(detailsDataList)
             .AddGlue();
-    
-    SetViewColor(255, 255, 255);
 }
 
+void
+DetailsView::SetTimeRange(TimeRange timeRange) {
+    //TODO: Wie kann ein Parent mehrere Ebenen tiefer ein Nachricht senden?
 
+    detailsChart->SetTimeRange(timeRange);
+
+}

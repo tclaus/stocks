@@ -6,6 +6,7 @@
 #include "utils/DelayedQueryTimer.h"
 #include "../handler/QuoteResultHandler.h"
 #include "../quoteUpdateJob/QuoteUpdateJob.h"
+#include "DetailsView.h"
 
 class MainWindow : public BWindow {
 public:
@@ -37,7 +38,7 @@ public:
 
 private:
     StocksPanelView *fStocksPanelView;
-    BView *chartView;
+    DetailsView *fChartView;
     DelayedQueryTimer *fDelayedQueryTimer;
     QuoteUpdateJob *fQuoteUpdateJob;
     QuoteResultHandler *fQuoteResultHandler;

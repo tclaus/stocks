@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.23)
 project(
         Stocks
         VERSION 0.1
-        DESCRIPTION "A stocks application to set up a portfolio and see updated data"
+        DESCRIPTION "A stocks application to set up a portfolio and check stock price changes over time"
 )
 
 set(CMAKE_MODULE_PATH "${Stocks_SOURCE_DIR}/CMakeModules")
@@ -114,6 +114,16 @@ haiku_add_executable(${PROJECT_NAME}
         source/gui/chartView/DetailsDataList.cpp
         source/gui/chartView/DetailsHeadline.h
         source/gui/chartView/DetailsHeadline.cpp
+        source/gui/chartView/ChartTimeRangeBar.h
+        source/gui/chartView/ChartTimeRangeBar.cpp
+        source/gui/chartView/ChartView.h
+        source/gui/chartView/ChartView.cpp
+        source/gui/chartView/drawer/GridlineDrawer.h
+        source/gui/chartView/drawer/GridlineDrawer.cpp
+        source/gui/chartView/drawer/SeriesDrawer.h
+        source/gui/chartView/drawer/SeriesDrawer.cpp
+        source/gui/chartView/drawer/DataSeriesLimiter.h
+        source/gui/chartView/drawer/DataSeriesLimiter.cpp
         source/gui/stocksPanel/StocksPanelView.h
         source/gui/stocksPanel/StocksPanelView.cpp
         source/gui/stocksPanel/SearchFieldControl.h
@@ -152,6 +162,11 @@ haiku_add_executable(${PROJECT_NAME}
         source/model/SearchResultList.cpp
         source/model/SelectionOfSymbols.h
         source/model/SelectionOfSymbols.cpp
+        source/model/HistoricalPrice.h
+        source/model/HistoricalPrice.cpp
+        source/model/HistoricalPriceList.h
+        source/model/HistoricalPriceList.cpp
+        source/model/TimeRange.h
         source/repository/QuotesRepository.h
         source/repository/QuotesRepository.cpp
         source/repository/RepositoryConfig.h
@@ -164,6 +179,8 @@ haiku_add_executable(${PROJECT_NAME}
         source/model/linkedRequestQuoteStore/QuoteRequestStore.cpp
         source/handler/QuoteResultHandler.h
         source/handler/QuoteResultHandler.cpp
+        source/handler/HistoricalPriceResultHandler.h
+        source/handler/HistoricalPriceResultHandler.cpp
         source/utils/BaseThreadedJob.h
         source/utils/BaseThreadedJob.cpp
         source/utils/ObservableSubject.h
