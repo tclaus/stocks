@@ -7,7 +7,7 @@ It mimics the macOS Stocks App by layout and functions as this is small enough t
 
 ## Install
 
-Load it from Haikudepot.
+There will be a loadable package. But for now, you have to get a developer APi key and build by your own. 
 
 ## Contribute
 
