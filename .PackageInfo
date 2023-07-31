@@ -1,6 +1,6 @@
-name Stocks
+name stocks
 version 0.1-1
-architecture x86
+architecture x86_64
 
 summary "A simple stocks app to show detail quotes data"
 description "Stocks mimics the stocks app from macOS. It allows to select multiple stocks for a daily view"
