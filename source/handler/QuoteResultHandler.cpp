@@ -65,7 +65,7 @@ QuoteResultHandler::UpdateQuoteWithResponseData(Quote *quote, BString *jsonStrin
 }
 
 float
-QuoteResultHandler::ValueFromJson(std::string key, nlohmann::basic_json<> &jsonElement) {
+QuoteResultHandler::ValueFromJson(std::string const &key, nlohmann::basic_json<> &jsonElement) {
     if (jsonElement.at(key) == nullptr) {
         return NAN;
     }

@@ -2,8 +2,11 @@
 // Created by Thorsten Claus on 06.03.23.
 //
 
-#include <sstream>
+
 #include "QuoteFormatter.h"
+#include "../Colors.h"
+
+#include <sstream>
 #include <locale>
 #include <cmath>
 #include <vector>
@@ -38,16 +41,13 @@ QuoteFormatter::CurrencyToString(float currencyValue) {
     return stringStream.str().data();
 }
 
-rgb_color *
-QuoteFormatter::ColorByValue(float value) {
-    auto *rectColor = new rgb_color();
+rgb_color
+QuoteFormatter::GainLossColor(float value) {
     if (value >= 0.0f) {
-        rectColor->set_to(101, 196, 102); // A green tone TODO: make a constant
+        return rgb_color(Colors::PriceGain());
     } else {
-        rectColor->set_to(235, 78, 61); // A red tone
+        return rgb_color(Colors::PriceLoss());
     }
-
-    return rectColor;
 }
 
 char *
@@ -63,18 +63,16 @@ QuoteFormatter::NumberToString(float number) {
 
 char *
 QuoteFormatter::HumanReadableLargeNumber(float largeNumber) {
-    printf("Converting %f to human readable format \n", largeNumber);
     if (std::isnan(largeNumber)) {
         return new char(' ');
     }
-    
+
     if (largeNumber < 1.0) {
         return new char('0');
     }
 
     std::vector<std::string> names{"", "Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion"};
     int powerOfTens = std::floor(std::log10(largeNumber) / 3.0);
-    printf("Got the 1,000 exponent as: %d \n", powerOfTens);
     // 0.. 999 => 0
     // 1000 99999 => 1
     std::string nameForNumber = names.at(powerOfTens);
@@ -82,6 +80,5 @@ QuoteFormatter::HumanReadableLargeNumber(float largeNumber) {
     auto reducedNumber = (float) (largeNumber / std::pow(1000L, powerOfTens));
     char *changeString = new char[30];
     std::sprintf(changeString, "%.2f %s", reducedNumber, nameForNumber.data());
-    printf("In human format: %s\n", changeString);
     return changeString;
 }

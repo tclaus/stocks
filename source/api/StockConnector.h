@@ -6,6 +6,7 @@
 #define STOCKS_STOCKREQUESTS_H
 
 #include <HttpResult.h>
+#include "TimeRange.h"
 
 using BPrivate::Network::BHttpBody;
 
@@ -15,20 +16,27 @@ public:
 
     /**
      * Searches for a symbol or company name
-     * @param searchQuery A symbol or part of a symbol.
-     * @return The new request Id
+     * @param searchQuery a symbol or part of a symbol.
+     * @return the new request Id
      */
     virtual int Search(const char *searchQuery) = 0;
 
     /**
      * Requests the quote details from API for a given symbol.
-     * @param symbol A known symbol
-     * @return The new request Id
+     * @param symbol a known symbol
+     * @return the new request Id
      */
     virtual int RetrieveQuote(const char *symbol) = 0;
 
-    // https://site.financialmodelingprep.com/developer/docs/#Stock-Historical-Price
-    // virtual int RequestHistoricalPrice(const char* symbol);
+    /**
+     * Requests historical data for a given quote and a time range.
+     * The algorithm requests the data from now an to the past. One Day means this day, 1 Year means
+     * from now on one year in the past.
+     * @param symbol the stocks symbol identifier
+     * @param timeRange the time range specifier
+     * @return the new request Id
+     */
+    virtual int RetrieveHistoricData(const char *symbol, TimeRange timeRange) = 0;
 
     virtual ~StockConnector() = default;
 

@@ -20,8 +20,6 @@ DetailsHeadline::DetailsHeadline() :
             .Add(fSymbolPriceLabel, 3, 0)
             .Add(fSymbolChangeLabel, 4, 0);
 
-    SetViewColor(255, 255, 255);
-
     Portfolio::Instance().Attach(this);
 }
 
@@ -69,8 +67,8 @@ void DetailsHeadline::UpdateChangeInPercentLabel() {
     char *percentString = QuoteFormatter::PercentageToString(fCurrentQuote->changesPercentage);
     fSymbolChangeLabel->SetText(percentString);
 
-    rgb_color *changeColor = QuoteFormatter::ColorByValue(fCurrentQuote->changesPercentage);
-    fSymbolChangeLabel->SetHighColor(*changeColor);
+    rgb_color changeColor = QuoteFormatter::GainLossColor(fCurrentQuote->changesPercentage);
+    fSymbolChangeLabel->SetHighColor(changeColor);
 }
 
 void DetailsHeadline::UpdatePriceLabel() {

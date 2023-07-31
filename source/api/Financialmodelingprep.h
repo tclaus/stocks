@@ -36,6 +36,9 @@ public:
     int
     RetrieveQuote(const char *symbol) override;
 
+    int
+    RetrieveHistoricData(const char *symbol, TimeRange timeRange) override;
+
 private:
     void AddApiKey(BString &request);
 
@@ -46,6 +49,8 @@ private:
     BHandler *fHandler;
 
     int SendRequest(const BUrl *url) const;
+
+    const char *DeterminePathForHistoricalData(TimeRange timeRange);
 };
 
 

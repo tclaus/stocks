@@ -3,7 +3,6 @@
 //
 
 #include "Portfolio.h"
-#include "List.h"
 
 Portfolio Portfolio::instance = Portfolio();
 

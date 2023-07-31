@@ -5,7 +5,6 @@
 #include <LayoutBuilder.h>
 #include <StringView.h>
 #include "DetailsDataList.h"
-#include "GraphicsDefs.h"
 #include "Portfolio.h"
 #include "QuoteFormatter.h"
 
@@ -14,7 +13,6 @@ DetailsDataList::DetailsDataList() :
 
     InitStringViews();
 
-    printf("Layout detail strings");
     BLayoutBuilder::Group<>(this, B_HORIZONTAL)
             .AddGroup(B_VERTICAL, B_USE_SMALL_SPACING)
             .AddGrid()
@@ -46,10 +44,8 @@ DetailsDataList::DetailsDataList() :
             .Add(fAvgVolumeValueStringView, 1, 2)
             .End()
             .End();
-    SetViewColor(200, 200, 200);
 
     Portfolio::Instance().Attach(this);
-
 }
 
 void DetailsDataList::UpdateStatus() {
@@ -62,7 +58,6 @@ void DetailsDataList::UpdateStatus() {
 
 void
 DetailsDataList::InitStringViews() {
-    printf("InitStringViews");
     fOpenStringView = new BStringView("strOpen", "Open");
     fOpenValueStringView = new BStringView("strOpenValue", "-");
     FormatValueLabel(fOpenValueStringView);

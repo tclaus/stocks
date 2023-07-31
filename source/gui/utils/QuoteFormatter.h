@@ -34,7 +34,7 @@ public:
      * @param value a float value from a negative to any positive value
      * @return a color to print out string labels
      */
-    static rgb_color *ColorByValue(float value);
+    static rgb_color GainLossColor(float value);
 
     /**
      * Converts a large number to a human readable format by using a number name instead the large number.

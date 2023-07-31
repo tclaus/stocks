@@ -7,6 +7,7 @@
 
 #include <View.h>
 #include "Quote.h"
+#include "ChartTimeRangeBar.h"
 
 class DetailsChart : public BView {
 public:
@@ -18,6 +19,12 @@ public:
  */
     void SetActiveQuote(Quote &quote);
 
+    void InitView();
+
+    void SetTimeRange(TimeRange timeRange);
+
+private:
+    ChartView *fChartView;
 };
 
 
