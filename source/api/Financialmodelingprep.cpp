@@ -71,7 +71,7 @@ Financialmodelingprep::RetrieveQuote(const char *symbol) {
 
     auto url = new BUrl(baseUrl);
     url->SetPath(requestString);
-    printf("RetrieveQuote Request: %s \n", url->UrlString().String());
+    printf("RetrieveQuote Request: %s \n", symbol);
     return SendRequest(url);
 }
 
@@ -88,7 +88,7 @@ Financialmodelingprep::RetrieveHistoricData(const char *symbol, TimeRange timeRa
 
     auto url = new BUrl(baseUrl);
     url->SetPath(requestString);
-    printf("Retrieve historic data Request: %s \n", url->UrlString().String());
+    printf("Retrieve historic data Request: %s \n", symbol);
     return SendRequest(url);
 }
 
