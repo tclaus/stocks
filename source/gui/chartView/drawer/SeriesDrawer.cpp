@@ -2,10 +2,11 @@
 // Created by Thorsten Claus on 19.07.23.
 //
 
-#include <cstdio>
 #include "SeriesDrawer.h"
 #include "DataSeriesLimiter.h"
 #include "DateTimeCalculator.h"
+#include "../Colors.h"
+#include <cstdio>
 
 SeriesDrawer::SeriesDrawer(BView *view) :
         fView(view) {
@@ -14,6 +15,7 @@ SeriesDrawer::SeriesDrawer(BView *view) :
 void
 SeriesDrawer::DrawSeries(TimeRange timeRange, HistoricalPriceList *historicalPriceList) {
     fView->PushState();
+    fView->SetPenSize(1.5);
     DrawSeriesWithState(timeRange, historicalPriceList);
     fView->PopState();
 }
@@ -37,6 +39,8 @@ SeriesDrawer::DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *his
         BString *lastItemTimestamp = lastItem->GetDate();
 
 
+        SetGainLossColor(firstItem, lastItem);
+
         printf("Max price: %f, min price: %f, range: %f\n ", maxPrice, minPrice, priceRange);
         printf("StartDate: %s, EndDate: %s \n", startItemTimestamp->String(), lastItemTimestamp->String());
 
@@ -47,7 +51,7 @@ SeriesDrawer::DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *his
         // OK Kurs Seitenverkehrt?
         // TODO: Grüne / rote farbe der Linie. Grün, wenn Closing price/CurrentPrice > Opening Price
         // TODO: Linie etwas dicker machen. Pattern? an den endpunkten jeweils eine Linie genau daneben zeichnen?
-        // TODO: Linie geht nicht bis zum rechten Rand
+        // OK Linie geht nicht bis zum rechten Rand
 
         float xOld, yOld, xNew, yNew;
         int dataPointNumber = 0;
@@ -64,6 +68,14 @@ SeriesDrawer::DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *his
         }
     }
     delete limitedHistoricalPrice;
+}
+
+void SeriesDrawer::SetGainLossColor(HistoricalPrice *firstItem, HistoricalPrice *lastItem) {
+    if (firstItem->GetOpen() < lastItem->GetClose()) {
+        fView->SetHighColor(Colors::PriceGain());
+    } else {
+        fView->SetHighColor(Colors::PriceLoss());
+    }
 }
 
 float

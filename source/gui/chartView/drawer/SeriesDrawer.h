@@ -30,6 +30,8 @@ private:
     float calculateYNew(float priceRange, float maxPrice, HistoricalPrice *const &item) const;
 
     void DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *historicalPriceList);
+
+    void SetGainLossColor(HistoricalPrice *firstItem, HistoricalPrice *lastItem);
 };
 
 
