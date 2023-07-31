@@ -20,17 +20,25 @@ public:
     /**
      * Creates a new {@link HistoricalPriceList} based on the time frame.
      * The data sent from the API may contain more than the requested timeframe.
+     * This functions takes ownership over {@link HistoricalPriceList} and removes it from memory. A new list is generated and returned.
      * @param historicalPriceList
-     * @return
+     * @return a new price list
      */
     HistoricalPriceList *LimitForRange(TimeRange timeRange, HistoricalPriceList *historicalPriceList);
 
 private:
     HistoricalPriceList *LimitForRangeForADay(HistoricalPriceList *historicalPriceList);
 
-    std::tm *LocalTime();
+    /**
+     * Creates a new object containing only the count of days since today provided in the parameter.
+     * @param historicalPriceList
+     * @param rangeInDays
+     * @return
+     */
+    HistoricalPriceList *LimitForTimeRangeInDays(HistoricalPriceList *historicalPriceList, int rangeInDays);
 
-    BString *DateForString(BString *dateTimeString);
+    time_t CalculateTimeForItem(HistoricalPrice *const &item);
+
 };
 
 #endif //STOCKS_DATASERIESLIMITER_H

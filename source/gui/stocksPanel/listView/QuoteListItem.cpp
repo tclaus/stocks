@@ -7,6 +7,7 @@
 #include <View.h>
 #include <algorithm>
 #include "ListView.h"
+#include "../../Colors.h"
 
 QuoteListItem::QuoteListItem(Quote *quote)
         : ShareListItem(quote),
@@ -177,16 +178,15 @@ QuoteListItem::DrawChange(const BRect &frame, alignment horizontal_alignment, ve
     const char *changeString = QuoteFormatter::PercentageToString(fQuote->changesPercentage);
 
     CalcAndStoreCellHeight(&font, horizontal_alignment);
-    const rgb_color *whiteTextColor = new rgb_color{255, 255, 255, 255};
-    const rgb_color *rectColor = QuoteFormatter::ColorByValue(fQuote->changesPercentage);
+    rgb_color *whiteTextColor = new rgb_color(Colors::LowColor());
+    rgb_color *rectColor = new rgb_color(QuoteFormatter::GainLossColor(fQuote->changesPercentage));
 
-    DrawItemSettings settings = {frame, &font, const_cast<rgb_color *>(whiteTextColor), horizontal_alignment,
+    DrawItemSettings settings = {frame, &font, whiteTextColor, horizontal_alignment,
                                  vertical_alignment,
-                                 const_cast<rgb_color *>(rectColor)};
+                                 rectColor};
 
     listItemDrawer->DrawString(changeString, settings);
     delete changeString;
-    delete rectColor;
 }
 
 void

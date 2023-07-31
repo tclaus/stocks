@@ -3,7 +3,9 @@
 //
 
 #include "DataSeriesLimiter.h"
-#include <chrono>
+#include "DateTimeCalculator.h"
+
+#include <StringList.h>
 
 HistoricalPriceList *
 DataSeriesLimiter::LimitForRange(TimeRange timeRange, HistoricalPriceList *historicalPriceList) {
@@ -11,21 +13,48 @@ DataSeriesLimiter::LimitForRange(TimeRange timeRange, HistoricalPriceList *histo
         case TimeRange::M_DAY : {
             return LimitForRangeForADay(historicalPriceList);
         }
+        case TimeRange::M_WEEK: {
+            return LimitForTimeRangeInDays(historicalPriceList, 7);
+        }
+        case TimeRange::M_MONTH: {
+            return LimitForTimeRangeInDays(historicalPriceList, 30);
+        }
+        case TimeRange::M_THREE_MONTH: {
+            return LimitForTimeRangeInDays(historicalPriceList, 90);
+        }
+        case TimeRange::M_SIX_MONTH: {
+            return LimitForTimeRangeInDays(historicalPriceList, 180);
+        }
+        case TimeRange::M_YEAR: {
+            return LimitForTimeRangeInDays(historicalPriceList, 360);
+        }
+        case TimeRange::M_TWO_YEARS: {
+            return LimitForTimeRangeInDays(historicalPriceList, 720);
+        }
+        case TimeRange::M_FIVE_YEARS: {
+            return LimitForTimeRangeInDays(historicalPriceList, 1800);
+        }
         default: {
             return new HistoricalPriceList(*historicalPriceList);
         }
     }
 }
 
+/**
+ * Get only the last day in series of data.
+ * @param historicalPriceList
+ * @return
+ */
 HistoricalPriceList *
 DataSeriesLimiter::LimitForRangeForADay(HistoricalPriceList *historicalPriceList) {
     auto *limitedHistoricalPriceList = new HistoricalPriceList();
     if (!historicalPriceList->List()->empty()) {
-        BString *lastDate = DateForString(historicalPriceList->List()->front()->GetDate());
+        BString *lastDate = DateTimeCalculator::ExtractDateFromTimestamp(
+                historicalPriceList->List()->front()->GetDate());
         for (const auto &item: *historicalPriceList->List()) {
-            BString *dateToCheck = DateForString(item->GetDate());
+            BString *dateToCheck = DateTimeCalculator::ExtractDateFromTimestamp(item->GetDate());
             if (lastDate->Compare(*dateToCheck) == 0) {
-                limitedHistoricalPriceList->List()->push_back(item);
+                limitedHistoricalPriceList->List()->push_front(item);
             }
         }
     }
@@ -33,16 +62,27 @@ DataSeriesLimiter::LimitForRangeForADay(HistoricalPriceList *historicalPriceList
     return limitedHistoricalPriceList;
 }
 
-BString *
-DataSeriesLimiter::DateForString(BString *dateTimeString) {
-    auto *dateString = new BString();
-    dateTimeString->CopyInto(*dateString, 0, 10);
-    return dateString;
+HistoricalPriceList *
+DataSeriesLimiter::LimitForTimeRangeInDays(HistoricalPriceList *historicalPriceList, int rangeInDays) {
+    auto *limitedHistoricalPriceList = new HistoricalPriceList();
+    if (!historicalPriceList->List()->empty()) {
+
+        std::tm *startOfSeries = DateTimeCalculator::CalculateStartOfSeries(rangeInDays);
+        time_t startOfSeriesInSeconds = std::mktime(startOfSeries);
+
+        for (const auto &item: *historicalPriceList->List()) {
+            time_t dateToCheckInSeconds = CalculateTimeForItem(item);
+
+            if (dateToCheckInSeconds > startOfSeriesInSeconds) {
+                limitedHistoricalPriceList->List()->push_front(item);
+            }
+        }
+    }
+    return limitedHistoricalPriceList;
 }
 
-std::tm *DataSeriesLimiter::LocalTime() {
-    std::time_t *time = new std::time_t;
-    tm *tm = localtime(time);
-    return tm;
+time_t
+DataSeriesLimiter::CalculateTimeForItem(HistoricalPrice *const &item) {
+    BString *dateStringToCheck = DateTimeCalculator::ExtractDateFromTimestamp(item->GetDate());
+    return DateTimeCalculator::MakeTMFromTimestamp(dateStringToCheck->String());
 }
-

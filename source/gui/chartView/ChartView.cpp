@@ -26,11 +26,11 @@ ChartView::ChartView() :
 void
 ChartView::UpdateStatus() {
     SetActiveQuote(Portfolio::Instance().GetCurrentQuote());
-    RequestRedraw();
 }
 
 void
 ChartView::SetActiveQuote(Quote *quote) {
+    printf("Set active quote: %s \n", quote->symbol->operator const char *());
     if (quote == fQuote) {
         return;
     }
@@ -60,6 +60,7 @@ ChartView::Draw(BRect updateRect) {
     BView::Draw(updateRect);
 
     fBackgroundDrawer->DrawGridLines(updateRect);
+    // Für den letzten Preis das Quote noch mitnehmen
     fSeriesDrawer->DrawSeries(fTimeRange, fHistoricalPriceList);
 
     // Draw axis and labels

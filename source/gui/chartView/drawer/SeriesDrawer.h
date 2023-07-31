@@ -27,7 +27,9 @@ private:
 
     float calculateXNew(float maxDataPoints, int dataPointNumber) const;
 
-    float calculateYNew(float priceRange, float minPrice, HistoricalPrice *const &item) const;
+    float calculateYNew(float priceRange, float maxPrice, HistoricalPrice *const &item) const;
+
+    void DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *historicalPriceList);
 };
 
 

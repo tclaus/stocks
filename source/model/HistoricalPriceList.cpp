@@ -16,7 +16,7 @@ HistoricalPriceList::HistoricalPriceList(const HistoricalPriceList &original) {
 
 
 HistoricalPriceList::~HistoricalPriceList() {
-    printf(" Calling destructor of Historical prices");
+    printf(" Calling destructor of Historical prices \n");
     delete fHistoricalPrices;
 }
 

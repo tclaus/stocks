@@ -21,7 +21,9 @@ ChartTimeRangeBar::InitTabs() {
             .Add(createButton("1 M", new BMessage(TimeRange::M_MONTH)))
             .Add(createButton("3 M", new BMessage(TimeRange::M_THREE_MONTH)))
             .Add(createButton("6 M", new BMessage(TimeRange::M_SIX_MONTH)))
-            .Add(createButton("1 Y", new BMessage(TimeRange::M_YEAR)));
+            .Add(createButton("1 Y", new BMessage(TimeRange::M_YEAR)))
+            .Add(createButton("2 Y", new BMessage(TimeRange::M_TWO_YEARS)))
+            .Add(createButton("5 Y", new BMessage(TimeRange::M_FIVE_YEARS)));
 }
 
 BButton *

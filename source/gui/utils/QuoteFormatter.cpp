@@ -2,8 +2,11 @@
 // Created by Thorsten Claus on 06.03.23.
 //
 
-#include <sstream>
+
 #include "QuoteFormatter.h"
+#include "../Colors.h"
+
+#include <sstream>
 #include <locale>
 #include <cmath>
 #include <vector>
@@ -38,16 +41,13 @@ QuoteFormatter::CurrencyToString(float currencyValue) {
     return stringStream.str().data();
 }
 
-rgb_color *
-QuoteFormatter::ColorByValue(float value) {
-    auto *rectColor = new rgb_color();
+rgb_color
+QuoteFormatter::GainLossColor(float value) {
     if (value >= 0.0f) {
-        rectColor->set_to(101, 196, 102); // A green tone TODO: make a constant
+        return rgb_color(Colors::PriceGain());
     } else {
-        rectColor->set_to(235, 78, 61); // A red tone
+        return rgb_color(Colors::PriceLoss());
     }
-
-    return rectColor;
 }
 
 char *
@@ -67,7 +67,7 @@ QuoteFormatter::HumanReadableLargeNumber(float largeNumber) {
     if (std::isnan(largeNumber)) {
         return new char(' ');
     }
-    
+
     if (largeNumber < 1.0) {
         return new char('0');
     }

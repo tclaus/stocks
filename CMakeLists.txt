@@ -86,9 +86,10 @@ FetchContent_MakeAvailable(Catch2)
 add_executable(tests
         tests/test.cpp
         tests/repository/TestRepositoryConfig.cpp
-        source/repository/RepositoryConfig.cpp
         tests/repository/TestRepository.cpp
-        tests/repository/TestRepository.cpp tests/gui/utils/TestQuoteFormatter.cpp tests/gui/utils/TestQuoteFormatter.h)
+        tests/gui/utils/TestQuoteFormatter.cpp
+        tests/gui/chartview/drawer/TestDateTimeCalculator.cpp
+)
 
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 include(Catch)
@@ -106,6 +107,8 @@ haiku_add_executable(${PROJECT_NAME}
         source/App.h
         source/gui/MainWindow.h
         source/gui/MainWindow.cpp
+        source/gui/Colors.h
+        source/gui/Colors.cpp
         source/gui/chartView/DetailsView.h
         source/gui/chartView/DetailsView.cpp
         source/gui/chartView/DetailsChart.h
@@ -124,6 +127,8 @@ haiku_add_executable(${PROJECT_NAME}
         source/gui/chartView/drawer/SeriesDrawer.cpp
         source/gui/chartView/drawer/DataSeriesLimiter.h
         source/gui/chartView/drawer/DataSeriesLimiter.cpp
+        source/gui/chartView/drawer/DateTimeCalculator.h
+        source/gui/chartView/drawer/DateTimeCalculator.cpp
         source/gui/stocksPanel/StocksPanelView.h
         source/gui/stocksPanel/StocksPanelView.cpp
         source/gui/stocksPanel/SearchFieldControl.h
@@ -189,7 +194,7 @@ haiku_add_executable(${PROJECT_NAME}
         source/utils/Observer.cpp
         source/quoteUpdateJob/QuoteUpdateJob.h
         source/quoteUpdateJob/QuoteUpdateJob.cpp
-        )
+)
 
 target_link_directories(${PROJECT_NAME} PUBLIC /boot/system/develop/lib)
 target_link_libraries(${PROJECT_NAME} be ${STDCPPLIBS} network netservices2 bnetapi nlohmann_json::nlohmann_json)
