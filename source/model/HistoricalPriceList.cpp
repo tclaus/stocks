@@ -20,7 +20,8 @@ HistoricalPriceList::~HistoricalPriceList() {
     delete fHistoricalPrices;
 }
 
-std::list<HistoricalPrice *> *HistoricalPriceList::List() {
+std::list<HistoricalPrice *> *
+HistoricalPriceList::List() {
     return fHistoricalPrices;
 }
 
@@ -41,11 +42,4 @@ HistoricalPriceList::GetMinClosingPrice() {
             fMinClosingPrice = std::min(fMinClosingPrice, item->GetClose());
     }
     return fMinClosingPrice;
-}
-
-void
-HistoricalPriceList::Clear() {
-    fHistoricalPrices->clear();
-    fMinClosingPrice = 0.0;
-    fMaxClosingPrice = 0.0;
 }

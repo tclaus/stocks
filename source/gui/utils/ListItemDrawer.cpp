@@ -131,7 +131,3 @@ ListItemDrawer::DrawRoundedRec(const BRect &frame, const rgb_color &rounded_rec_
                            5.0f,
                            5.0f);
 }
-
-void ListItemDrawer::DrawOnPenPosition(const char *text) {
-    fParent->DrawString(text);
-}

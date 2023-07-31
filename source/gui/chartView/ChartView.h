@@ -59,7 +59,6 @@ private:
     StockConnector *fStockConnector{};
     HistoricalPriceResultHandler *fHistoricalPriceListHandler;
     HistoricalPriceList *fHistoricalPriceList;
-    uint32 fLastRequestId = 0;
 };
 
 

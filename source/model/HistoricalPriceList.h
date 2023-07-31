@@ -18,11 +18,7 @@ public:
 
     ~HistoricalPriceList();
 
-    float MaxPrice();
-
     std::list<HistoricalPrice *> *List();
-
-    void Clear();
 
     float GetMinClosingPrice();
 

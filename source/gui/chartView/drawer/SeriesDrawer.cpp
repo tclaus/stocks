@@ -72,9 +72,9 @@ SeriesDrawer::DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *his
 
 void SeriesDrawer::SetGainLossColor(HistoricalPrice *firstItem, HistoricalPrice *lastItem) {
     if (firstItem->GetOpen() < lastItem->GetClose()) {
-        fView->SetHighColor(Colors::PriceGain());
+        fView->SetHighColor(Colors::PlotGain());
     } else {
-        fView->SetHighColor(Colors::PriceLoss());
+        fView->SetHighColor(Colors::PlotLoss());
     }
 }
 

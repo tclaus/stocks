@@ -36,8 +36,6 @@ public:
 
     void DrawString(const char *text, const DrawItemSettings &settings);
 
-    void DrawOnPenPosition(const char *text);
-
 private:
 
     void DrawString(const char *text, BRect &frame, const BFont *font, alignment align, rgb_color *color,
