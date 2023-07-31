@@ -13,7 +13,6 @@ DetailsDataList::DetailsDataList() :
 
     InitStringViews();
 
-    printf("Layout detail strings");
     BLayoutBuilder::Group<>(this, B_HORIZONTAL)
             .AddGroup(B_VERTICAL, B_USE_SMALL_SPACING)
             .AddGrid()
@@ -59,7 +58,6 @@ void DetailsDataList::UpdateStatus() {
 
 void
 DetailsDataList::InitStringViews() {
-    printf("InitStringViews");
     fOpenStringView = new BStringView("strOpen", "Open");
     fOpenValueStringView = new BStringView("strOpenValue", "-");
     FormatValueLabel(fOpenValueStringView);

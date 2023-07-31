@@ -63,7 +63,6 @@ QuoteFormatter::NumberToString(float number) {
 
 char *
 QuoteFormatter::HumanReadableLargeNumber(float largeNumber) {
-    printf("Converting %f to human readable format \n", largeNumber);
     if (std::isnan(largeNumber)) {
         return new char(' ');
     }
@@ -74,7 +73,6 @@ QuoteFormatter::HumanReadableLargeNumber(float largeNumber) {
 
     std::vector<std::string> names{"", "Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion"};
     int powerOfTens = std::floor(std::log10(largeNumber) / 3.0);
-    printf("Got the 1,000 exponent as: %d \n", powerOfTens);
     // 0.. 999 => 0
     // 1000 99999 => 1
     std::string nameForNumber = names.at(powerOfTens);
@@ -82,6 +80,5 @@ QuoteFormatter::HumanReadableLargeNumber(float largeNumber) {
     auto reducedNumber = (float) (largeNumber / std::pow(1000L, powerOfTens));
     char *changeString = new char[30];
     std::sprintf(changeString, "%.2f %s", reducedNumber, nameForNumber.data());
-    printf("In human format: %s\n", changeString);
     return changeString;
 }

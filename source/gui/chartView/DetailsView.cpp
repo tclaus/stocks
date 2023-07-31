@@ -25,8 +25,5 @@ DetailsView::DetailsView()
 
 void
 DetailsView::SetTimeRange(TimeRange timeRange) {
-    //TODO: Wie kann ein Parent mehrere Ebenen tiefer ein Nachricht senden?
-
     detailsChart->SetTimeRange(timeRange);
-
 }

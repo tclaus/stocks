@@ -31,7 +31,7 @@ private:
 
     void DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *historicalPriceList);
 
-    void SetGainLossColor(HistoricalPrice *firstItem, HistoricalPrice *lastItem);
+    void SetGainLossColor(HistoricalPriceList &priceList);
 };
 
 

@@ -3,6 +3,7 @@
 //
 
 #include "GridlineDrawer.h"
+#include "../Colors.h"
 
 GridlineDrawer::GridlineDrawer(BView *view) :
         fView(view) {
@@ -21,7 +22,7 @@ GridlineDrawer::DrawOuterFrame() { fView->StrokeRect(fView->Bounds()); }
 void
 GridlineDrawer::DrawVerticalLines() {
     fView->PushState();
-    fView->SetHighColor(200, 200, 200); // A gray line
+    fView->SetHighColor(Colors::Gridline());
     for (int lineNumber = 0; lineNumber < numberOfVerticalLines; lineNumber++) {
         float startX = fView->Bounds().Width() / (float) numberOfVerticalLines * (1 + (float) lineNumber);
         float startY = 0.0;
@@ -38,7 +39,7 @@ GridlineDrawer::DrawVerticalLines() {
 void
 GridlineDrawer::DrawHorizontalLines() {
     fView->PushState();
-    fView->SetHighColor(200, 200, 200); // A gray line
+    fView->SetHighColor(Colors::Gridline());
     for (int lineNumber = 0; lineNumber < numberOfHorizontalLines; lineNumber++) {
         float startX = 0.0;
         float startY = fView->Bounds().Height() / (float) numberOfHorizontalLines * (1 + (float) lineNumber);

@@ -30,7 +30,6 @@ ChartView::UpdateStatus() {
 
 void
 ChartView::SetActiveQuote(Quote *quote) {
-    printf("Set active quote: %s \n", quote->symbol->operator const char *());
     if (quote == fQuote) {
         return;
     }
@@ -41,7 +40,6 @@ ChartView::SetActiveQuote(Quote *quote) {
 
 void
 ChartView::SetTimeRange(TimeRange timeRange) {
-    printf("Set new timeRange: %d\n", timeRange);
     if (fTimeRange == timeRange) {
         return;
     }
@@ -76,7 +74,6 @@ void
 ChartView::MessageReceived(BMessage *message) {
     switch (message->what) {
         case (BPrivate::Network::UrlEvent::RequestCompleted): {
-            printf("Received historic Data from request \n");
             ResultHandler(message->GetInt32(BPrivate::Network::UrlEventData::Id, -1));
             break;
         }
@@ -88,7 +85,6 @@ ChartView::MessageReceived(BMessage *message) {
 
 void
 ChartView::ResultHandler(int32 requestId) {
-    printf(" RequestId: %d \n", requestId);
     fHistoricalPriceList = fHistoricalPriceListHandler->GenerateHistoricalDataObject(requestId);
     Invalidate();
 }

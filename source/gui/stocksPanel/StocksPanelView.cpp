@@ -222,7 +222,6 @@ StocksPanelView::RemoveCachedQuoteListItem(const std::string &symbol) {
 
     auto const iterator = fQuoteListItems->find(symbol.c_str());
     if (iterator != fQuoteListItems->end()) {
-        printf("Remove list item for quote %s from list store \n", symbol.c_str());
         QuoteListItem *quoteListItem = iterator->second;
         fQuoteListItems->erase(BString(symbol.c_str()));
         delete quoteListItem;
@@ -239,7 +238,6 @@ StocksPanelView::StockSelected() {
         portfolio.ClearCurrentSelection();
         return;
     }
-    printf("Stock selected \n");
     if (fCurrentViewMode == ViewState::modePortfolioList) {
         auto *selectedQuoteListItem = dynamic_cast<QuoteListItem *>(listView->ItemAt(listViewSelection));
         portfolio.SetCurrentQuote(selectedQuoteListItem->GetQuote());

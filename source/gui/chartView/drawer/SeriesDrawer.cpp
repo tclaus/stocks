@@ -31,29 +31,11 @@ SeriesDrawer::DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *his
         float minPrice = limitedHistoricalPrice->GetMinClosingPrice();
         float priceRange = maxPrice - minPrice;
 
-        HistoricalPrice *firstItem = limitedHistoricalPrice->List()->front();
-        BString *startItemTimestamp = firstItem->GetDate();
-        // Hole die sekunden
+        SetGainLossColor(*limitedHistoricalPrice);
 
-        HistoricalPrice *lastItem = limitedHistoricalPrice->List()->back();
-        BString *lastItemTimestamp = lastItem->GetDate();
+        float maxDataPoints = (float) limitedHistoricalPrice->List()->size();
 
-
-        SetGainLossColor(firstItem, lastItem);
-
-        printf("Max price: %f, min price: %f, range: %f\n ", maxPrice, minPrice, priceRange);
-        printf("StartDate: %s, EndDate: %s \n", startItemTimestamp->String(), lastItemTimestamp->String());
-
-        printf("Datapoint count: %zu \n", limitedHistoricalPrice->List()->size());
-
-        float maxDataPoints = (float) limitedHistoricalPrice->List()->size();  // Bei einem ganzen Tag - alle anderen gilt die Anzahl der Datenpunkte in der Liste
-
-        // OK Kurs Seitenverkehrt?
-        // TODO: Grüne / rote farbe der Linie. Grün, wenn Closing price/CurrentPrice > Opening Price
-        // TODO: Linie etwas dicker machen. Pattern? an den endpunkten jeweils eine Linie genau daneben zeichnen?
-        // OK Linie geht nicht bis zum rechten Rand
-
-        float xOld, yOld, xNew, yNew;
+        float xOld = 0.0, yOld = 0.0, xNew = 0.0, yNew = 0.0;
         int dataPointNumber = 0;
         for (const auto &item: *limitedHistoricalPrice->List()) {
 
@@ -70,7 +52,10 @@ SeriesDrawer::DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *his
     delete limitedHistoricalPrice;
 }
 
-void SeriesDrawer::SetGainLossColor(HistoricalPrice *firstItem, HistoricalPrice *lastItem) {
+void SeriesDrawer::SetGainLossColor(HistoricalPriceList &historicalPriceList) {
+    HistoricalPrice *firstItem = historicalPriceList.List()->front();
+    HistoricalPrice *lastItem = historicalPriceList.List()->back();
+
     if (firstItem->GetOpen() < lastItem->GetClose()) {
         fView->SetHighColor(Colors::PlotGain());
     } else {

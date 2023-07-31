@@ -30,9 +30,9 @@ public:
 
     /**
      * Requests historical data for a given quote and a time range.
-     * The algorithm requests the data from now an to the past. 1 Day means this day, 1 Year means
+     * The algorithm requests the data from now an to the past. One Day means this day, 1 Year means
      * from now on one year in the past.
-     * @param symbol a
+     * @param symbol the stocks symbol identifier
      * @param timeRange the time range specifier
      * @return the new request Id
      */

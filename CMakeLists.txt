@@ -191,7 +191,6 @@ haiku_add_executable(${PROJECT_NAME}
         source/utils/ObservableSubject.h
         source/utils/ObservableSubject.cpp
         source/utils/Observer.h
-        source/utils/Observer.cpp
         source/quoteUpdateJob/QuoteUpdateJob.h
         source/quoteUpdateJob/QuoteUpdateJob.cpp
 )
