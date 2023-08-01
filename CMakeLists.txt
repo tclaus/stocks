@@ -95,13 +95,6 @@ target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 include(Catch)
 catch_discover_tests(tests)
 
-
-find_library(network NAMES network PATHS /boot/system/develop/lib/ REQUIRED)
-find_library(bnetapi NAMES bnetapi PATHS /boot/system/develop/lib/ REQUIRED)
-find_library(netservices2 NAMES netservices2 PATHS /boot/system/develop/lib/ REQUIRED)
-
-link_directories(/boot/system/develop/lib/)
-
 haiku_add_executable(${PROJECT_NAME}
         source/App.cpp
         source/App.h
@@ -195,5 +188,4 @@ haiku_add_executable(${PROJECT_NAME}
         source/quoteUpdateJob/QuoteUpdateJob.cpp
 )
 
-target_link_directories(${PROJECT_NAME} PUBLIC /boot/system/develop/lib)
 target_link_libraries(${PROJECT_NAME} be ${STDCPPLIBS} network netservices2 bnetapi nlohmann_json::nlohmann_json)

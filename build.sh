@@ -6,5 +6,4 @@ echo building package
 mkdir -p package/apps
 cd package
 cp ../build/Stocks ./apps
-ln -rs /boot/system/apps/Stocks/stocks  /apps/stocks
-package create -v -i ../.PackageInfo ../Stocks-0.1-x86.hpkg
+package create -v -i ../.PackageInfo ../stocks-0.1-x86_64.hpkg
