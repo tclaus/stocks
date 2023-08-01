@@ -2,14 +2,18 @@
 // Created by Thorsten Claus on 10.07.23.
 //
 
+#include <Catalog.h>
 #include <NetServicesDefs.h>
 #include "ChartView.h"
 #include "Portfolio.h"
 #include "TimeRange.h"
 #include "ApiBuilder.h"
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "ChartView"
+
 ChartView::ChartView() :
-        BView(BRect(), "chartView", B_FOLLOW_ALL, B_WILL_DRAW),
+        BView(BRect(), B_TRANSLATE("chartView"), B_FOLLOW_ALL, B_WILL_DRAW),
         fTimeRange(TimeRange::M_DAY),
         fHistoricalPriceListHandler(new HistoricalPriceResultHandler()),
         fHistoricalPriceList(new HistoricalPriceList()) {

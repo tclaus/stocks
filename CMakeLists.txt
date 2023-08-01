@@ -191,4 +191,5 @@ haiku_add_executable(${PROJECT_NAME}
         source/quoteUpdateJob/QuoteUpdateJob.cpp
 )
 
-target_link_libraries(${PROJECT_NAME} be ${STDCPPLIBS} network netservices2 bnetapi nlohmann_json::nlohmann_json)
+target_link_directories(${PROJECT_NAME} PUBLIC /boot/system/develop/lib)
+target_link_libraries(${PROJECT_NAME} be ${STDCPPLIBS} localestub network netservices2 bnetapi nlohmann_json::nlohmann_json)
