@@ -40,7 +40,8 @@ CMakeCache.txt
 CMakeFiles/
 /build*
 
-package/*.hpkg
+# Packages
+*.hpkg
 
 cmake_install.cmake
 compile_commands.json
