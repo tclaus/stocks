@@ -2,11 +2,15 @@
 // Created by Thorsten Claus on 01.05.23.
 //
 
+#include <Catalog.h>
 #include <LayoutBuilder.h>
 #include "DetailsChart.h"
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "DetailsChart"
+
 DetailsChart::DetailsChart() :
-        BView(BRect(), "detailsChartView", B_FOLLOW_ALL, B_WILL_DRAW) {
+        BView(BRect(), B_TRANSLATE("detailsChartView"), B_FOLLOW_ALL, B_WILL_DRAW) {
 
     InitView();
 }

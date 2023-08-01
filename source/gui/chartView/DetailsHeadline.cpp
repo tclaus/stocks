@@ -5,11 +5,15 @@
 #include "DetailsHeadline.h"
 #include "QuoteFormatter.h"
 #include "Portfolio.h"
+#include <Catalog.h>
 #include <LayoutBuilder.h>
 #include <StringView.h>
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "DetailsHeadline"
+
 DetailsHeadline::DetailsHeadline() :
-        BView(BRect(), "detailsHeadView", B_FOLLOW_ALL, B_WILL_DRAW) {
+        BView(BRect(), B_TRANSLATE("detailsHeadView"), B_FOLLOW_ALL, B_WILL_DRAW) {
 
     InitStringViews();
 
@@ -82,25 +86,25 @@ void DetailsHeadline::UpdateShortSymbolName() { fSymbolShortNameLabel->SetText(f
 
 void
 DetailsHeadline::CreateSymbolFullNameLabel() {
-    fSymbolFullNameLabel = new BStringView("symbolFullNameLabel", "Symbol");
+    fSymbolFullNameLabel = new BStringView("symbolFullNameLabel", B_TRANSLATE("Symbol"));
     fSymbolFullNameLabel->ResizeBy(0, 50);
 }
 
 void
 DetailsHeadline::CreateSymbolPriceLabel() {
-    fSymbolPriceLabel = new BStringView("symbolPriceLabel", "0,00€");
+    fSymbolPriceLabel = new BStringView("symbolPriceLabel", B_TRANSLATE("0,00€"));
     BFont font(be_bold_font);
     font.SetFace(B_BOLD_FACE);
     fSymbolPriceLabel->SetFont(&font);
 }
 
 void DetailsHeadline::CreateSymbolChangeLabel() {
-    fSymbolChangeLabel = new BStringView("symbolChangeLabel", "0%");
+    fSymbolChangeLabel = new BStringView("symbolChangeLabel", B_TRANSLATE("0%"));
 }
 
 void
 DetailsHeadline::CreateSymbolShortNameLabel() {
-    fSymbolShortNameLabel = new BStringView("shortSymbolName", "SYM");
+    fSymbolShortNameLabel = new BStringView("shortSymbolName", B_TRANSLATE("SYM"));
     BFont font(be_plain_font);
     font.SetFace(B_BOLD_FACE);
     font.SetSize(25);

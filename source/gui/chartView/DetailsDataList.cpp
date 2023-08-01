@@ -2,14 +2,18 @@
 // Created by Thorsten Claus on 01.05.23.
 //
 
+#include <Catalog.h>
 #include <LayoutBuilder.h>
 #include <StringView.h>
 #include "DetailsDataList.h"
 #include "Portfolio.h"
 #include "QuoteFormatter.h"
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "DetailsDataList"
+
 DetailsDataList::DetailsDataList() :
-        BView(BRect(), "detailsDataList", B_FOLLOW_ALL, B_WILL_DRAW) {
+        BView(BRect(), B_TRANSLATE("detailsDataList"), B_FOLLOW_ALL, B_WILL_DRAW) {
 
     InitStringViews();
 
@@ -58,39 +62,39 @@ void DetailsDataList::UpdateStatus() {
 
 void
 DetailsDataList::InitStringViews() {
-    fOpenStringView = new BStringView("strOpen", "Open");
+    fOpenStringView = new BStringView("strOpen", B_TRANSLATE("Open"));
     fOpenValueStringView = new BStringView("strOpenValue", "-");
     FormatValueLabel(fOpenValueStringView);
 
-    fHighStringView = new BStringView("strHigh", "High");
+    fHighStringView = new BStringView("strHigh", B_TRANSLATE("High"));
     fHighValueStringView = new BStringView("strHighValue", "-");
     FormatValueLabel(fHighValueStringView);
 
-    fLowStringView = new BStringView("strLow", "Low");
+    fLowStringView = new BStringView("strLow", B_TRANSLATE("Low"));
     fLowValueStringView = new BStringView("strLowValue", "-");
     FormatValueLabel(fLowValueStringView);
 
-    fVolumeStringView = new BStringView("strVolume", "Volume");
+    fVolumeStringView = new BStringView("strVolume", B_TRANSLATE("Volume"));
     fVolumeValueStringView = new BStringView("strVolumeValue", "-");
     FormatValueLabel(fVolumeValueStringView);
 
-    fPeStringView = new BStringView("strPe", "PE");
+    fPeStringView = new BStringView("strPe", B_TRANSLATE("PE"));
     fPeValueStringView = new BStringView("strPeValue", "-");
     FormatValueLabel(fPeValueStringView);
 
-    fMarketCapStringView = new BStringView("strMarketCap", "Cap");
+    fMarketCapStringView = new BStringView("strMarketCap", B_TRANSLATE("Cap"));
     fMarketCapValueStringView = new BStringView("strMarketCapValue", "-");
     FormatValueLabel(fMarketCapValueStringView);
 
-    fYearHighStringView = new BStringView("strYearHigh", "52W-H");
+    fYearHighStringView = new BStringView("strYearHigh", B_TRANSLATE("52W-H"));
     fYearHighValueValueStringView = new BStringView("strYearHighValue", "-");
     FormatValueLabel(fYearHighValueValueStringView);
 
-    fYearLowStringView = new BStringView("strYearLow", "52-W-L");
+    fYearLowStringView = new BStringView("strYearLow", B_TRANSLATE("52-W-L"));
     fYearLowValueStringView = new BStringView("strYearLowValue", "-");
     FormatValueLabel(fYearLowValueStringView);
 
-    fAvgVolumeStringView = new BStringView("strAvgVolume", "Avg. Vol");
+    fAvgVolumeStringView = new BStringView("strAvgVolume", B_TRANSLATE("Avg. Vol"));
     fAvgVolumeValueStringView = new BStringView("strAvgVolValue", "-");
     FormatValueLabel(fAvgVolumeValueStringView);
 }
