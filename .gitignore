@@ -34,13 +34,14 @@ objects.x86_64-cc11-release/
 *.out
 *.app
 
-Stocks
+
 .kdev4/
 CMakeCache.txt
 CMakeFiles/
 /build*
 
 # Packages
+package/apps/Stocks
 *.hpkg
 
 cmake_install.cmake
