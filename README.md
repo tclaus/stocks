@@ -9,7 +9,9 @@ It mimics the macOS Stocks App by layout and functions as this is small enough t
 
 ## Install
 
-There will be a loadable package. But for now, you have to get a developer APi key and build by your own.
+Just load and install the package from github. (x64). Its complete and ready-to-run. 
+
+You can also compile by your own. See next chapter how to get a API key to access the data provider.
 
 ## Contributing
 
