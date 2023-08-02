@@ -5,6 +5,8 @@ A stocks app for haiku.
 Simple search for a stock, by its name or its symbol and monitors gain/loss, latest price and a chart.
 It mimics the macOS Stocks App by layout and functions as this is small enough to be useful.
 
+![Stocks screenshot](./pictures/stocks.png) A sample screenshot
+
 ## Install
 
 There will be a loadable package. But for now, you have to get a developer APi key and build by your own.
