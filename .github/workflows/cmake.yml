@@ -23,14 +23,12 @@ jobs:
     - name: Get Haiku build dependencies
       run:  git clone --depth 1 https://github.com/tclaus/Haiku-libs.git build-dependencies
 
-    - name: Change lib path and injecting includes paths in cmake file
-      run: |
-          sed -i 's|/boot/system/develop/lib|build-dependencies/lib|g' CMakeLists.txt
-          sed -i '142i include_directories(AFTER SYSTEM \
-                build-dependencies/headers \
-                build-dependencies/headers/os/app \
-                build-dependencies/headers/interface)' \
-                CMakeLists.txt
+    - name: Get Haiku Toolchains repo
+      run: get clone git@github.com:haiku/haiku-toolchains-ubuntu.git
+
+    - name: Get Toolchains
+      run: cd haiku-toolchains-ubuntu
+           curl -sLOJ $(./fetch.sh --hosttools)
     
 
 #TODO: get the needed Libs from another repo
