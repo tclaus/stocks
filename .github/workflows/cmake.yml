@@ -24,7 +24,7 @@ jobs:
       run:  git clone --depth 1 https://github.com/tclaus/Haiku-libs.git build-dependencies
 
     - name: Get Haiku Toolchains repo
-      run: get clone git@github.com:haiku/haiku-toolchains-ubuntu.git
+      run: git clone git@github.com:haiku/haiku-toolchains-ubuntu.git
 
     - name: Get Toolchains
       run: cd haiku-toolchains-ubuntu
