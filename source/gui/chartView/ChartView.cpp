@@ -58,7 +58,6 @@ ChartView::Draw(BRect updateRect) {
     BView::Draw(updateRect);
 
     fBackgroundDrawer->DrawGridLines(updateRect);
-    // Für den letzten Preis das Quote noch mitnehmen
     fSeriesDrawer->DrawSeries(fTimeRange, fHistoricalPriceList);
 
     // Draw axis and labels
