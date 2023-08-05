@@ -13,6 +13,8 @@ class DetailsChart : public BView {
 public:
     DetailsChart();
 
+    ~DetailsChart();
+
 /**
  * Sets the current active quote to view its details.
  * @param quote The quote to show details.
@@ -25,6 +27,7 @@ public:
 
 private:
     ChartView *fChartView;
+    ChartTimeRangeBar *fChartTimeRangeBar;
 };
 
 
