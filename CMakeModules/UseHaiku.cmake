@@ -42,7 +42,7 @@ if (HAIKU_ENABLE_I18N)
     add_custom_target("catalogsinstall"
             DEPENDS "catalogs"
             COMMAND "${CMAKE_COMMAND}" "-DCMAKE_INSTALL_COMPONENT=locales" "-P" "${CMAKE_BINARY_DIR}/cmake_install.cmake"
-            )
+    )
 
     if (NOT DEFINED CMAKE_INSTALL_LOCALEDIR)
         set(CMAKE_INSTALL_LOCALEDIR "data/locale")
