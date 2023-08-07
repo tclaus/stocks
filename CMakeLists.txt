@@ -96,6 +96,7 @@ include(Catch)
 catch_discover_tests(tests)
 
 haiku_add_executable(${PROJECT_NAME}
+        source/Stocks.rdef
         source/App.cpp
         source/App.h
         source/gui/MainWindow.h
