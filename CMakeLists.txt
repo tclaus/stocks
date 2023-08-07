@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.23)
 
 project(
         Stocks
-        VERSION 0.1
+        VERSION 0.2
         DESCRIPTION "A stocks application to set up a portfolio and check stock price changes over time"
 )
 
