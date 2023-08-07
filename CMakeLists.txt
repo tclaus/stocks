@@ -7,6 +7,7 @@ project(
 )
 
 set(CMAKE_MODULE_PATH "${Stocks_SOURCE_DIR}/CMakeModules")
+
 if (CMAKE_PROJECT_NAME STREQUAL ${PROJECT_NAME})
     set(CMAKE_EXPORT_COMPILE_COMMANDS On)
     set(CMAKE_CXX_STANDARD 17)
@@ -18,8 +19,14 @@ if (CMAKE_PROJECT_NAME STREQUAL ${PROJECT_NAME})
 endif ()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set(HAIKU_ENABLE_I18N ON)
 
 include(UseHaiku)
+
+# Needed dependencies because FinancialmodelingApiKey and RepositoryConfig should be copied to the right place
+add_dependencies("catkeys" ${PROJECT_NAME})
+add_dependencies("catalogs" ${PROJECT_NAME})
+add_dependencies("bindcatalogs" ${PROJECT_NAME})
 
 option(STRICT_WARNINGS "Compile with extra warnings and errors" ON)
 
@@ -193,3 +200,9 @@ haiku_add_executable(${PROJECT_NAME}
 
 target_link_directories(${PROJECT_NAME} PUBLIC /boot/system/develop/lib)
 target_link_libraries(${PROJECT_NAME} be ${STDCPPLIBS} localestub network netservices2 bnetapi nlohmann_json::nlohmann_json)
+
+if (HAIKU_ENABLE_I18N)
+    set("${PROJECT_NAME}-APP_MIME_SIG" "application/x-vnd.tclaus-StocksApp")
+    set("${PROJECT_NAME}-LOCALES" "en")
+    haiku_add_i18n(${PROJECT_NAME})
+endif ()
