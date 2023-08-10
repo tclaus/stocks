@@ -13,10 +13,10 @@ class HistoricalPriceResultHandler {
 public:
     HistoricalPriceResultHandler();
 
-/**
- * Generates a historical data object from the request id
- * @param requestId
- */
+    /**
+     * Generates a historical data object from the request id
+     * @param requestId
+     */
     HistoricalPriceList *GenerateHistoricalDataObject(int requestId);
 
 private:
