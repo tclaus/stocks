@@ -64,6 +64,7 @@ MainWindow::MessageReceived(BMessage *message) {
         case (TimeRange::M_DAY):
         case (TimeRange::M_WEEK):
         case (TimeRange::M_MONTH):
+        case (TimeRange::M_THREE_MONTH):
         case (TimeRange::M_SIX_MONTH):
         case (TimeRange::M_YEAR):
         case (TimeRange::M_TWO_YEARS):
