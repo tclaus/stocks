@@ -21,8 +21,10 @@ HistoricalPriceResultHandler::GenerateHistoricalDataObject(int requestId) {
 HistoricalPriceList *
 HistoricalPriceResultHandler::ConvertJsonToHistoricalData(BString *jsonString) {
     json parsedJson = json::parse(jsonString->String());
-
     auto *historicalPriceList = new HistoricalPriceList();
+
+    parsedJson = retrieveInnerArrayOnLargerTimeframes(parsedJson);
+
     for (auto &item: parsedJson.items()) {
         auto innerJsonElement = item.value();
         auto *historicalPrice = new HistoricalPrice();
@@ -34,6 +36,13 @@ HistoricalPriceResultHandler::ConvertJsonToHistoricalData(BString *jsonString) {
         historicalPriceList->List()->push_back(historicalPrice);
     }
     return historicalPriceList;
+}
+
+json &HistoricalPriceResultHandler::retrieveInnerArrayOnLargerTimeframes(json &parsedJson) const {
+    if (!parsedJson.is_array()) {
+        parsedJson = parsedJson.at("historical");
+    }
+    return parsedJson;
 }
 
 float

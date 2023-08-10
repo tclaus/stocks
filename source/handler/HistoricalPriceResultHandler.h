@@ -29,6 +29,18 @@ private:
      * @return
      */
     float FloatValueFromJson(std::string const &key, nlohmann::basic_json<> &jsonElement);
+
+    /**
+     * On a larger timescale the API wraps the inner array in something like
+     * <pre>
+     * {"symbol": "appl",
+     * "historicData: [{a single datapoint}, {...}]}
+     * </pre>
+     * This method retrieves the inner array
+     * @param parsedJson raw json from API
+     * @return the array part with the datapoints ( [{data}, {data},...] )
+     */
+    nlohmann::basic_json<> &retrieveInnerArrayOnLargerTimeframes(nlohmann::basic_json<> &parsedJson) const;
 };
 
 

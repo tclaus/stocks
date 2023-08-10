@@ -69,10 +69,9 @@ MainWindow::MessageReceived(BMessage *message) {
         case (TimeRange::M_YEAR):
         case (TimeRange::M_TWO_YEARS):
         case (TimeRange::M_FIVE_YEARS): {
-        // TODO:  How can a time range button directly send a message to its parent?
-        // Dont like this detour
-        TimeRange timeRange = static_cast<TimeRange>(message->what);
-
+            // TODO:  How can a time range button directly send a message to its parent?
+            // Dont like this detour
+            TimeRange timeRange = static_cast<TimeRange>(message->what);
             fChartView->SetTimeRange(timeRange);
             break;
         }
