@@ -100,6 +100,7 @@ Financialmodelingprep::DeterminePathForHistoricalData(TimeRange timeRange) {
         case M_WEEK:
             return "historical-chart/5min/";
         case M_MONTH:
+            return "historical-chart/15min/";
         case M_THREE_MONTH:
             return "historical-chart/1hour/";
         case M_SIX_MONTH:
