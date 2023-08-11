@@ -1,5 +1,5 @@
 name Stocks
-version 0.2-1
+version 0.3-1
 architecture x86_64
 
 summary "A simple stocks app to show detail quotes data"
@@ -12,12 +12,15 @@ licenses "Apache v2"
 urls {
 	https://github.com/tclaus/stocks
 }
+source-url {
+	https://github.com/tclaus/stocks
+}
 
 source-urls {
 	https://github.com/tclaus/stocks
 }
 
 provides {
-	Stocks = 0.2-1
-	app:Stocks = 0.2
+	Stocks = 0.3-1
+	app:Stocks = 0.3
 }
