@@ -12,9 +12,6 @@ licenses "Apache v2"
 urls {
 	https://github.com/tclaus/stocks
 }
-source-url {
-	https://github.com/tclaus/stocks
-}
 
 source-urls {
 	https://github.com/tclaus/stocks
