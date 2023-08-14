@@ -57,7 +57,7 @@ configure_file(
         "source/repository/RepositoryConfig.cpp"
 )
 
-# Set the api key from a environment variable
+# Set the api key from an environment variable
 set(FINANCIAL_API_KEY $ENV{STOCKS_APP_API_KEY})
 configure_file(
         "source/api/FinancialmodelingApiKey.cpp.in"
@@ -123,6 +123,8 @@ haiku_add_executable(${PROJECT_NAME}
         source/gui/chartView/drawer/DataSeriesLimiter.cpp
         source/gui/chartView/drawer/DateTimeCalculator.h
         source/gui/chartView/drawer/DateTimeCalculator.cpp
+        source/gui/chartView/drawer/VerticalAxisDrawer.h
+        source/gui/chartView/drawer/VerticalAxisDrawer.cpp
         source/gui/stocksPanel/StocksPanelView.h
         source/gui/stocksPanel/StocksPanelView.cpp
         source/gui/stocksPanel/SearchFieldControl.h
