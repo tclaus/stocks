@@ -4,9 +4,8 @@
 
 #include "SeriesDrawer.h"
 #include "DataSeriesLimiter.h"
-#include "DateTimeCalculator.h"
 #include "../Colors.h"
-#include <cstdio>
+#include "VerticalAxisDrawer.h"
 
 SeriesDrawer::SeriesDrawer(BView *view) :
         fView(view) {
@@ -70,5 +69,9 @@ SeriesDrawer::calculateYNew(float priceRange, float maxPrice, HistoricalPrice *c
 
 float
 SeriesDrawer::calculateXNew(float maxDataPoints, int dataPointNumber) const {
-    return (float) dataPointNumber * (fView->Bounds().Width() / (float) maxDataPoints);
+    return (float) dataPointNumber * (CalculateDrawAreaWidth() / (float) maxDataPoints);
+}
+
+float SeriesDrawer::CalculateDrawAreaWidth() const {
+    return fView->Bounds().Width() - RIGHT_PLAT_AREA_MARGIN;
 }

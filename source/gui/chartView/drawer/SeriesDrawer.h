@@ -25,13 +25,18 @@ public:
 private:
     BView *fView;
 
+    [[nodiscard]]
     float calculateXNew(float maxDataPoints, int dataPointNumber) const;
 
+    [[nodiscard]]
     float calculateYNew(float priceRange, float maxPrice, HistoricalPrice *const &item) const;
 
     void DrawSeriesWithState(TimeRange &timeRange, HistoricalPriceList *historicalPriceList);
 
     void SetGainLossColor(HistoricalPriceList &priceList);
+
+    [[nodiscard]]
+    float CalculateDrawAreaWidth() const;
 };
 
 

@@ -18,6 +18,7 @@ ChartView::ChartView() :
 
     fBackgroundDrawer = new GridlineDrawer(this);
     fSeriesDrawer = new SeriesDrawer(this);
+    fVerticalAxisDrawer = new VerticalAxisDrawer(this);
 
     Portfolio::Instance().Attach(this);
     CreateApiConnection();
@@ -59,7 +60,7 @@ ChartView::Draw(BRect updateRect) {
 
     fBackgroundDrawer->DrawGridLines(updateRect);
     fSeriesDrawer->DrawSeries(fTimeRange, fHistoricalPriceList);
-
+    fVerticalAxisDrawer->DrawAxis(fTimeRange, fHistoricalPriceList);
     // Draw axis and labels
 }
 

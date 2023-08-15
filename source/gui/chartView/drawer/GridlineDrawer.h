@@ -18,7 +18,7 @@ public:
      * It draws the frame as well as the horizontal and vertical background lines.
      * @param view
      */
-    GridlineDrawer(BView *view);
+    explicit GridlineDrawer(BView *view);
 
     void DrawGridLines(BRect &updateRect);
 
@@ -28,8 +28,8 @@ private:
     void DrawVerticalLines();
 
     BView *fView;
-    const int numberOfVerticalLines = 3;
-    const int numberOfHorizontalLines = 3;
+    const int numberOfVerticalLines = 4;
+    const int numberOfHorizontalLines = 4;
 
     void DrawHorizontalLines();
 };

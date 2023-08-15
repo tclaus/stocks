@@ -11,7 +11,7 @@
 #include "TimeRange.h"
 #include "drawer/GridlineDrawer.h"
 #include "drawer/SeriesDrawer.h"
-
+#include "drawer/VerticalAxisDrawer.h"
 #include "View.h"
 #include "StockConnector.h"
 #include "HistoricalPriceList.h"
@@ -56,6 +56,8 @@ private:
     TimeRange fTimeRange;
     GridlineDrawer *fBackgroundDrawer;
     SeriesDrawer *fSeriesDrawer;
+    VerticalAxisDrawer *fVerticalAxisDrawer;
+
     StockConnector *fStockConnector{};
     HistoricalPriceResultHandler *fHistoricalPriceListHandler;
     HistoricalPriceList *fHistoricalPriceList;
