@@ -6,4 +6,4 @@ echo Building package
 
 cd package
 cp ../build/Stocks ./apps
-package create -v -i ../.PackageInfo ../stocks-0.3-x86_64.hpkg
+package create -v -i ../.PackageInfo ../stocks-0.4-x86_64.hpkg
