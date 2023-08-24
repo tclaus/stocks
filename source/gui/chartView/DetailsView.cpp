@@ -11,7 +11,7 @@
 #define B_TRANSLATION_CONTEXT "DetailsView"
 
 DetailsView::DetailsView()
-        : BView(BRect(), B_TRANSLATE("chartView"), B_FOLLOW_ALL, B_WILL_DRAW) {
+        : BView(BRect(), "chartView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
     SetExplicitMinSize(BSize(200, 500));
 

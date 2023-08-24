@@ -13,7 +13,7 @@
 #define B_TRANSLATION_CONTEXT "DetailsHeadline"
 
 DetailsHeadline::DetailsHeadline() :
-        BView(BRect(), B_TRANSLATE("detailsHeadView"), B_FOLLOW_ALL, B_WILL_DRAW) {
+        BView(BRect(), "detailsHeadView", B_FOLLOW_ALL, B_WILL_DRAW) {
 
     InitStringViews();
 

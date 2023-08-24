@@ -13,7 +13,7 @@
 #define B_TRANSLATION_CONTEXT "ChartView"
 
 ChartView::ChartView() :
-        BView(BRect(), B_TRANSLATE("chartView"), B_FOLLOW_ALL, B_WILL_DRAW),
+        BView(BRect(), "chartView", B_FOLLOW_ALL, B_WILL_DRAW),
         fTimeRange(TimeRange::M_DAY),
         fHistoricalPriceListHandler(new HistoricalPriceResultHandler()),
         fHistoricalPriceList(new HistoricalPriceList()) {
