@@ -9,7 +9,6 @@
 #include <string>
 #include <Path.h>
 
-const std::string RepositoryConfig::projectDirectoryName = "@PROJECT_NAME@";
 const std::string RepositoryConfig::configFileName = "config";
 
 std::string RepositoryConfig::GetConfigFilePath() {

@@ -4,8 +4,6 @@
 
 #include "FinancialmodelingApiKey.h"
 
-const std::string FinancialmodelingApiKey::fApiKey = "@FINANCIAL_API_KEY@";
-
 std::string FinancialmodelingApiKey::GetApiKey() {
     return fApiKey;
 }

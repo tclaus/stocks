@@ -14,7 +14,7 @@ public:
     static std::string GetConfigfileFieleName();
 
 private:
-    static const std::string projectDirectoryName;
+    inline static const std::string projectDirectoryName = "@PROJECT_NAME@";
     static const std::string configFileName;
 };
 
