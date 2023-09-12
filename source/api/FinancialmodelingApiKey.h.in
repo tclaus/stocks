@@ -23,7 +23,7 @@ public:
     static std::string GetApiKey();
 
 private:
-    static const std::string fApiKey;
+    inline static const std::string fApiKey = "@FINANCIAL_API_KEY@";
 };
 
 

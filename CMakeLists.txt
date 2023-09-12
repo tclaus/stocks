@@ -56,19 +56,21 @@ include_directories(AFTER
         source/gui/chartView
         source/gui/utils
         source/repository
-        source/api)
+        source/api
+        ${CMAKE_BINARY_DIR}/source/repository
+        ${CMAKE_BINARY_DIR}/source/api)
 
 # Set project name
 configure_file(
-        "source/repository/RepositoryConfig.cpp.in"
-        "source/repository/RepositoryConfig.cpp"
+        "source/repository/RepositoryConfig.h.in"
+        "source/repository/RepositoryConfig.h"
 )
 
 # Set the api key from an environment variable
 set(FINANCIAL_API_KEY $ENV{STOCKS_APP_API_KEY})
 configure_file(
-        "source/api/FinancialmodelingApiKey.cpp.in"
-        "source/api/FinancialmodelingApiKey.cpp"
+        "source/api/FinancialmodelingApiKey.h.in"
+        "source/api/FinancialmodelingApiKey.h"
 )
 
 # JSON Parser
@@ -105,96 +107,48 @@ catch_discover_tests(tests)
 haiku_add_executable(${PROJECT_NAME}
         source/Stocks.rdef
         source/App.cpp
-        source/App.h
-        source/gui/MainWindow.h
         source/gui/MainWindow.cpp
-        source/gui/Colors.h
         source/gui/Colors.cpp
-        source/gui/chartView/DetailsView.h
         source/gui/chartView/DetailsView.cpp
-        source/gui/chartView/DetailsChart.h
         source/gui/chartView/DetailsChart.cpp
-        source/gui/chartView/DetailsDataList.h
         source/gui/chartView/DetailsDataList.cpp
-        source/gui/chartView/DetailsHeadline.h
         source/gui/chartView/DetailsHeadline.cpp
-        source/gui/chartView/ChartTimeRangeBar.h
         source/gui/chartView/ChartTimeRangeBar.cpp
-        source/gui/chartView/ChartView.h
         source/gui/chartView/ChartView.cpp
-        source/gui/chartView/drawer/GridlineDrawer.h
         source/gui/chartView/drawer/GridlineDrawer.cpp
-        source/gui/chartView/drawer/SeriesDrawer.h
         source/gui/chartView/drawer/SeriesDrawer.cpp
-        source/gui/chartView/drawer/DataSeriesLimiter.h
         source/gui/chartView/drawer/DataSeriesLimiter.cpp
-        source/gui/chartView/drawer/DateTimeCalculator.h
         source/gui/chartView/drawer/DateTimeCalculator.cpp
-        source/gui/chartView/drawer/VerticalAxisDrawer.h
         source/gui/chartView/drawer/VerticalAxisDrawer.cpp
-        source/gui/stocksPanel/StocksPanelView.h
         source/gui/stocksPanel/StocksPanelView.cpp
-        source/gui/stocksPanel/SearchFieldControl.h
         source/gui/stocksPanel/SearchFieldControl.cpp
-        source/gui/stocksPanel/ListItemConstants.h
-        source/gui/stocksPanel/listView/QuoteListItem.h
         source/gui/stocksPanel/listView/QuoteListItem.cpp
-        source/gui/stocksPanel/listView/FoundShareListItem.h
         source/gui/stocksPanel/listView/FoundShareListItem.cpp
-        source/gui/stocksPanel/listView/ShareListItem.h
         source/gui/stocksPanel/listView/ShareListItem.cpp
-        source/gui/utils/ListItemDrawer.h
         source/gui/utils/ListItemDrawer.cpp
-        source/gui/utils/QuoteFormatter.h
         source/gui/utils/QuoteFormatter.cpp
-        source/gui/utils/DelayedQueryTimer.h
         source/gui/utils/DelayedQueryTimer.cpp
-        source/gui/utils/EscapeCancelFilter.h
         source/gui/utils/EscapeCancelFilter.cpp
-        source/api/StockConnector.h
-        source/api/Financialmodelingprep.h
         source/api/Financialmodelingprep.cpp
         source/api/FinancialmodelingApiKey.cpp
-        source/api/FinancialmodelingApiKey.h
-        source/api/NetRequester.h
         source/api/NetRequester.cpp
-        source/api/ApiBuilder.h
         source/api/ApiBuilder.cpp
         source/model/Quote.cpp
-        source/model/Quote.h
-        source/model/Portfolio.h
         source/model/Portfolio.cpp
-        source/model/SearchResultItem.h
         source/model/SearchResultItem.cpp
-        source/model/SearchResultList.h
         source/model/SearchResultList.cpp
-        source/model/SelectionOfSymbols.h
         source/model/SelectionOfSymbols.cpp
-        source/model/HistoricalPrice.h
         source/model/HistoricalPrice.cpp
-        source/model/HistoricalPriceList.h
         source/model/HistoricalPriceList.cpp
-        source/model/TimeRange.h
-        source/repository/QuotesRepository.h
         source/repository/QuotesRepository.cpp
-        source/repository/RepositoryConfig.h
         source/repository/RepositoryConfig.cpp
-        source/repository/Repository.h
         source/repository/Repository.cpp
-        source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.h
         source/model/linkedRequestQuoteStore/BaseLinkedRequestToQuoteStore.cpp
-        source/model/linkedRequestQuoteStore/QuoteRequestStore.h
         source/model/linkedRequestQuoteStore/QuoteRequestStore.cpp
-        source/handler/QuoteResultHandler.h
         source/handler/QuoteResultHandler.cpp
-        source/handler/HistoricalPriceResultHandler.h
         source/handler/HistoricalPriceResultHandler.cpp
-        source/utils/BaseThreadedJob.h
         source/utils/BaseThreadedJob.cpp
-        source/utils/ObservableSubject.h
         source/utils/ObservableSubject.cpp
-        source/utils/Observer.h
-        source/quoteUpdateJob/QuoteUpdateJob.h
         source/quoteUpdateJob/QuoteUpdateJob.cpp
 )
 
