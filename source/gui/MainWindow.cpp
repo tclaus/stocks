@@ -16,7 +16,7 @@
 
 MainWindow::MainWindow()
         : BWindow(BRect(100, 100, 500, 400), B_TRANSLATE_SYSTEM_NAME("Stocks"), B_TITLED_WINDOW,
-                  B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS),
+                  B_ASYNCHRONOUS_CONTROLS),
           fQuoteResultHandler(new QuoteResultHandler()) {
 
     SetWindowSizeLimits();
