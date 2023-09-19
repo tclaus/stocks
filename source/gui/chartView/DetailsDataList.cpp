@@ -2,11 +2,15 @@
 // Created by Thorsten Claus on 01.05.23.
 //
 
+#include <Catalog.h>
 #include <LayoutBuilder.h>
 #include <StringView.h>
 #include "DetailsDataList.h"
 #include "Portfolio.h"
 #include "QuoteFormatter.h"
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "DetailsDataList"
 
 DetailsDataList::DetailsDataList() :
         BView(BRect(), "detailsDataList", B_FOLLOW_ALL, B_WILL_DRAW) {
@@ -58,39 +62,45 @@ void DetailsDataList::UpdateStatus() {
 
 void
 DetailsDataList::InitStringViews() {
-    fOpenStringView = new BStringView("strOpen", "Open");
+    fOpenStringView = new BStringView("strOpen", B_TRANSLATE_COMMENT("Open", "Last daily opening price"));
     fOpenValueStringView = new BStringView("strOpenValue", "-");
     FormatValueLabel(fOpenValueStringView);
 
-    fHighStringView = new BStringView("strHigh", "High");
+    fHighStringView = new BStringView("strHigh", B_TRANSLATE_COMMENT("High", "Highest price for current or last day"));
     fHighValueStringView = new BStringView("strHighValue", "-");
     FormatValueLabel(fHighValueStringView);
 
-    fLowStringView = new BStringView("strLow", "Low");
+    fLowStringView = new BStringView("strLow", B_TRANSLATE_COMMENT("Low", "Lowest price for current or last day"));
     fLowValueStringView = new BStringView("strLowValue", "-");
     FormatValueLabel(fLowValueStringView);
 
-    fVolumeStringView = new BStringView("strVolume", "Volume");
+    fVolumeStringView = new BStringView("strVolume", B_TRANSLATE("Volume"));
     fVolumeValueStringView = new BStringView("strVolumeValue", "-");
     FormatValueLabel(fVolumeValueStringView);
 
-    fPeStringView = new BStringView("strPe", "PE");
+    fPeStringView = new BStringView("strPe", B_TRANSLATE_COMMENT("P/E ratio",
+                                                                 "The price-earnings ratio, also known as P/E, or PER, is the ratio of a company's share price to the company's earnings per share. Keep as short as possible. "));
     fPeValueStringView = new BStringView("strPeValue", "-");
     FormatValueLabel(fPeValueStringView);
 
-    fMarketCapStringView = new BStringView("strMarketCap", "Cap");
+    fMarketCapStringView = new BStringView("strMarketCap",
+                                           B_TRANSLATE_COMMENT("Cap",
+                                                               "Abbreviation for the total value of shares owned by stockholders."));
     fMarketCapValueStringView = new BStringView("strMarketCapValue", "-");
     FormatValueLabel(fMarketCapValueStringView);
 
-    fYearHighStringView = new BStringView("strYearHigh", "52W-H");
+    fYearHighStringView = new BStringView("strYearHigh", B_TRANSLATE_COMMENT("52W-H",
+                                                                             "Abbreviation for the highest price in last 52 weeks."));
     fYearHighValueValueStringView = new BStringView("strYearHighValue", "-");
     FormatValueLabel(fYearHighValueValueStringView);
 
-    fYearLowStringView = new BStringView("strYearLow", "52-W-L");
+    fYearLowStringView = new BStringView("strYearLow", B_TRANSLATE_COMMENT("52-W-L",
+                                                                           "Abbreviation for the lowest price in last 52 weeks."));
     fYearLowValueStringView = new BStringView("strYearLowValue", "-");
     FormatValueLabel(fYearLowValueStringView);
 
-    fAvgVolumeStringView = new BStringView("strAvgVolume", "Avg. Vol");
+    fAvgVolumeStringView = new BStringView("strAvgVolume",
+                                           B_TRANSLATE_COMMENT("Avg. Vol", "Abbreviation for the average volume."));
     fAvgVolumeValueStringView = new BStringView("strAvgVolValue", "-");
     FormatValueLabel(fAvgVolumeValueStringView);
 }

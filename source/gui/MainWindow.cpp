@@ -3,14 +3,19 @@
 #include "DetailsView.h"
 #include "stocksPanel/SearchFieldControl.h"
 #include <Application.h>
+#include <Catalog.h>
 #include <InterfaceKit.h>
 #include <LayoutBuilder.h>
 #include "utils/EscapeCancelFilter.h"
 #include <Window.h>
 #include <private/netservices2/NetServicesDefs.h>
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "MainWindow"
+
+
 MainWindow::MainWindow()
-        : BWindow(BRect(100, 100, 500, 400), "Stocks", B_TITLED_WINDOW,
+        : BWindow(BRect(100, 100, 500, 400), B_TRANSLATE_SYSTEM_NAME("Stocks"), B_TITLED_WINDOW,
                   B_ASYNCHRONOUS_CONTROLS),
           fQuoteResultHandler(new QuoteResultHandler()) {
 

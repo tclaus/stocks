@@ -1,6 +1,6 @@
 echo Building stocks
-cmake -DCMAKE_BUILD_TYPE=Release -S ./ -B build
-cmake --build ./build --target Stocks -- -j 4
+cmake -DCMAKE_BUILD_TYPE=Release -DHAIKU_ENABLE_I18N=ON -S ./ -B build
+cmake --build ./build --target Stocks -- -j 2
 
 echo Building package
 

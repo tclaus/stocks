@@ -1,0 +1,21 @@
+1	English	x-vnd.tclaus-StocksApp	3946264694
+52-W-L	DetailsDataList	Abbreviation for the lowest price in last 52 weeks.	52-W-L
+3 M	ChartTimeRangeBar	Abbreviation for 'three months'	3 M
+Open	DetailsDataList	Last daily opening price	Open
+1 M	ChartTimeRangeBar	Abbreviation for 'one month'	1 M
+1 W	ChartTimeRangeBar	Abbreviation for 'one Week'	1 W
+Stocks	System name		Stocks
+5 Y	ChartTimeRangeBar	Abbreviation for '5 years', the longest possible period	5 Y
+SYM	DetailsHeadline	Abbreviation for 'symbol' the stocks identifier.	SYM
+Avg. Vol	DetailsDataList	Abbreviation for the average volume.	Avg. Vol
+6 M	ChartTimeRangeBar	Abbreviation for 'six months'	6 M
+2 Y	ChartTimeRangeBar	Abbreviation for 'two years'	2 Y
+52W-H	DetailsDataList	Abbreviation for the highest price in last 52 weeks.	52W-H
+Volume	DetailsDataList		Volume
+Symbol	DetailsHeadline	The stocks full name. Used as a placeholder here.	Symbol
+1 Y	ChartTimeRangeBar	Abbreviation for 'one year', the last 12 months	1 Y
+1 D	ChartTimeRangeBar	Abbreviation for 'one day', short as possible	1 D
+Low	DetailsDataList	Lowest price for current or last day	Low
+Cap	DetailsDataList	Abbreviation for the total value of shares owned by stockholders.	Cap
+P/E ratio	DetailsDataList	The price-earnings ratio, also known as P/E, or PER, is the ratio of a company's share price to the company's earnings per share. Keep as short as possible. 	P/E ratio
+High	DetailsDataList	Highest price for current or last day	High

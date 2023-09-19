@@ -3,8 +3,12 @@
 #include "DetailsHeadline.h"
 #include "DetailsChart.h"
 #include "DetailsDataList.h"
+#include <Catalog.h>
 #include <LayoutBuilder.h>
 #include <View.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "DetailsView"
 
 DetailsView::DetailsView()
         : BView(BRect(), "chartView", B_FOLLOW_ALL, B_WILL_DRAW) {
